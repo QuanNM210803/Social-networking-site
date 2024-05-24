@@ -12,7 +12,16 @@ const messageSchema=new mongoose.Schema({
 	videoUrl:{
 		type: String,
 		default:false
-	}
+	},
+   seen:{
+      type: Boolean,
+      default:false
+   },
+   msgByUserId:{
+      type: mongoose.Schema.ObjectId,
+      required:true,
+      ref:'User'
+   }
 
 }, {
 	timestamps:true
@@ -40,10 +49,10 @@ const conversationSchema=new mongoose.Schema({
 	timestamps: true
 })
 
-const messageModel=mongoose.model('Message', messageSchema)
+const MessageModel=mongoose.model('Message', messageSchema)
 const ConversationModel=mongoose.model('Conversation', conversationSchema)
 
 module.exports={
-	messageModel,
+	MessageModel,
 	ConversationModel
 }

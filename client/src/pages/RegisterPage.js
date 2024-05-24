@@ -22,7 +22,7 @@ const RegisterPage = () => {
 		const { name, value }=e.target
 		setData({ ...data, [name]:value })
 	}
-
+   
 	const handleUploadPhoto= async (e) => {
 		const file=e.target.files[0]
 		const uploadPhoto=await uploadFile(file)

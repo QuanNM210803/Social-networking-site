@@ -7,7 +7,7 @@ async function logout(request,response){
 
       return response.cookie('token','', cookieOptions).status(200).json({
          message:'session out',
-         sucess: true
+         success: true
       })
    }catch(error){
       return response.status(500).json({
