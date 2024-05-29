@@ -103,11 +103,14 @@ io.on('connection', async (socket)=>{
 
       const saveMessage=await message.save()
 
-      const updateConversation=await ConversationModel.updateOne({
-         '$push':{
-            messages: saveMessage?._id
+      const updateConversation=await ConversationModel.updateOne(
+         {
+            _id: conversation?._id
+         },
+         {
+            '$push':{ messages: saveMessage?._id }
          }
-      })
+      )
 
       const getConversationMessage=await ConversationModel.findOne({
          '$or':[

@@ -17,6 +17,9 @@ import Loading from './Loading'
 import backgroundImage from '../assets/wallapaper.jpeg'
 import { IoMdSend } from 'react-icons/io'
 import moment from 'moment'
+import { FcVideoCall } from 'react-icons/fc'
+import { IoCall } from 'react-icons/io5'
+import Rightbar from './rightbar/Rightbar'
 
 const MessagePage = () => {
 	const params= useParams()
@@ -40,6 +43,7 @@ const MessagePage = () => {
 	const [loading, setLoading]=useState(false)
 	const [allMessages, setAllMessages]=useState([])
 	const currentMessage= useRef()
+	const [openDetailsConversation, setOpenDetailsConversation]=useState(true)
 
 	useEffect(() => {
 		if (currentMessage) {
@@ -147,196 +151,223 @@ const MessagePage = () => {
 		}
 	}
 
+	const handleOpenDetailsConversation=() => {
+		setOpenDetailsConversation(!openDetailsConversation)
+	}
+
 	return (
-		<div style={{ backgroundImage: `url(${backgroundImage})` }} className='
-         bg-no-repeat bg-cover'>
-			<header className='sticky top-0 h-16 bg-white flex justify-between items-center px-4'>
-				<div className='flex items-center gap-4'>
-					<Link to={'/'} className='lg:hidden'>
-						<FaAngleLeft size={20}/>
-					</Link>
-					<div>
-						<Avatar
-							width={50}
-							height={50}
-							imageUrl={dataUser?.profile_pic}
-							name={dataUser?.name}
-							userId={dataUser?._id}
-						/>
+		<div>
+			<div style={{ backgroundImage: `url(${backgroundImage})` }} className={`
+            bg-no-repeat bg-cover z-0 ${openDetailsConversation ? 'mr-80':''}`}>
+            
+				<header className='sticky top-0 h-16 bg-white flex justify-between items-center px-4'>
+					<div className='flex items-center gap-4'>
+						<Link to={'/'} className='lg:hidden'>
+							<FaAngleLeft size={20}/>
+						</Link>
+						<div>
+							<Avatar
+								width={50}
+								height={50}
+								imageUrl={dataUser?.profile_pic}
+								name={dataUser?.name}
+								userId={dataUser?._id}
+							/>
+						</div>
+						<div>
+							<h3 className='font-semibold text-lg my-0 text-ellipsis line-clamp-1'>
+								{dataUser?.name}
+							</h3>
+							<p className='-my-1 text-sm'>
+								{
+									dataUser?.online ? (
+										<span className='text-primary'>Online</span>
+									):(
+										<span className='text-slate-400'>Offline</span>
+									)
+								}
+							</p>
+						</div>
 					</div>
-					<div>
-						<h3 className='font-semibold text-lg my-0 text-ellipsis line-clamp-1'>
-							{dataUser?.name}
-						</h3>
-						<p className='-my-2 text-sm'>
-							{
-								dataUser?.online ? (
-									<span className='text-primary'>Online</span>
-								):(
-									<span className='text-slate-400'>Offline</span>
-								)
-							}
-						</p>
+					<div className='flex items-center gap-4'>
+						<div className='sm:block hidden' title='Call'>
+							<button className=''>
+								<IoCall size={20}/>
+							</button>
+						</div>
+						<div className='sm:block hidden' title='Video call'>
+							<button className=''>
+								<FcVideoCall size={25} className='text-black'/>
+							</button>
+						</div>
+						<div className='' onClick={handleOpenDetailsConversation} title='Information Conversation'>
+							<button className=''>
+								<HiDotsVertical size={20}/>
+							</button>
+						</div>
 					</div>
-				</div>
+				</header>
 
-				<div className=''>
-					<button className=''>
-						<HiDotsVertical/>
-					</button>
-				</div>
-			</header>
-
-			{/** show all message */}
-			<section className='relative bg-slate-200 bg-opacity-50 h-[calc(100vh-128px)] overflow-x-hidden overflow-y-scroll scrollbar'>
-				
-				{/** all message show here */}
-				<div className='flex flex-col gap-2 py-2 mx-2' ref={currentMessage}>
-					{
-						allMessages.map((msg, index) => {
-							return (
-								<div className={`bg-white p-1 py-1 rounded w-fit max-w-[280px] md:max-w-sm lg:max-w-md ${user._id===msg?.msgByUserId ? 'ml-auto bg-teal-100':'bg-white'}`}>
-									<div className='w-full'>
-										{
-											msg?.imageUrl && (
-												<img
-													src={msg?.imageUrl}
-													className='w-full h-full object-scale-down'
-												/>
-											)
-										}
-										{
-											msg?.videoUrl && (
-												<video
-													src={msg?.videoUrl}
-													className='w-full h-full object-scale-down'
-													controls
-													autoPlay
-												/>
-											)
-										}
+				{/** show all message */}
+				<section className='relative bg-slate-200 bg-opacity-50 h-[calc(100vh-128px)] 
+               overflow-x-hidden overflow-y-scroll scrollbar'>
+               
+					{/** all message show here */}
+					<div className='flex flex-col gap-2 py-2 mx-2' ref={currentMessage}>
+						{
+							allMessages.map((msg, index) => {
+								return (
+									<div className={`bg-white p-1 py-1 rounded w-fit max-w-[280px] md:max-w-sm lg:max-w-md 
+                              ${user._id===msg?.msgByUserId ? 'ml-auto bg-teal-100':'bg-white'}`}>
+										<div className='w-full'>
+											{
+												msg?.imageUrl && (
+													<img
+														src={msg?.imageUrl}
+														className='w-full h-full object-scale-down'
+													/>
+												)
+											}
+											{
+												msg?.videoUrl && (
+													<video
+														src={msg?.videoUrl}
+														className='w-full h-full object-scale-down'
+														controls
+														autoPlay
+													/>
+												)
+											}
+										</div>
+										<p className='px-2'>
+											{msg?.text}
+										</p>
+										<p className='text-xs ml-auto w-fit'>
+											{ moment(msg.createdAt).format('HH:mm')}
+										</p>
 									</div>
-									<p className='px-2'>
-										{msg?.text}
-									</p>
-									<p className='text-xs ml-auto w-fit'>
-										{ moment(msg.createdAt).format('HH:mm')}
-									</p>
-								</div>
-							)
-						})
-					}
-				</div>
+								)
+							})
+						}
+					</div>
 
-				{/** upload image display */}
-				{
-					message.imageUrl && (
-						<div className='sticky bottom-0 w-full h-full bg-slate-700 bg-opacity-30 flex justify-center items-center
-                  rounded overflow-hidden'>
-							<div onClick={handleClearUploadImage} className='w-fit p-2 absolute top-0 right-0 cursor-pointer hover:text-red-600'>
-								<IoClose size={25}/>
-							</div>
-							<div className='bg-white p-3'>
-								<img 
-									src={message.imageUrl}
-									alt='uploadImage'
-									className='aspect-square w-full h-full max-w-sm m-2 object-scale-down'
-								/>
-							</div>
-						</div>
-					)
-				}
-				{/** upload video display */}
-				{
-					message.videoUrl && (
-						<div className='sticky bottom-0 w-full h-full bg-slate-700 bg-opacity-30 flex justify-center items-center
-                     rounded overflow-hidden'>
-							<div onClick={handleClearUploadVideo} className='w-fit p-2 absolute top-0 right-0 cursor-pointer hover:text-red-600'>
-								<IoClose size={25}/>
-							</div>
-							<div className='bg-white p-3'>
-								<video
-									src={message.videoUrl}
-									alt='uploadVideo'
-									className='aspect-square w-full h-full max-w-sm m-2 object-scale-down'
-									controls
-									muted
-									autoPlay
-								/>
-							</div>
-						</div>
-					)
-				}
-
-				{
-					loading && (
-						<div className='sticky bottom-0 w-full h-full flex justify-center items-center'>
-							<Loading/>
-						</div>
-					)
-				}
-			</section>
-                  
-			{/** send message */}
-			<section className='h-16 bg-white flex items-center px-4'>
-				<div className=' relative'>
-					<button onClick={handleUploadImageVideoOpen} className='flex justify-center items-center w-11 h-11 rounded-full
-                hover:bg-primary hover:text-white'>
-						<FaPlus size={20}/>
-					</button>
-
-					{/** video and image */}
+					{/** upload image display */}
 					{
-						openImageVideoUpload && (
-							<div className='bg-white shadow rounded absolute bottom-12 w-36 p-2'>
-								<form>
-									<label htmlFor='uploadImage' className='flex items-center p-2 gap-3
-                           hover:bg-slate-300 px-3 cursor-pointer'>
-										<div className='text-primary'>
-											<FaImage size={18}/>
-										</div>
-										<p>Image</p>
-									</label>
-									<label htmlFor='uploadVideo' className='flex items-center p-2 gap-3
-                           hover:bg-slate-300 px-3 cursor-pointer'>
-										<div className='text-purple-500'>
-											<FaVideo size={18}/>
-										</div>
-										<p>Video</p>
-									</label>
-									<input
-										type='file'
-										accept='image/*'
-										id='uploadImage'
-										onChange={handleUploadImage}
-										className='hidden'
+						message.imageUrl && (
+							<div className='sticky bottom-0 w-full h-full bg-slate-700 bg-opacity-30 flex justify-center items-center
+                     rounded overflow-hidden'>
+								<div onClick={handleClearUploadImage} className='w-fit p-2 absolute top-0 right-0 cursor-pointer hover:text-red-600'>
+									<IoClose size={25}/>
+								</div>
+								<div className='bg-white p-3'>
+									<img 
+										src={message.imageUrl}
+										alt='uploadImage'
+										className='aspect-square w-full h-full max-w-sm m-2 object-scale-down'
 									/>
-									<input
-										type='file'
-										accept='video/*'
-										id='uploadVideo'
-										onChange={handleUploadVideo}
-										className='hidden'
-									/>
-								</form>
+								</div>
 							</div>
 						)
 					}
-				</div>
-				{/** input box */}
-				<form className='h-full w-full flex gap-2' onSubmit={handleSendMessage}>
-					<input
-						type='text'
-						placeholder='Type a message'
-						className='w-full h-full py-1 px-4 outline-none'
-						value={message.text}
-						onChange={handleOnChange}
-					/>
-					<button className='text-primary hover:text-secondary'>
-						<IoMdSend size={28}/>
-					</button>
-				</form>
-			</section>
+					{/** upload video display */}
+					{
+						message.videoUrl && (
+							<div className='sticky bottom-0 w-full h-full bg-slate-700 bg-opacity-30 flex justify-center items-center
+                        rounded overflow-hidden'>
+								<div onClick={handleClearUploadVideo} className='w-fit p-2 absolute top-0 right-0 cursor-pointer hover:text-red-600'>
+									<IoClose size={25}/>
+								</div>
+								<div className='bg-white p-3'>
+									<video
+										src={message.videoUrl}
+										alt='uploadVideo'
+										className='aspect-square w-full h-full max-w-sm m-2 object-scale-down'
+										controls
+										muted
+										autoPlay
+									/>
+								</div>
+							</div>
+						)
+					}
+
+					{
+						loading && (
+							<div className='sticky bottom-0 w-full h-full flex justify-center items-center'>
+								<Loading/>
+							</div>
+						)
+					}
+				</section>
+                     
+				{/** send message */}
+				<section className='h-16 bg-white flex items-center px-4'>
+					<div className=' relative'>
+						<button onClick={handleUploadImageVideoOpen} className='flex justify-center items-center w-11 h-11 rounded-full
+                  hover:bg-primary hover:text-white'>
+							<FaPlus size={20}/>
+						</button>
+
+						{/** video and image */}
+						{
+							openImageVideoUpload && (
+								<div className='bg-white shadow rounded absolute bottom-12 w-36 p-2'>
+									<form>
+										<label htmlFor='uploadImage' className='flex items-center p-2 gap-3
+                              hover:bg-slate-300 px-3 cursor-pointer'>
+											<div className='text-primary'>
+												<FaImage size={18}/>
+											</div>
+											<p>Image</p>
+										</label>
+										<label htmlFor='uploadVideo' className='flex items-center p-2 gap-3
+                              hover:bg-slate-300 px-3 cursor-pointer'>
+											<div className='text-purple-500'>
+												<FaVideo size={18}/>
+											</div>
+											<p>Video</p>
+										</label>
+										<input
+											type='file'
+											accept='image/*'
+											id='uploadImage'
+											onChange={handleUploadImage}
+											className='hidden'
+										/>
+										<input
+											type='file'
+											accept='video/*'
+											id='uploadVideo'
+											onChange={handleUploadVideo}
+											className='hidden'
+										/>
+									</form>
+								</div>
+							)
+						}
+					</div>
+					{/** input box */}
+					<form className='h-full w-full flex gap-2' onSubmit={handleSendMessage}>
+						<input
+							type='text'
+							placeholder='Type a message'
+							className='w-full h-full py-1 px-4 outline-none'
+							value={message.text}
+							onChange={handleOnChange}
+						/>
+						<button className='text-primary hover:text-secondary'>
+							<IoMdSend size={28}/>
+						</button>
+					</form>
+				</section>
+			</div>
+			{
+				openDetailsConversation && (
+					<div className='w-80 fixed right-0 top-0 z-0 h-full'>
+						<Rightbar receiver={dataUser}/>
+					</div>
+				)
+			}
 		</div>
 	)
 }
