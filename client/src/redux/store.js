@@ -1,4 +1,5 @@
 //tạo ra một Redux store sử dụng Redux Toolkit
+//import { configureStore } from '@reduxjs/toolkit'
 import { configureStore } from '@reduxjs/toolkit'
 import userReducer from './userSlice'
 // import không nhất thiết phải là userReducer, đây chỉ là cái tên

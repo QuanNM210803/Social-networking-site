@@ -77,3 +77,15 @@ export async function searchUserApi(data) {
 		toast.error(error?.response?.data?.message)
 	}
 }
+
+export async function getConversationsApi(userId) {
+	try {
+		console.log('userId', userId)
+		const response=await api.get(`/api/conversations/${userId}`, { withCredentials:true })
+		console.log(response.data)
+		return response.data
+	} catch (error) {
+		console.log(error)
+		toast.error(error?.response?.data?.message)
+	}
+}

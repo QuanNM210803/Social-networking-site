@@ -1,77 +1,22 @@
+/* eslint-disable no-console */
 /* eslint-disable no-undef */
 /* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable no-unused-vars */
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { FaArrowLeft } from 'react-icons/fa6'
 import Tab from './Tab'
 import MediaTab from './MediaTab'
 import FileTab from './FileTab'
 import LinkTab from './LinkTab'
+import { useSelector } from 'react-redux'
+import { useParams } from 'react-router-dom'
 
 const showFile = ({ handleShowFile, content }) => {
 	const [activeTab, setActiveTab] =useState(content)
-	const [media, setMedia]=useState([
-		{
-			url:'https://res.cloudinary.com/daygzzzwz/image/upload/v1716567877/chat-app-file/clr41jlqrnjhbpd3o18k.png'
-		},
-		{
-			url:'https://res.cloudinary.com/daygzzzwz/image/upload/v1716568884/chat-app-file/zvfkmesllv6rqeeardkw.png'
-		},
-		{
-			url:'https://res.cloudinary.com/daygzzzwz/image/upload/v1716564091/chat-app-file/n0goblcfufupp1dbuh0t.jpg'
-		},
-		{
-			url:'https://res.cloudinary.com/daygzzzwz/video/upload/v1716564050/chat-app-file/cmklt1lc6xponxsp3jxe.mp4'
-		},
-		{
-			url:'https://res.cloudinary.com/daygzzzwz/image/upload/v1716567877/chat-app-file/clr41jlqrnjhbpd3o18k.png'
-		},
-		{
-			url:'https://res.cloudinary.com/daygzzzwz/image/upload/v1716568884/chat-app-file/zvfkmesllv6rqeeardkw.png'
-		},
-		{
-			url:'https://res.cloudinary.com/daygzzzwz/image/upload/v1716564091/chat-app-file/n0goblcfufupp1dbuh0t.jpg'
-		},
-		{
-			url:'https://res.cloudinary.com/daygzzzwz/video/upload/v1716564050/chat-app-file/cmklt1lc6xponxsp3jxe.mp4'
-		},
-		{
-			url:'https://res.cloudinary.com/daygzzzwz/image/upload/v1716567877/chat-app-file/clr41jlqrnjhbpd3o18k.png'
-		},
-		{
-			url:'https://res.cloudinary.com/daygzzzwz/image/upload/v1716568884/chat-app-file/zvfkmesllv6rqeeardkw.png'
-		},
-		{
-			url:'https://res.cloudinary.com/daygzzzwz/image/upload/v1716564091/chat-app-file/n0goblcfufupp1dbuh0t.jpg'
-		},
-		{
-			url:'https://res.cloudinary.com/daygzzzwz/video/upload/v1716564050/chat-app-file/cmklt1lc6xponxsp3jxe.mp4'
-		},
-		{
-			url:'https://res.cloudinary.com/daygzzzwz/image/upload/v1716567877/chat-app-file/clr41jlqrnjhbpd3o18k.png'
-		},
-		{
-			url:'https://res.cloudinary.com/daygzzzwz/image/upload/v1716568884/chat-app-file/zvfkmesllv6rqeeardkw.png'
-		},
-		{
-			url:'https://res.cloudinary.com/daygzzzwz/image/upload/v1716564091/chat-app-file/n0goblcfufupp1dbuh0t.jpg'
-		},
-		{
-			url:'https://res.cloudinary.com/daygzzzwz/video/upload/v1716564050/chat-app-file/cmklt1lc6xponxsp3jxe.mp4'
-		},
-		{
-			url:'https://res.cloudinary.com/daygzzzwz/image/upload/v1716567877/chat-app-file/clr41jlqrnjhbpd3o18k.png'
-		},
-		{
-			url:'https://res.cloudinary.com/daygzzzwz/image/upload/v1716568884/chat-app-file/zvfkmesllv6rqeeardkw.png'
-		},
-		{
-			url:'https://res.cloudinary.com/daygzzzwz/image/upload/v1716564091/chat-app-file/n0goblcfufupp1dbuh0t.jpg'
-		},
-		{
-			url:'https://res.cloudinary.com/daygzzzwz/video/upload/v1716564050/chat-app-file/cmklt1lc6xponxsp3jxe.mp4'
-		}
-	])
+	const params=useParams()
+	const user=useSelector(state => state?.user)
+	const socketConnection=useSelector(state => state?.user?.socketConnection)
+	const [media, setMedia]=useState([])
 	const [file, setFile]=useState([
 		{
 			name:'file1',
@@ -201,6 +146,17 @@ const showFile = ({ handleShowFile, content }) => {
 			url:'https://www.youtube.com'
 		}
 	])
+	useEffect(() => {
+		if (socketConnection) {
+			socketConnection.emit('rightbar', user?._id, params?.userId)
+			socketConnection.on('newMedia', (data) => {
+				setMedia([data, ...media])
+			})
+			socketConnection.on('media', (data) => {
+				setMedia(data)
+			})
+		}
+	}, [socketConnection, user, params?.userId, media])
 	return (
 		<div className='overflow-auto scrollbar w-full h-full'>
 			<div className='w-full h-14 flex items-center gap-0'>

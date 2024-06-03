@@ -19,10 +19,10 @@ export const userSlice = createSlice({
 	//reducers: Một đối tượng chứa các reducer function. Mỗi reducer function sẽ xử lý một loại action cụ thể.
 	reducers: {
 		setUser:(state, action) => {
-			state._id=action.payload._id,
-			state.name=action.payload.name,
-			state.email=action.payload.email,
-			state.profile_pic=action.payload.profile_pic
+			state._id=action?.payload?._id,
+			state.name=action?.payload?.name,
+			state.email=action?.payload?.email,
+			state.profile_pic=action?.payload?.profile_pic
 		},
 		setToken:(state, action) => {
 			state.token=action.payload
@@ -36,10 +36,10 @@ export const userSlice = createSlice({
 			state.socketConnection=null
 		},
 		setOnlineUsers:(state, action) => {
-			state.onlineUsers=action.payload
+			state.onlineUsers=action?.payload
 		},
 		setSocketConnection :(state, action) => {
-			state.socketConnection=action.payload
+			state.socketConnection=action?.payload
 		}
 	}
 })

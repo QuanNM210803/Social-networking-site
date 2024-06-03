@@ -18,17 +18,9 @@ const Avatar = ({ userId, name, imageUrl, width, height }) => {
 	}
 
 	const bgColor=[
-		'bg-slate-200',
-		'bg-teal-200',
-		'bg-green-200',
-		'bg-yellow-200',
-		'bg-red-200',
-		'bg-gray-200',
-		'bg-cyan-200',
-		'bg-sky-200',
-		'bg-blue-200'
+		'bg-sky-200'
 	]
-	const randomNumber=Math.floor(Math.random()*9)
+	const randomNumber=Math.floor(Math.random()*1)
 
 	const isOnline=onlineUsers?.includes(userId)
 

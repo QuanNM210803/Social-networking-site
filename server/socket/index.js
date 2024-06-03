@@ -25,7 +25,6 @@ const onlineUsers= new Set()
  * với socket của client đó
  */
 io.on('connection', async (socket)=>{
-   console.log('connect user', socket.id)
 
    const token=socket.handshake.auth.token
    // current user userDetails
@@ -40,7 +39,6 @@ io.on('connection', async (socket)=>{
 
    /** đăng kí sự kiện */
    socket.on('message-page',async (userId)=>{
-      console.log('message-page',userId)
       const userDetails=await UserModel.findById(userId).select('-password')
 
       const payload={
@@ -72,7 +70,10 @@ io.on('connection', async (socket)=>{
 
    // new message
    socket.on('new-message',async (data)=>{
-      // check conversation is available both user
+      if(data?.imageUrl || data?.videoUrl){
+         const media={url: data?.imageUrl || data?.videoUrl}
+         socket.emit('newMedia', media)
+      }
       
       let conversation =await ConversationModel.findOne({
          '$or':[
@@ -177,6 +178,26 @@ io.on('connection', async (socket)=>{
       io.to(msgByUserId).emit('conversation', conversationReceiver)
    })
 
+   //media
+   socket.on('rightbar', async (senderId, receiverId)=>{
+      const conversation=await ConversationModel.findOne({
+         '$or':[
+            {sender: senderId, receiver:receiverId},
+            {sender: receiverId, receiver:senderId},
+         ]
+      }).populate('messages')
+      const mediaConversation=conversation?.messages.reverse().filter(msg=> msg.imageUrl || msg.videoUrl) || []
+      const media=[]
+      if(mediaConversation.length>0){
+         mediaConversation.forEach(msg=>{
+            media.push({
+               url:msg.imageUrl || msg.videoUrl
+            })
+         })
+      }
+      socket.emit('media',media || [])
+   })
+
    socket.on('disconnect',()=>{
       onlineUsers.delete(user?._id?.toString())
       console.log('disconnect user', socket.id)
@@ -184,5 +205,3 @@ io.on('connection', async (socket)=>{
 })
 
 module.exports={app, server}
-
-// 7:33:47

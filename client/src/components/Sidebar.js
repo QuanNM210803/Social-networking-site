@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable no-console */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-mixed-spaces-and-tabs */
@@ -15,6 +16,7 @@ import SearchUser from './SearchUser'
 import { FaImage } from 'react-icons/fa6'
 import { FaVideo } from 'react-icons/fa6'
 import { logout } from '../redux/userSlice'
+import { getConversationsApi, getUserDetails } from '../apis/CallAPI'
 
 const Sidebar = () => {
 	const user=useSelector(state => state?.user)
@@ -29,7 +31,6 @@ const Sidebar = () => {
 		if (socketConnection) {
 			socketConnection.emit('sidebar', user._id)
 			socketConnection.on('conversation', (data) => {
-				console.log('conversation', data)
 				const conversationUserData=data.map((conversationUser, index) => {
 					if (conversationUser?.sender?._id===conversationUser?.receiver?._id) {
 						return {
@@ -57,7 +58,6 @@ const Sidebar = () => {
 		dispatch(logout())
 		navigate('/email')
 		localStorage.clear()
-
 	}
 
 	return (

@@ -13,7 +13,7 @@ import { io } from 'socket.io-client'
 
 const Home = () => {
 	//Khi trạng thái user trong Redux store thay đổi, useSelector sẽ tự động cập nhật lại giá trị của user và re-render component.
-	const user=useSelector(state => state.user)// chính là user trong store.js
+	const user=useSelector(state => state?.user)// chính là user trong store.js
 	const dispatch=useDispatch()
 	const navigate=useNavigate()
 	const location=useLocation()
@@ -21,7 +21,7 @@ const Home = () => {
 	const [userDetails, setUserDetails]=useState({})
 	useEffect(() => {
 		getUserDetails().then((data) => {
-			if (data.data.logout) {
+			if (data?.data?.logout) {
 				dispatch(logout())
 				navigate('/email')
 			} else {
@@ -40,7 +40,6 @@ const Home = () => {
 		})
 
 		socketConnection.on('onlineUsers', (data) => {
-			console.log(data)
 			dispatch(setOnlineUsers(data))
 		})
 		dispatch(setSocketConnection(socketConnection))
@@ -54,10 +53,9 @@ const Home = () => {
 	return (
 		<div className='grid lg:grid-cols-[300px,1fr] h-screen max-h-screen'>
 			<section className={`bg-white ${!basePath && 'hidden'} lg:block`}>
-				<Sidebar/>
-			</section>
-			<section className={`${basePath && 'hidden'}`}>
-				<Outlet/>
+				<Sidebar />
+			</section><section className={`${basePath && 'hidden'}`}>
+				<Outlet />
 			</section>
 
 			<div className={`justify-center items-center flex-col gap-2 hidden

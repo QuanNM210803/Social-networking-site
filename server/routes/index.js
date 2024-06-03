@@ -6,6 +6,7 @@ const userDetails = require('../controller/userDetails')
 const logout = require('../controller/logout')
 const updateUserDetails = require('../controller/updateUserDetails')
 const searchUser = require('../controller/searchUser')
+const conversationById = require('../controller/conversationById')
 const router=express.Router()
 
 router.post('/register',registerUser)
@@ -15,5 +16,6 @@ router.get('/user-details', userDetails)
 router.get('/logout',logout)
 router.put('/update-user',updateUserDetails)
 router.post('/search-user',searchUser)
+router.get('/conversations/:userId',conversationById)
 
 module.exports=router
