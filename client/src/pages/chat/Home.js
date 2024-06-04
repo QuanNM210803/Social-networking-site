@@ -4,11 +4,11 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
-import { getUserDetails } from '../apis/CallAPI'
+import { getUserDetails } from '../../apis/CallAPI'
 import { useDispatch, useSelector } from 'react-redux'
-import { logout, setOnlineUsers, setSocketConnection, setUser } from '../redux/userSlice'
-import Sidebar from '../components/Sidebar'
-import logo from '../assets/logo.png'
+import { logout, setOnlineUsers, setSocketConnection, setUser } from '../../redux/userSlice'
+import Sidebar from '../../components/Sidebar'
+import logo from '../../assets/logo.png'
 import { io } from 'socket.io-client'
 
 const Home = () => {
@@ -54,7 +54,8 @@ const Home = () => {
 		<div className='grid lg:grid-cols-[300px,1fr] h-screen max-h-screen'>
 			<section className={`bg-white ${!basePath && 'hidden'} lg:block`}>
 				<Sidebar />
-			</section><section className={`${basePath && 'hidden'}`}>
+			</section>
+			<section className={`${basePath && 'hidden'}`}>
 				<Outlet />
 			</section>
 

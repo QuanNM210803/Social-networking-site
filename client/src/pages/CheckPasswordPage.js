@@ -4,7 +4,6 @@
 /* eslint-disable no-unused-vars */
 
 import React, { useEffect, useState } from 'react'
-import { PiUserCircle } from 'react-icons/pi'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { checkPassword } from '../apis/CallAPI'
 import Avatar from '../components/Avatar'

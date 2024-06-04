@@ -3,10 +3,11 @@ import App from '../App'
 import RegisterPage from '../pages/RegisterPage'
 import CheckEmailPage from '../pages/CheckEmailPage'
 import CheckPasswordPage from '../pages/CheckPasswordPage'
-import Home from '../pages/Home'
+import Home from '../pages/chat/Home'
 import MessagePage from '../components/MessagePage'
 import AuthLayouts from '../layout'
 import ForgotPassword from '../pages/ForgotPassword'
+import HomePage from '../pages/news_feed/HomePage'
 
 const router = createBrowserRouter([
 	{
@@ -38,6 +39,10 @@ const router = createBrowserRouter([
 						element: <MessagePage/>
 					}
 				]
+			},
+			{
+				path:'home',
+				element: <HomePage/>
 			}
 		]
 	}

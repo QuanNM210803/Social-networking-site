@@ -9,3 +9,25 @@
 .scrollbar::-webkit-scrollbar-thumb{
    @apply bg-slate-300 rounded-full
 }
+
+.text-nomal {
+   font-size: 18px;
+   line-height: 24px;
+}
+
+.scrollbar-newsfeed::-webkit-scrollbar{
+   width: 5px;
+   display: none;
+}
+
+.scrollbar-newsfeed:hover::-webkit-scrollbar {
+   display: initial;
+ }
+
+.scrollbar-newsfeed::-webkit-scrollbar-track{
+   @apply bg-slate-200
+}
+
+.scrollbar-newsfeed::-webkit-scrollbar-thumb{
+   @apply bg-slate-400 rounded-full
+}
