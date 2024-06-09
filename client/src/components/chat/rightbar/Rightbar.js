@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
-import Avatar from '../Avatar'
+import Avatar from '../../Avatar'
 import { RiArrowDropDownLine } from 'react-icons/ri'
 import { RiArrowDropUpLine } from 'react-icons/ri'
 import { AiFillPicture } from 'react-icons/ai'
@@ -117,7 +117,7 @@ const Rightbar = ({ receiver }) => {
 											</button>
 										</div>
 									</div>
-								)
+								) 
 							}
 						</div>
 						<div className='bg-slate-200 w-full h-auto py-1 font-semibold'>

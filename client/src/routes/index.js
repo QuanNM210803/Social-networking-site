@@ -4,10 +4,14 @@ import RegisterPage from '../pages/RegisterPage'
 import CheckEmailPage from '../pages/CheckEmailPage'
 import CheckPasswordPage from '../pages/CheckPasswordPage'
 import Home from '../pages/chat/Home'
-import MessagePage from '../components/MessagePage'
+import MessagePage from '../components/chat/message/MessagePage'
 import AuthLayouts from '../layout'
 import ForgotPassword from '../pages/ForgotPassword'
 import HomePage from '../pages/news_feed/HomePage'
+import FriendRequest from '../pages/news_feed/FriendRequest'
+import VideoPage from '../pages/news_feed/VideoPage'
+import GroupPage from '../pages/news_feed/GroupPage'
+import GamePage from '../pages/news_feed/GamePage'
 
 const router = createBrowserRouter([
 	{
@@ -43,6 +47,22 @@ const router = createBrowserRouter([
 			{
 				path:'home',
 				element: <HomePage/>
+			},
+			{
+				path: 'friend-request',
+				element: <FriendRequest/>
+			},
+			{
+				path: 'video',
+				element: <VideoPage/>
+			},
+			{
+				path: 'groups',
+				element: <GroupPage/>
+			},
+			{
+				path: 'games',
+				element: <GamePage/>
 			}
 		]
 	}

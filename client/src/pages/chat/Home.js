@@ -7,7 +7,7 @@ import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { getUserDetails } from '../../apis/CallAPI'
 import { useDispatch, useSelector } from 'react-redux'
 import { logout, setOnlineUsers, setSocketConnection, setUser } from '../../redux/userSlice'
-import Sidebar from '../../components/Sidebar'
+import Sidebar from '../../components/chat/sidebar/Sidebar'
 import logo from '../../assets/logo.png'
 import { io } from 'socket.io-client'
 

@@ -2,6 +2,8 @@
 /* eslint-disable no-unused-vars */
 import React, { useState } from 'react'
 import { IoSearchOutline } from 'react-icons/io5'
+import ChatWindow from '../ChatWindow'
+import { Link } from 'react-router-dom'
 
 const Rightbar = () => {
 	const [inviteFriend, setInviteFriend]=useState([
@@ -24,60 +26,78 @@ const Rightbar = () => {
 			mutualFriends: 3
 		}
 	])
-	const [friendChat, setFriendChat]=useState([
+	const [friendsChat, setFriendsChat]=useState([
 		{
+			_id: '1',
 			avatar: 'https://www.w3schools.com/howto/img_avatar.png',
 			name: 'Nguyễn Văn A',
 			online: true
 		},
 		{
+			_id: '2',
 			avatar: 'https://www.w3schools.com/howto/img_avatar.png',
 			name: 'Nguyễn Văn A',
 			online: false
 		},
 		{
+			_id: '3',
 			avatar: 'https://www.w3schools.com/howto/img_avatar.png',
 			name: 'Nguyễn Văn A',
 			online: false
 		},
 		{
+			_id: '4',
 			avatar: 'https://www.w3schools.com/howto/img_avatar.png',
 			name: 'Nguyễn Văn A',
 			online: true
 		},
 		{
+			_id: '5',
 			avatar: 'https://www.w3schools.com/howto/img_avatar.png',
 			name: 'Nguyễn Văn A',
 			online: false
 		},
 		{
+			_id: '6',
 			avatar: 'https://www.w3schools.com/howto/img_avatar.png',
 			name: 'Nguyễn Văn A',
 			online: false
 		},
 		{
+			_id: '7',
 			avatar: 'https://www.w3schools.com/howto/img_avatar.png',
 			name: 'Nguyễn Văn A',
 			online: true
 		},
 		{
+			_id: '8',
 			avatar: 'https://www.w3schools.com/howto/img_avatar.png',
 			name: 'Nguyễn Văn A',
 			online: false
 		},
 		{
+			_id: '9',
 			avatar: 'https://www.w3schools.com/howto/img_avatar.png',
 			name: 'Nguyễn Văn A',
 			online: false
 		}
    
 	])
+	const [isOpenChatWindow, setIsOpenChatWindow]=useState(false)
+	const [IdFriendChat, setIdFriendChat]=useState('')
+	const handleOpenChatWindow=(id) => {
+		setIdFriendChat(id)
+		setIsOpenChatWindow(true)
+	}
+	const handleCloseChatWindow=() => {
+		setIsOpenChatWindow(false)
+	}
 	return (
-		<div>
+		<div className='z-0 w-[295px]'>
 			<div className='w-full h-auto'>
 				<div className='flex w-full h-auto items-center justify-between p-3'>
 					<p className='font-semibold'>Lời mời kết bạn</p>
-					<p className='text-blue-600 cursor-pointer'>Xem tất cả</p>
+					<Link to={'/friend-request'} className='text-blue-600 cursor-pointer'>Xem tất cả</Link>
 				</div>
 				{inviteFriend.length>0 && (
 					inviteFriend.slice(0, 2).map((friend, index) => (
@@ -118,14 +138,14 @@ const Rightbar = () => {
 					</div>
 				</div>
 			</div>
-			{friendChat.length===0 && (
+			{friendsChat.length===0 && (
 				<div className='flex items-center justify-center w-full h-40 px-5'>
 					<p className='text-slate-500 text-center'>Bạn chưa có cuộc trò chuyện nào. Hãy bắt đầu ngay</p>
 				</div>
 			)}
-			{friendChat.length>0 && (
-				friendChat.map((friend, index) => (
-					<div className='flex gap-3 px-3 py-2'>
+			{friendsChat.length>0 && (
+				friendsChat.map((friend, index) => (
+					<div className='flex gap-3 px-3 py-2 cursor-pointer hover:bg-slate-200 rounded-md' onClick={() => handleOpenChatWindow(friend?._id)}>
 						<div className='relative'>
 							<img
 								src={friend?.avatar}
@@ -141,6 +161,11 @@ const Rightbar = () => {
 					</div>
 				))
 			)}
+			{
+				isOpenChatWindow && (
+					<ChatWindow handleCloseChatWindow={handleCloseChatWindow} IdFriendChat={IdFriendChat}/>
+				)
+			}
 		</div>
 	)
 }

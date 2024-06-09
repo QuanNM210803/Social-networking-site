@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable no-unused-vars */
 import React from 'react'
 import logo from '../../../assets/logoNewsFeed.jpg'
@@ -9,8 +10,10 @@ import { IoGameControllerSharp } from 'react-icons/io5'
 import { IoMenu } from 'react-icons/io5'
 import { BiSolidMessageRounded } from 'react-icons/bi'
 import { IoNotifications } from 'react-icons/io5'
+import { Link, useLocation } from 'react-router-dom'
 
 const navbar = () => {
+	const location = useLocation()
 	return (
 		<div className='w-full h-14 flex items-center justify-between'>
 			<div className='h-auto w-auto flex items-center gap-3 px-5'>
@@ -30,21 +33,26 @@ const navbar = () => {
 				</div>
 			</div>
 			<div className='h-auto w-auto flex items-center gap-5'>
-				<div className='w-20 h-auto flex justify-center'>
-					<IoHome className='w-8 h-8 text-slate-800 hover:text-slate-300 cursor-pointer'/>
-				</div>
-				<div className='w-20 h-auto flex justify-center'>
-					<IoPeopleSharp className='w-8 h-8 text-slate-800 hover:text-slate-300 cursor-pointer'/>
-				</div>
-				<div className='w-20 h-auto flex justify-center'>
-					<BiSolidVideos className='w-8 h-8 text-slate-800 hover:text-slate-300 cursor-pointer'/>
-				</div>
-				<div className='w-20 h-auto flex justify-center'>
-					<MdGroups className='w-8 h-8 text-slate-800 hover:text-slate-300 cursor-pointer'/>
-				</div>
-				<div className='w-20 h-auto flex justify-center'>
-					<IoGameControllerSharp className='w-8 h-8 text-slate-800 hover:text-slate-300 cursor-pointer'/>
-				</div>
+				<Link to={'/home'} className={'w-20 h-auto flex justify-center'}>
+					<IoHome className={location.pathname === '/home' ? 'w-8 h-8 text-slate-300 cursor-pointer'
+						:'w-8 h-8 text-slate-800 hover:text-slate-300 cursor-pointer'}/>
+				</Link>
+				<Link to={'/friend-request'} className='w-20 h-auto flex justify-center'>
+					<IoPeopleSharp className={location.pathname === '/friend-request' ? 'w-8 h-8 text-slate-300 cursor-pointer'
+						:'w-8 h-8 text-slate-800 hover:text-slate-300 cursor-pointer'}/>
+				</Link>
+				<Link to={'/video'} className='w-20 h-auto flex justify-center'>
+					<BiSolidVideos className={location.pathname === '/video' ? 'w-8 h-8 text-slate-300 cursor-pointer'
+						:'w-8 h-8 text-slate-800 hover:text-slate-300 cursor-pointer'}/>
+				</Link>
+				<Link to={'/groups'} className='w-20 h-auto flex justify-center'>
+					<MdGroups className={location.pathname === '/groups' ? 'w-9 h-9 text-slate-300 cursor-pointer'
+						:'w-8 h-8 text-slate-800 hover:text-slate-300 cursor-pointer'}/>
+				</Link>
+				<Link to={'/games'} className='w-20 h-auto flex justify-center'>
+					<IoGameControllerSharp className={location.pathname === '/games' ? 'w-8 h-8 text-slate-300 cursor-pointer'
+						:'w-8 h-8 text-slate-800 hover:text-slate-300 cursor-pointer'}/>
+				</Link>
 			</div>
 			<div className=' h-auto w-auto flex items-center px-5 gap-3'>
 				<div className='w-auto h-auto flex justify-center rounded-full bg-slate-600 p-[5px] hover:bg-slate-400'>

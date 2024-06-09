@@ -15,14 +15,22 @@
    line-height: 24px;
 }
 
+.text-mini {
+   font-size: 12px;
+   line-height: 18px;
+}
+.text-mini-1 {
+   font-size: 15px;
+}
+
 .scrollbar-newsfeed::-webkit-scrollbar{
    width: 5px;
    display: none;
 }
 
 .scrollbar-newsfeed:hover::-webkit-scrollbar {
-   display: initial;
- }
+   display:inherit;
+}
 
 .scrollbar-newsfeed::-webkit-scrollbar-track{
    @apply bg-slate-200

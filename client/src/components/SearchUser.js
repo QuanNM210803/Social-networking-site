@@ -53,7 +53,6 @@ const SearchUser = ({ onClose }) => {
 							searchUser.map((user, index) => {
 								return (
 									<UserSearchCard key={user._id} user={user} onClose={onClose}/>
-
 								)
 							})
 						)

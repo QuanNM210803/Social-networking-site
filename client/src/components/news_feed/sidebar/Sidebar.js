@@ -8,6 +8,7 @@ import { MdGroups } from 'react-icons/md'
 import { IoGameControllerSharp } from 'react-icons/io5'
 import { IoIosArrowDown } from 'react-icons/io'
 import { IoIosArrowUp } from 'react-icons/io'
+import { Link } from 'react-router-dom'
 
 const Sidebar = () => {
 	const [showMore, setShowMore]=useState(false)
@@ -53,7 +54,7 @@ const Sidebar = () => {
 		setShowMore(!showMore)
 	}
 	return (
-		<div className=''>
+		<div className='w-[365px]'>
 			<div className='w-full h-auto py-2'>
 				<div className='flex gap-3 py-2 px-5 items-center cursor-pointer hover:bg-slate-200 rounded-lg'>
 					<img
@@ -63,22 +64,22 @@ const Sidebar = () => {
 					/>
 					<p className='text-nomal font-semibold'>Nguyễn Minh Quân</p>
 				</div>
-				<div className='flex gap-5 py-2 px-5 items-center cursor-pointer hover:bg-slate-200 rounded-lg'>
+				<Link to={'/friend-request'} className='flex gap-5 py-2 px-5 items-center cursor-pointer hover:bg-slate-200 rounded-lg'>
 					<IoPeopleSharp className='w-8 h-8 text-blue-600 cursor-pointer'/>
 					<p className='text-base font-semibold'>Bạn bè</p>
-				</div>
-				<div className='flex gap-5 py-2 px-5 items-center cursor-pointer hover:bg-slate-200 rounded-lg'>
+				</Link>
+				<Link to={'/video'} className='flex gap-5 py-2 px-5 items-center cursor-pointer hover:bg-slate-200 rounded-lg'>
 					<BiSolidVideos className='w-8 h-8 text-red-600 cursor-pointer'/>
 					<p className='text-base font-semibold'>Video</p>
-				</div>
-				<div className='flex gap-5 py-2 px-5 items-center cursor-pointer hover:bg-slate-200 rounded-lg'>
+				</Link>
+				<Link to={'/groups'} className='flex gap-5 py-2 px-5 items-center cursor-pointer hover:bg-slate-200 rounded-lg'>
 					<MdGroups className='w-8 h-8 text-teal-600 cursor-pointer'/>
 					<p className='text-base font-semibold'>Nhóm</p>
-				</div>
-				<div className='flex gap-5 py-2 px-5 items-center cursor-pointer hover:bg-slate-200 rounded-lg'>
+				</Link>
+				<Link to={'/games'} className='flex gap-5 py-2 px-5 items-center cursor-pointer hover:bg-slate-200 rounded-lg'>
 					<IoGameControllerSharp className='w-8 h-8 text-gray-700 cursor-pointer'/>
 					<p className='text-base font-semibold'>Trò chơi</p>
-				</div>
+				</Link>
 			</div>
 
 			<div className='flex justify-center'>
