@@ -8,6 +8,7 @@ import { FaRegComment } from 'react-icons/fa'
 import { AiOutlineLike } from 'react-icons/ai'
 import DetailsMedia from '../../DetailsMedia'
 import Comment from './Comment'
+import { FaRegPlayCircle } from 'react-icons/fa'
 
 const NewsCard = ({ news }) => {
 	const [post, setPost]=useState()
@@ -15,7 +16,6 @@ const NewsCard = ({ news }) => {
 	const numImage = news?.content?.image?.length
 	const numVideo = news?.content?.video?.length
 	const numMedia = numImage + numVideo
-	const videoRef=useRef(null)
 
 	const [currentMedia, setCurrentMedia]=useState(0)
 	const [isOpenDetailMedia, setIsOpenDetailMedia]=useState(false)
@@ -25,9 +25,6 @@ const NewsCard = ({ news }) => {
 	}, [news])
 
 	const handleOpenDetailMedia = (index) => {
-		if (videoRef.current) {
-			videoRef.current.pause()
-		}
 		setIsOpenDetailMedia(true)
 		setCurrentMedia(index)
 	}
@@ -63,13 +60,16 @@ const NewsCard = ({ news }) => {
 								{
 									listMedia.map((item, index) => (
 										index<numVideo ? (
-											<video
-												ref={videoRef}
-												src={item}
-												key={index}
-												controls
-												className='w-full h-full object-cover cursor-pointer'
-											/>
+											<div key={index} className='cursor-pointer relative opacity-80' onClick={() => handleOpenDetailMedia(index)}>
+												<video
+													src={item}
+													key={index}
+													className='w-full h-full object-cover'
+												/>
+												<div className='absolute top-0 left-0 right-0 bottom-0 flex items-center justify-center'>
+													<FaRegPlayCircle size={70}/>
+												</div>
+											</div>
 										):(
 											<img
 												src={item}
@@ -87,13 +87,16 @@ const NewsCard = ({ news }) => {
 								{
 									listMedia.map((item, index) => (
 										index<numVideo ? (
-											<video
-												ref={videoRef}
-												src={item}
-												key={index}
-												controls
-												className='w-full h-full object-cover cursor-pointer'
-											/>
+											<div key={index} className='cursor-pointer relative opacity-80' onClick={() => handleOpenDetailMedia(index)}>
+												<video
+													src={item}
+													key={index}
+													className='w-full h-full object-cover'
+												/>
+												<div className='absolute top-0 left-0 right-0 bottom-0 flex items-center justify-center'>
+													<FaRegPlayCircle size={70}/>
+												</div>
+											</div>
 										):(
 											<img
 												src={item}
@@ -107,18 +110,21 @@ const NewsCard = ({ news }) => {
 							</div>
 						)}
 						{numMedia>=5 && (
-							<>
+							<div className='space-y-[1px]'>
 								<div className='grid grid-flow-row grid-cols-2 gap-[1px]'>
 									{
 										listMedia.slice(0, 2).map((item, index) => (
 											index<numVideo ? (
-												<video
-													ref={videoRef}
-													src={item}
-													key={index}
-													controls
-													className='w-full h-full object-cover cursor-pointer'
-												/>
+												<div key={index} className='cursor-pointer relative opacity-80' onClick={() => handleOpenDetailMedia(index)}>
+													<video
+														src={item}
+														key={index}
+														className='w-full h-full object-cover'
+													/>
+													<div className='absolute top-0 left-0 right-0 bottom-0 flex items-center justify-center'>
+														<FaRegPlayCircle size={50}/>
+													</div>
+												</div>
 											):(
 												<img
 													src={item}
@@ -135,13 +141,16 @@ const NewsCard = ({ news }) => {
 										listMedia.map((item, index) => (
 											index>=2 && index<5 && (
 												index<numVideo ? (
-													<video
-														ref={videoRef}
-														src={item}
-														key={index}
-														controls
-														className='w-full h-full object-cover cursor-pointer'
-													/>
+													<div key={index} className='cursor-pointer relative opacity-80' onClick={() => handleOpenDetailMedia(index)}>
+														<video
+															src={item}
+															key={index}
+															className='w-full h-full object-cover'
+														/>
+														<div className='absolute top-0 left-0 right-0 bottom-0 flex items-center justify-center'>
+															<FaRegPlayCircle size={50}/>
+														</div>
+													</div>
 												):(
 													<img
 														src={item}
@@ -154,13 +163,13 @@ const NewsCard = ({ news }) => {
 										))
 									}
 								</div>
-							</>
+							</div>
 						)}
 						{numMedia>5 && (
 							<p className='font-semibold mt-2 cursor-pointer hover:text-blue-700 hover:underline'
 								onClick={() => handleOpenDetailMedia(5)}
 							>
-                     Xem thêm {numMedia-5} ảnh ...
+                        Xem thêm {numMedia-5} ảnh ...
 							</p>
 						)}
 					</div>

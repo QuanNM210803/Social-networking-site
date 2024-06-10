@@ -12,6 +12,7 @@ import FriendRequest from '../pages/news_feed/FriendRequest'
 import VideoPage from '../pages/news_feed/VideoPage'
 import GroupPage from '../pages/news_feed/GroupPage'
 import GamePage from '../pages/news_feed/GamePage'
+import ProfileUserPage from '../pages/news_feed/ProfileUserPage'
 
 const router = createBrowserRouter([
 	{
@@ -63,6 +64,10 @@ const router = createBrowserRouter([
 			{
 				path: 'games',
 				element: <GamePage/>
+			},
+			{
+				path: 'profileUser/:userId',
+				element: <ProfileUserPage/>
 			}
 		]
 	}

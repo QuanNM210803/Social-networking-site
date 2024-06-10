@@ -12,6 +12,7 @@ import { Link } from 'react-router-dom'
 
 const Sidebar = () => {
 	const [showMore, setShowMore]=useState(false)
+	const [userId, setUserId]=useState('123')
 	const [groups, setGroups]=useState([
 		{
 			avatar: 'https://www.w3schools.com/howto/img_avatar.png',
@@ -56,14 +57,14 @@ const Sidebar = () => {
 	return (
 		<div className='w-[365px]'>
 			<div className='w-full h-auto py-2'>
-				<div className='flex gap-3 py-2 px-5 items-center cursor-pointer hover:bg-slate-200 rounded-lg'>
+				<Link to={`/profileUser/${userId}`} className='flex gap-3 py-2 px-5 items-center cursor-pointer hover:bg-slate-200 rounded-lg'>
 					<img
 						src='https://www.w3schools.com/howto/img_avatar.png'
 						alt='profile'
 						className='rounded-full w-10 h-10'
 					/>
 					<p className='text-nomal font-semibold'>Nguyễn Minh Quân</p>
-				</div>
+				</Link>
 				<Link to={'/friend-request'} className='flex gap-5 py-2 px-5 items-center cursor-pointer hover:bg-slate-200 rounded-lg'>
 					<IoPeopleSharp className='w-8 h-8 text-blue-600 cursor-pointer'/>
 					<p className='text-base font-semibold'>Bạn bè</p>

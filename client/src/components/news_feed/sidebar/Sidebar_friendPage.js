@@ -229,7 +229,7 @@ const Sidebar_friendPage = ({ handleClickFriend }) => {
 			</div>
 			{option===null && (
 				<div>
-					<div className='px-3 py-2 flex items-center justify-between hover:bg-slate-100 rounded-md cursor-pointer'
+					<div className='px-3 py-2 flex items-center justify-between hover:bg-slate-200 rounded-md cursor-pointer'
 						onClick={() => handleClickedOption(1)}>
 						<div className='flex items-center gap-4'>
 							<PersonAddIcon sx={{ fontSize: 30 }}/>
@@ -237,7 +237,7 @@ const Sidebar_friendPage = ({ handleClickFriend }) => {
 						</div>
 						<FaAngleRight size={25}/>
 					</div>
-					<div className='px-3 py-2 flex items-center justify-between hover:bg-slate-100 rounded-md cursor-pointer'
+					<div className='px-3 py-2 flex items-center justify-between hover:bg-slate-200 rounded-md cursor-pointer'
 						onClick={() => handleClickedOption(2)}>
 						<div className='flex items-center gap-4'>
 							<TipsAndUpdatesIcon sx={{ fontSize: 30 }}/>
@@ -245,7 +245,7 @@ const Sidebar_friendPage = ({ handleClickFriend }) => {
 						</div>
 						<FaAngleRight size={25}/>
 					</div>
-					<div className='px-3 py-2 flex items-center justify-between hover:bg-slate-100 rounded-md cursor-pointer'
+					<div className='px-3 py-2 flex items-center justify-between hover:bg-slate-200 rounded-md cursor-pointer'
 						onClick={() => handleClickedOption(3)}>
 						<div className='flex items-center gap-4'>
 							<IoMdPeople size={30}/>
@@ -372,10 +372,10 @@ const Sidebar_friendPage = ({ handleClickFriend }) => {
 							</div>
 						):(
 							<div className='py-3 px-3 h-[550px] overflow-auto scrollbar-newsfeed'>
-								<div className='w-[335px] space-y-3'>
+								<div className='w-[335px] space-y-3 '>
 									{
 										friends.map((friend, index) => (
-											<div className='flex gap-3'>
+											<div className='flex gap-3 items-center'>
 												<div className=''>
 													<img
 														src={friend?.avatar}
@@ -385,12 +385,12 @@ const Sidebar_friendPage = ({ handleClickFriend }) => {
 														onClick={() => handleClickFriend(friend?._id)}
 													/>
 												</div>
-												<div className=' w-full h-auto py-1'>
-													<div className='flex justify-between'>
+												<div className='w-full h-full flex items-center'>
+													<div className='w-auto h-auto'>
 														<p className='text-sm font-semibold cursor-pointer hover:underline'
-															onClick={() => handleClickFriend(friend?._id)}>{friend?.name}</p>
-													</div>
-													<div>
+															onClick={() => handleClickFriend(friend?._id)}>
+															{friend?.name}
+														</p>
 														<p className='text-sm'>{friend?.mutualFriends} bạn chung</p>
 													</div>
 												</div>

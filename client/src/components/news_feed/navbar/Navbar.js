@@ -17,13 +17,13 @@ const navbar = () => {
 	return (
 		<div className='w-full h-14 flex items-center justify-between'>
 			<div className='h-auto w-auto flex items-center gap-3 px-5'>
-				<div>
+				<Link to={'/home'}>
 					<img
 						src={logo}
 						alt='logo'
 						className='rounded-full w-10 h-10'
 					/>
-				</div>
+				</Link>
 				<div className=''>
 					<input
 						type='text'

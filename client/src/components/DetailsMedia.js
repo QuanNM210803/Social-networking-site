@@ -22,14 +22,14 @@ const DetailsMedia = ({ handleCloseDetailMedia, currentMedia, listMedia, numMedi
 	}
 	return (
 		<>
-			<div className='fixed top-0 bottom-0 left-0 right-0 z-50 bg-gray-700 bg-opacity-90
+			<div className='fixed top-0 bottom-0 left-0 right-0 z-50 bg-gray-700 bg-opacity-70
                   flex justify-center items-center'>
 				{
 					listMedia[current].endsWith('.mp4') ? (
 						<video
 							src={listMedia[current]}
 							ref={videoRef}
-							className='w-auto h-full cursor-pointer'
+							className='w-auto h-full cursor-pointer rounded-md'
 							controls
 							autoPlay
 						/>
@@ -39,25 +39,31 @@ const DetailsMedia = ({ handleCloseDetailMedia, currentMedia, listMedia, numMedi
 								<img
 									src={listMedia[current]}
 									alt='Media'
-									className='w-auto h-[600px]'
+									className='w-auto h-[600px] rounded-md'
 								/>
 							</TransformComponent>
 						</TransformWrapper>
 					)
 				}
-				<div className='absolute top-auto left-5 text-3xl hover:bg-slate-200 hover:text-black text-slate-200
+				{
+					listMedia.length>1 && (
+						<>
+							<div className='absolute top-auto left-5 text-3xl hover:bg-slate-200 hover:text-black text-slate-200
                      w-12 h-12 flex items-center justify-center rounded-full cursor-pointer' onClick={handlePrevMedia}>
-					<button>
-						<FaAngleLeft size={40}/>
-					</button>
-				</div>
-				<div className='absolute top-auto right-5 text-3xl hover:bg-slate-200 hover:text-black text-slate-200
+								<button>
+									<FaAngleLeft size={40}/>
+								</button>
+							</div>
+							<div className='absolute top-auto right-5 text-3xl hover:bg-slate-200 hover:text-black text-slate-200
                      w-12 h-12 flex items-center justify-center rounded-full cursor-pointer' onClick={handleNextMedia}>
-					<button>
-						<FaAngleRight size={40}/>
-					</button>
-				</div>
-				<div className='absolute top-0 right-0 mt-2 mr-3 text-3xl hover:text-slate-300 hover:bg-slate-900 
+								<button>
+									<FaAngleRight size={40}/>
+								</button>
+							</div>
+						</>
+					)
+				}
+				<div className='absolute top-0 right-0 mt-2 mr-3 text-3xl hover:bg-slate-50 
                      w-12 h-12 bg-slate-300 flex items-center justify-center rounded-full cursor-pointer' onClick={handleCloseDetailMedia}>
 					<button>
 						<IoMdClose/>
