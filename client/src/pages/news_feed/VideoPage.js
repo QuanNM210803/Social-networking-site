@@ -7,8 +7,221 @@ import ContentVideoPage from '../../components/news_feed/DetailsObject/videoPage
 
 const VideoPage = () => {
 	const [option, setOption]=useState(1)
-	const [listVideo, setListVideo]=useState(['listVideo'])
-	const [storageVideo, setStorageVideo]=useState(['storageVideo'])
+	const [listVideo, setListVideo]=useState([
+		{
+			content:{
+				text: 'Day la ban tin moi nhat cua toi',
+				video:[
+					'https://www.w3schools.com/html/mov_bbb.mp4'
+				]
+			},
+			like: 10,
+			comment: 10,
+			poster:{
+				name:'Nguyễn Minh Quân',
+				avatar:'https://www.w3schools.com/howto/img_avatar.png'
+			},
+			createdAt: '54 phút'
+		},
+		{
+			content:{
+				text: 'Hom nay la mot ngay dep troi',
+				video:[
+					'https://www.w3schools.com/html/mov_bbb.mp4'
+				]
+			},
+			like: 10,
+			comment: 10,
+			poster:{
+				name:'Nguyễn Minh Quân',
+				avatar:'https://www.w3schools.com/howto/img_avatar.png'
+			},
+			createdAt: '54 phút'
+		},
+		{
+			content:{
+				text: '',
+				video:[
+					'https://www.w3schools.com/html/mov_bbb.mp4',
+					'https://www.w3schools.com/html/movie.mp4'
+					
+				]
+			},
+			like: 10,
+			comment: 10,
+			poster:{
+				name:'Nguyễn Minh Quân',
+				avatar:'https://www.w3schools.com/howto/img_avatar.png'
+			},
+			createdAt: '54 phút'
+		},
+		{
+			content:{
+				text: 'Toi vua di choi ve',
+				video:[
+					'https://www.w3schools.com/html/mov_bbb.mp4'
+				]
+			},
+			like: 10,
+			comment: 10,
+			poster:{
+				name:'Nguyễn Minh Quân',
+				avatar:'https://www.w3schools.com/howto/img_avatar.png'
+			},
+			createdAt: '54 phút'
+		},
+		{
+			content:{
+				text: '',
+				video:[
+					'https://www.w3schools.com/html/mov_bbb.mp4',
+					'https://www.w3schools.com/html/mov_bbb.mp4'
+				]
+			},
+			like: 10,
+			comment: 10,
+			poster:{
+				name:'Nguyễn Minh Quân',
+				avatar:'https://www.w3schools.com/howto/img_avatar.png'
+			},
+			createdAt: '54 phút'
+		},
+		{
+			content:{
+				text: '',
+				video:[
+					'https://www.w3schools.com/html/mov_bbb.mp4',
+					'https://www.w3schools.com/html/mov_bbb.mp4',
+					'https://www.w3schools.com/html/mov_bbb.mp4'
+				]
+			},
+			like: 10,
+			comment: 10,
+			poster:{
+				name:'Nguyễn Minh Quân',
+				avatar:'https://www.w3schools.com/howto/img_avatar.png'
+			},
+			createdAt: '54 phút'
+		},
+		{
+			content:{
+				text: '',
+				video:[
+					'https://www.w3schools.com/html/mov_bbb.mp4',
+					'https://www.w3schools.com/html/mov_bbb.mp4',
+					'https://www.w3schools.com/html/mov_bbb.mp4',
+					'https://www.w3schools.com/html/mov_bbb.mp4',
+					'https://www.w3schools.com/html/mov_bbb.mp4',
+					'https://www.w3schools.com/html/mov_bbb.mp4'
+				]
+			},
+			like: 10,
+			comment: 10,
+			poster:{
+				name:'Nguyễn Minh Quân',
+				avatar:'https://www.w3schools.com/howto/img_avatar.png'
+			},
+			createdAt: '54 phút'
+		},
+		{
+			content:{
+				text: '',
+				video:[
+					'https://www.w3schools.com/html/mov_bbb.mp4'
+				]
+			},
+			like: 10,
+			comment: 10,
+			poster:{
+				name:'Nguyễn Minh Quân',
+				avatar:'https://www.w3schools.com/howto/img_avatar.png'
+			},
+			createdAt: '54 phút'
+		}
+	])
+	const [storageVideo, setStorageVideo]=useState([
+		{
+			content:{
+				text: 'Hom nay la mot ngay dep troi',
+				video:[
+					'https://www.w3schools.com/html/mov_bbb.mp4'
+				]
+			},
+			like: 10,
+			comment: 10,
+			poster:{
+				name:'Nguyễn Minh Quân',
+				avatar:'https://www.w3schools.com/howto/img_avatar.png'
+			},
+			createdAt: '54 phút'
+		},
+		{
+			content:{
+				text: '',
+				video:[
+					'https://www.w3schools.com/html/mov_bbb.mp4',
+					'https://www.w3schools.com/html/movie.mp4'
+					
+				]
+			},
+			like: 10,
+			comment: 10,
+			poster:{
+				name:'Nguyễn Minh Quân',
+				avatar:'https://www.w3schools.com/howto/img_avatar.png'
+			},
+			createdAt: '54 phút'
+		},
+		{
+			content:{
+				text: 'Toi vua di choi ve',
+				video:[
+					'https://www.w3schools.com/html/mov_bbb.mp4'
+				]
+			},
+			like: 10,
+			comment: 10,
+			poster:{
+				name:'Nguyễn Minh Quân',
+				avatar:'https://www.w3schools.com/howto/img_avatar.png'
+			},
+			createdAt: '54 phút'
+		},
+		{
+			content:{
+				text: '',
+				video:[
+					'https://www.w3schools.com/html/mov_bbb.mp4',
+					'https://www.w3schools.com/html/mov_bbb.mp4'
+				]
+			},
+			like: 10,
+			comment: 10,
+			poster:{
+				name:'Nguyễn Minh Quân',
+				avatar:'https://www.w3schools.com/howto/img_avatar.png'
+			},
+			createdAt: '54 phút'
+		},
+		{
+			content:{
+				text: '',
+				video:[
+					'https://www.w3schools.com/html/mov_bbb.mp4',
+					'https://www.w3schools.com/html/mov_bbb.mp4',
+					'https://www.w3schools.com/html/mov_bbb.mp4'
+				]
+			},
+			like: 10,
+			comment: 10,
+			poster:{
+				name:'Nguyễn Minh Quân',
+				avatar:'https://www.w3schools.com/howto/img_avatar.png'
+			},
+			createdAt: '54 phút'
+		}
+	])
+	// const [listVideo, setListVideo]=useState([])
 	useEffect(() => {
 		if (option===1) {
 			console.log('Option 1')
@@ -27,12 +240,12 @@ const VideoPage = () => {
 					<Sidebar_videoPage option={option} setOption={setOption}/>
 				</div>
 				{option===1 &&(
-					<div className='h-[calc(100vh-56px)] w-[80%] overflow-auto bg-slate-300'>
+					<div className='h-[calc(100vh-56px)] w-[80%] py-3 overflow-auto bg-slate-300'>
 						<ContentVideoPage news={listVideo}/>
 					</div>
 				)}
 				{option===2 &&(
-					<div className='h-[calc(100vh-56px)] w-[80%] overflow-auto bg-slate-300'>
+					<div className='h-[calc(100vh-56px)] w-[80%] py-3 overflow-auto bg-slate-300'>
 						<ContentVideoPage news={storageVideo}/>
 					</div>
 				)}
