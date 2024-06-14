@@ -199,7 +199,7 @@ const Content = () => {
 		}
 	])
 	return (
-		<div className='w-[859px] space-y-3 px-20'>
+		<div className='w-[850px] space-y-3 px-20'>
 			<div className='w-full h-auto bg-slate-200 px-4 py-2 space-y-2 rounded-md'>
 				<div className='flex items-center gap-4'>
 					<img

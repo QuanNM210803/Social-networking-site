@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { FaRegPlayCircle } from 'react-icons/fa'
 import DetailsMedia from '../../DetailsMedia'
 
-const Videos = ({ userId }) => {
+const Videos = ({ objectId, typeObject }) => {
 	const name='Nguyễn Minh Quân'
 	const words=name?.split(' ')
 	const [currentMedia, setCurrentMedia]=useState(0)
@@ -35,7 +35,7 @@ const Videos = ({ userId }) => {
 			<div className='bg-slate-200 rounded-md h-auto'>
 				<div className='flex justify-between px-3 py-2'>
 					<div className='flex items-center gap-7'>
-						<p className='text-2xl font-bold px-3'>Video của {words[words?.length-1]}</p>
+						<p className='text-2xl font-bold px-3'>Video của {typeObject==='user' ? (words[words?.length-1]):(name)}</p>
 						<p>{videos.length} video</p>
 					</div>
 				</div>
@@ -49,7 +49,7 @@ const Videos = ({ userId }) => {
 							{
 								videos?.map((video, index) => (
 									<div key={index} className='cursor-pointer relative opacity-80' onClick={() => handleOpenDetailMedia(index)}>
-										<video src={video} alt='video' className='w-auto h-[220px] object-cover rounded-md'/>
+										<video src={video} alt='video' className='w-auto h-[200px] object-cover rounded-md'/>
 										<div className='absolute top-0 left-0 right-0 bottom-0 flex items-center justify-center'>
 											<FaRegPlayCircle size={50}/>
 										</div>

@@ -21,12 +21,12 @@ const FriendRequest = () => {
 				</div>
 				{
 					idFriend===null ? (
-						<div className='h-[calc(100vh-56px)] w-[80%] flex justify-center items-center overflow-auto bg-slate-300'>
+						<div className='h-[calc(100vh-56px)] w-[75%] flex justify-center items-center overflow-auto bg-slate-300'>
 							<h1 className='text-2xl text-slate-400'>Chọn tên của người mà bạn muốn xem trước trang cá nhân.</h1>
 						</div>
 					):(
-						<div className='h-[calc(100vh-56px)] w-[80%] overflow-auto bg-slate-300'>
-							<ProfileUser idFriend={idFriend} width={90}/>
+						<div className='h-[calc(100vh-56px)] w-[75%] overflow-auto bg-slate-300'>
+							<ProfileUser idFriend={idFriend}/>
 						</div>
 					)
 				}

@@ -5,7 +5,7 @@ import { MdPhoneAndroid } from 'react-icons/md'
 import { FaBirthdayCake } from 'react-icons/fa'
 import { PiMapPinAreaFill } from 'react-icons/pi'
 
-const IntroductionUser = ({ userId }) => {
+const IntroductionUser = ({ objectId }) => {
 	const [userInformation, setUserInformation]=useState({
 		email: 'aaaaaa@gmail.com',
 		phone: '0482363574',

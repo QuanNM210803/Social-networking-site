@@ -13,7 +13,7 @@ const ProfileUserPage = () => {
 			</div>
 			<div className='flex top-14 left-0 right-0 bottom-0'>
 				<div className='h-[calc(100vh-56px)] overflow-auto bg-slate-300 w-full'>
-					<ProfileUser idFriend={userId} width={75}/>
+					<ProfileUser idFriend={userId}/>
 				</div>
 			</div>
 		</div>

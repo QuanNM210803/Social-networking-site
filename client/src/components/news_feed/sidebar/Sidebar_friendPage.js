@@ -268,7 +268,7 @@ const Sidebar_friendPage = ({ handleClickFriend }) => {
 								<p className='text-center text-slate-500'>Không có lời mời kết bạn</p>
 							</div>
 						):(
-							<div className='py-2 px-3 space-y-2 h-[550px] overflow-auto scrollbar-newsfeed'>
+							<div className='p-3 space-y-2 h-[550px] overflow-auto scrollbar-newsfeed'>
 								<div className='w-[335px]'>
 									{
 										friendRequest.map((friend, index) => (
@@ -318,7 +318,7 @@ const Sidebar_friendPage = ({ handleClickFriend }) => {
 								<p className='text-center text-slate-500'>Không có bạn bè gợi ý</p>
 							</div>
 						):(
-							<div className='py-2 px-3 space-y-2 h-[550px] overflow-auto scrollbar-newsfeed'>
+							<div className='p-3 space-y-2 h-[550px] overflow-auto scrollbar-newsfeed'>
 								<div className='w-[335px]'>
 									{
 										friendsSuggest.map((friend, index) => (
@@ -357,7 +357,7 @@ const Sidebar_friendPage = ({ handleClickFriend }) => {
 			)}
 			{option===3 && (
 				<div className=''>
-					<div className='flex items-center justify-between px-3 py-2 bg-slate-300'>
+					<div className='flex items-center justify-between px-3 py-1 bg-slate-300'>
 						<div className='flex items-center gap-4'>
 							<FaArrowLeft size={30} className='cursor-pointer p-1 rounded-full hover:bg-slate-200'
 								onClick={() => handleClickedOption(null)}/>
@@ -365,13 +365,16 @@ const Sidebar_friendPage = ({ handleClickFriend }) => {
 						</div>
 						<p className='font-semibold text-mini-1'>{friends.length} người bạn</p>
 					</div>
+					<div className='flex items-center px-3 py-2 bg-slate-300'>
+						<input type='text' placeholder='Tìm kiếm trong danh sách bạn bè' className='w-full h-8 px-3 bg-slate-200 rounded-md'/>
+					</div>
 					{
 						friends.length===0 ? (
 							<div className='py-5 px-5'>
 								<p className='text-center text-slate-500'>Bạn chưa kết bạn với ai. Hãy tìm kiếm bạn bè ngay!</p>
 							</div>
 						):(
-							<div className='py-3 px-3 h-[550px] overflow-auto scrollbar-newsfeed'>
+							<div className='p-3 h-[510px] overflow-auto scrollbar-newsfeed'>
 								<div className='w-[335px] space-y-3 '>
 									{
 										friends.map((friend, index) => (

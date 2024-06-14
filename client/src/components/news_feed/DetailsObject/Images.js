@@ -2,7 +2,7 @@
 import React, { useState } from 'react'
 import DetailsMedia from '../../DetailsMedia'
 
-const Images = ({ userId }) => {
+const Images = ({ objectId, typeObject }) => {
 	const name='Nguyễn Minh Quân'
 	const words=name?.split(' ')
 	const [currentMedia, setCurrentMedia]=useState(0)
@@ -47,7 +47,7 @@ const Images = ({ userId }) => {
 			<div className='bg-slate-200 rounded-md h-auto'>
 				<div className='flex justify-between px-3 py-2'>
 					<div className='flex items-center gap-7'>
-						<p className='text-2xl font-bold px-3'>Ảnh của {words[words?.length-1]}</p>
+						<p className='text-2xl font-bold px-3'>Ảnh của {typeObject==='user' ? (words[words?.length-1]):(name)}</p>
 						<p>{images.length} ảnh</p>
 					</div>
 				</div>
@@ -61,7 +61,7 @@ const Images = ({ userId }) => {
 							{
 								images?.map((image, index) => (
 									<div key={index} onClick={() => handleOpenDetailMedia(index)} className='cursor-pointer'>
-										<img src={image} alt='Image' className='w-auto h-[220px] object-cover rounded-md'/>
+										<img src={image} alt='Image' className='w-full h-full object-cover rounded-md'/>
 									</div>
 								))
 							}

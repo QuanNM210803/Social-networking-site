@@ -7,7 +7,7 @@ import Videos from '../Videos'
 import IntroductionUser from './IntroductionUser'
 import FriendUser from './FriendUser'
 
-const ProfileUser = ({ idFriend, width }) => {
+const ProfileUser = ({ idFriend }) => {
 	const [activeTab, setActiveTab] =useState('Bài viết')
 	const [user, setUser] = useState({
 		_id: idFriend,
@@ -22,11 +22,11 @@ const ProfileUser = ({ idFriend, width }) => {
 				<div className='flex justify-center rounded-b-md'>
 					<img
 						src={user?.coverPhoto}
-						className={`w-[${width}%] h-[350px] object-cover rounded-b-md`}
+						className={'w-[80%] h-[350px] object-cover rounded-b-md'}
 					/>
 				</div>
 				<div className='flex justify-center w-full h-auto absolute top-[60%]'>
-					<div className={`h-auto w-[${width}%] flex justify-between`}>
+					<div className={'h-auto w-[80%] flex justify-between'}>
 						<div className='flex gap-5'>
 							<div className='ml-10'>
 								<img
@@ -47,10 +47,10 @@ const ProfileUser = ({ idFriend, width }) => {
 				</div>
 			</div>
 			<div className='flex justify-center bg-slate-200'>
-				<hr className={`w-[${width}%] border-slate-300`}/>
+				<hr className={'w-[80%] border-slate-300'}/>
 			</div>
 			<div className='flex justify-center bg-slate-200'>
-				<div className={`w-[${width}%] px-1 py-3 flex items-center gap-1`}>
+				<div className={'w-[80%] px-1 py-3 flex items-center gap-1'}>
 					<Tab label="Bài viết" isActive={activeTab === 'Bài viết'} onClick={() => setActiveTab('Bài viết')}/>
 					<Tab label="Giới thiệu" isActive={activeTab === 'Giới thiệu'} onClick={() => setActiveTab('Giới thiệu')}/>
 					<Tab label="Bạn bè" isActive={activeTab === 'Bạn bè'} onClick={() => setActiveTab('Bạn bè')}/>
@@ -59,21 +59,21 @@ const ProfileUser = ({ idFriend, width }) => {
 				</div>
 			</div>
 			<div className='flex justify-center'>
-				<div className={`w-[${width}%] h-auto py-5`}>
+				<div className={'w-[80%] h-auto py-5'}>
 					{activeTab==='Bài viết' && (
-						<Posts userId={user?._id}/>
+						<Posts objectId={user?._id}/>
 					)}
 					{activeTab==='Giới thiệu' && (
-						<IntroductionUser userId={user?._id}/>
+						<IntroductionUser objectId={user?._id}/>
 					)}
 					{activeTab==='Bạn bè' && (
-						<FriendUser userId={user?._id}/>
+						<FriendUser objectId={user?._id}/>
 					)}
 					{activeTab==='Ảnh' && (
-						<Images userId={user?._id}/>
+						<Images objectId={user?._id}/>
 					)}
 					{activeTab==='Video' && (
-						<Videos userId={user?._id}/>
+						<Videos objectId={user?._id}/>
 					)}
 				</div>
 			</div>
