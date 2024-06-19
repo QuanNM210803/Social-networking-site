@@ -91,12 +91,12 @@ const Sidebar = () => {
 					</button>
 				</div>
 			</div>
-			<div className='w-full'>
+			<div className='w-full h-full'>
 				<div className='h-16 flex items-center'>
 					<h2 className='text-xl font-bold p-4 text-slate-800'>Message</h2>
 				</div>
 				<div className='bg-slate-200 p-[0.5px]'></div>
-				<div className='h-[calc(100vh-65px)] overflow-x-hidden overflow-y-auto scrollbar'>
+				<div className='h-[calc(100%-65px)] overflow-x-hidden overflow-y-auto scrollbar'>
 					{
 						allUser.length===0 && (
 							<div className='mt-12'>
@@ -110,7 +110,7 @@ const Sidebar = () => {
 					{
 						allUser.map((conv, index) => {
 							return (
-								<NavLink to={'/'+conv?.userDetails?._id} key={conv?._id} className='flex items-center gap-2 py-3 px-2 
+								<NavLink to={'/chat/'+conv?.userDetails?._id} key={conv?._id} className='flex items-center gap-2 py-3 px-2 
                            border border-transparent hover:border-primary rounded hover:bg-slate-100 cursor-pointer'>
 									<div>
 										<Avatar

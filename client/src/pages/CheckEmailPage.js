@@ -21,9 +21,8 @@ const CheckEmailPage = () => {
 	const handleSubmit=async(e) => {
 		e.preventDefault()
 		e.stopPropagation()
-      console.log(1)
+
 		const response=await checkEmail(data)
-      console.log(2)
 		if (response?.success) {
 			setData({
 				email:''
@@ -41,7 +40,7 @@ const CheckEmailPage = () => {
 						size={80}
 					/>
 				</div>
-				<h3 className='flex justify-center items-center'>Welcome to Chat app!</h3>
+				<h3 className='flex justify-center items-center'>Welcome to NuaQ!</h3>
 				<form className='grid gap-4 mt-3' onSubmit={handleSubmit}>
 					<div className='flex flex-col gap-1'>
 						<label htmlFor='email'>Email : </label>

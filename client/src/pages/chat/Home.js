@@ -8,7 +8,8 @@ import { getUserDetails } from '../../apis/CallAPI'
 import { useDispatch, useSelector } from 'react-redux'
 import { logout, setOnlineUsers, setSocketConnection, setUser } from '../../redux/userSlice'
 import Sidebar from '../../components/chat/sidebar/Sidebar'
-import logo from '../../assets/logo.png'
+import Navbar from '../../components/news_feed/navbar/Navbar'
+import logo from '../../assets/xing.svg'
 import { io } from 'socket.io-client'
 
 const Home = () => {
@@ -49,29 +50,34 @@ const Home = () => {
 		}
 	}, [])
 
-	const basePath=location.pathname === '/'
+	const basePath=location.pathname === '/chat'
 	return (
-		<div className='grid lg:grid-cols-[300px,1fr] h-screen max-h-screen'>
-			<section className={`bg-white ${!basePath && 'hidden'} lg:block`}>
-				<Sidebar />
-			</section>
-			<section className={`${basePath && 'hidden'}`}>
-				<Outlet />
-			</section>
-
-			<div className={`justify-center items-center flex-col gap-2 hidden
-            ${!basePath ? 'hidden':'lg:flex'}`}>
-				<div>
-					<img
-						src={logo}
-						width={200}
-						alt='logo'
-					></img>
-				</div>
-				<p className='text-lg mt-2 text-slate-500'>Select user to send message</p>
+		<div>
+			<div className='sticky top-0 bg-slate-500'>
+				<Navbar/>
 			</div>
-
+			<div className='flex top-14 left-0 right-0 bottom-0'>
+				<div className='h-[calc(100vh-56px)] w-[20%]'>
+					<Sidebar />
+				</div>
+				<div className='h-[calc(100vh-56px)] w-[80%]'>
+					<section className={`${basePath && 'hidden'} h-full w-full`}>
+						<Outlet />
+					</section>
+					<div className={`justify-center items-center flex-col gap-2 w-full h-full
+                  ${!basePath ? 'hidden':'lg:flex'}`}>
+						<img
+							src={logo}
+							width={150}
+							alt='logo'
+							className=''
+						></img>
+						<p className='text-lg mt-2 text-slate-500'>Select user to send message</p>
+					</div>
+				</div>
+			</div>
 		</div>
+		
 	)
 }
 

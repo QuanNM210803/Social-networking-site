@@ -17,7 +17,7 @@ import Loading from '../../Loading'
 import backgroundImage from '../../../assets/wallapaper.jpeg'
 import { IoMdSend } from 'react-icons/io'
 import moment from 'moment'
-import { FcVideoCall } from 'react-icons/fc'
+import { IoVideocam } from 'react-icons/io5'
 import { IoCall } from 'react-icons/io5'
 import Rightbar from '../rightbar/Rightbar'
 
@@ -156,7 +156,8 @@ const MessagePage = () => {
 	}
 
 	return (
-		<div>
+
+		<div className='w-full h-full'>
 			<div style={{ backgroundImage: `url(${backgroundImage})` }} className={`
             bg-no-repeat bg-cover z-0 ${openDetailsConversation ? 'mr-80':''}`}>
             
@@ -197,7 +198,7 @@ const MessagePage = () => {
 						</div>
 						<div className='sm:block hidden' title='Video call'>
 							<button className=''>
-								<FcVideoCall size={25} className='text-black'/>
+								<IoVideocam size={25}/>
 							</button>
 						</div>
 						<div className='' onClick={handleOpenDetailsConversation} title='Information Conversation'>
@@ -209,7 +210,7 @@ const MessagePage = () => {
 				</header>
 
 				{/** show all message */}
-				<section className='relative bg-slate-200 bg-opacity-50 h-[calc(100vh-128px)] 
+				<section className='relative bg-slate-200 bg-opacity-50 h-[calc(100vh-184px)] 
                overflow-x-hidden overflow-y-scroll scrollbar'>
                
 					{/** all message show here */}
@@ -363,7 +364,7 @@ const MessagePage = () => {
 			</div>
 			{
 				openDetailsConversation && (
-					<div className='w-80 fixed right-0 top-0 z-0 h-full'>
+					<div className='w-80 fixed right-0 top-14 z-0 h-full'>
 						<Rightbar receiver={dataUser}/>
 					</div>
 				)

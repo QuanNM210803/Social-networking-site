@@ -4,11 +4,11 @@ const cloudinary=require('cloudinary').v2
 
 async function createPost(request,response){
    try{
-      const {poster,content}=request.body
+      const {posterId,content}=request.body
       const text=content?.text || ''
       const image=content?.image || []
       const video=content?.video || []
-      const userId=poster
+      const userId=posterId
 
       const user=await User.findById(userId)
       if(!user){

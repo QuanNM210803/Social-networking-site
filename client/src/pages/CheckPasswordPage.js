@@ -42,7 +42,7 @@ const CheckPasswordPage = () => {
 			setData({
 				password:''
 			})
-			navigate('/')
+			navigate('/home')
 		}
 	}
 	return (

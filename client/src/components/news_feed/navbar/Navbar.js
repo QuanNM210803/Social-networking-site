@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable no-unused-vars */
 import React from 'react'
-import logo from '../../../assets/logoNewsFeed.jpg'
+import logo from '../../../assets/xing.svg'
 import { IoHome } from 'react-icons/io5'
 import { IoPeopleSharp } from 'react-icons/io5'
 import { BiSolidVideos } from 'react-icons/bi'
@@ -21,7 +21,7 @@ const navbar = () => {
 					<img
 						src={logo}
 						alt='logo'
-						className='rounded-full w-10 h-10'
+						className='rounded-full w-10 h-10 bg-slate-300'
 					/>
 				</Link>
 				<div className=''>
@@ -34,33 +34,29 @@ const navbar = () => {
 			</div>
 			<div className='h-auto w-auto flex items-center gap-5'>
 				<Link to={'/home'} className={'w-20 h-auto flex justify-center'}>
-					<IoHome className={location.pathname === '/home' ? 'w-8 h-8 text-slate-300 cursor-pointer'
-						:'w-8 h-8 text-slate-800 hover:text-slate-300 cursor-pointer'}/>
+					<IoHome className={`w-8 h-8 cursor-pointer ${location.pathname === '/home' ? 'text-slate-300':'hover:text-slate-300 text-slate-800'}`}/>
 				</Link>
 				<Link to={'/friend-request'} className='w-20 h-auto flex justify-center'>
-					<IoPeopleSharp className={location.pathname === '/friend-request' ? 'w-8 h-8 text-slate-300 cursor-pointer'
-						:'w-8 h-8 text-slate-800 hover:text-slate-300 cursor-pointer'}/>
+					<IoPeopleSharp className={`w-8 h-8 cursor-pointer ${location.pathname === '/friend-request' ? 'text-slate-300':'hover:text-slate-300 text-slate-800'}`}/>
 				</Link>
 				<Link to={'/video'} className='w-20 h-auto flex justify-center'>
-					<BiSolidVideos className={location.pathname === '/video' ? 'w-8 h-8 text-slate-300 cursor-pointer'
-						:'w-8 h-8 text-slate-800 hover:text-slate-300 cursor-pointer'}/>
+					<BiSolidVideos className={`w-8 h-8 cursor-pointer ${location.pathname === '/video' ? 'text-slate-300':'hover:text-slate-300 text-slate-800'}`}/>
 				</Link>
 				<Link to={'/groups'} className='w-20 h-auto flex justify-center'>
-					<MdGroups className={location.pathname === '/groups' ? 'w-9 h-9 text-slate-300 cursor-pointer'
-						:'w-8 h-8 text-slate-800 hover:text-slate-300 cursor-pointer'}/>
+					<MdGroups className={`w-8 h-8 cursor-pointer ${location.pathname === '/groups' ? 'text-slate-300':'hover:text-slate-300 text-slate-800'}`}/>
 				</Link>
 				<Link to={'/games'} className='w-20 h-auto flex justify-center'>
-					<IoGameControllerSharp className={location.pathname === '/games' ? 'w-8 h-8 text-slate-300 cursor-pointer'
-						:'w-8 h-8 text-slate-800 hover:text-slate-300 cursor-pointer'}/>
+					<IoGameControllerSharp className={`w-8 h-8 cursor-pointer ${location.pathname === '/games' ? 'text-slate-300':'hover:text-slate-300 text-slate-800'}`}/>
 				</Link>
 			</div>
 			<div className=' h-auto w-auto flex items-center px-5 gap-3'>
 				<div className='w-auto h-auto flex justify-center rounded-full bg-slate-600 p-[5px] hover:bg-slate-400'>
 					<IoMenu className='w-7 h-7 text-slate-800 cursor-pointer'/>
 				</div>
-				<div className='w-auto h-auto flex justify-center rounded-full bg-slate-600 p-[5px] hover:bg-slate-400'>
+				<Link to={'/chat'} className={`w-auto h-auto flex justify-center rounded-full p-[5px] 
+               ${location.pathname.includes('/chat') ? 'bg-slate-400':'hover:bg-slate-400 bg-slate-600'}`}>
 					<BiSolidMessageRounded className='w-7 h-7 text-slate-800  cursor-pointer'/>
-				</div>
+				</Link>
 				<div className='w-auto h-auto flex justify-center rounded-full bg-slate-600 p-[5px] hover:bg-slate-400'>
 					<IoNotifications className='w-7 h-7 text-slate-800 cursor-pointer'/>
 				</div>
@@ -68,7 +64,7 @@ const navbar = () => {
 					<img
 						src={logo}
 						alt='logo'
-						className='rounded-full w-[38px] h-[38px]'
+						className='rounded-full w-[38px] h-[38px] bg-slate-300'
 					/>
 				</div>
 			</div>

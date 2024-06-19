@@ -5,7 +5,7 @@ import CheckEmailPage from '../pages/CheckEmailPage'
 import CheckPasswordPage from '../pages/CheckPasswordPage'
 import Home from '../pages/chat/Home'
 import MessagePage from '../components/chat/message/MessagePage'
-import AuthLayouts from '../layout'
+import AuthLayouts from '../layout/AuthLayouts'
 import ForgotPassword from '../pages/ForgotPassword'
 import HomePage from '../pages/news_feed/HomePage'
 import FriendRequest from '../pages/news_feed/FriendRequest'
@@ -36,7 +36,7 @@ const router = createBrowserRouter([
 				element: <AuthLayouts> <ForgotPassword/> </AuthLayouts>
 			},
 			{
-				path:'',
+				path:'chat',
 				element: <Home/>,
 				children:[
 					{
