@@ -11,7 +11,11 @@ async function getPostsByUserId(request,response){
          })
       }
       const posts=await Post.find({poster:userId}).sort({createdAt:-1})
-      return response.status(200).json(posts)
+      return response.status(200).json({
+         data:posts,
+         message:'Posts fetched successfully',
+         success:true
+      })
    }catch(error){
       return response.status(500).json({
          message:error.message || error,

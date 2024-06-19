@@ -44,7 +44,11 @@ async function createPost(request,response){
          }
       })
       await newPost.save()
-      return response.status(201).json(newPost)
+      return response.status(201).json({
+         data:newPost,
+         message:'Post created successfully',
+         success:true
+      })
    }catch(error){
       return response.status(500).json({
          message:error.message || error,

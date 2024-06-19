@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors')
 require('dotenv').config()
+const cloudinary=require('cloudinary').v2
 
 const connectDB=require('./config/connectDB')
 const userRouter=require('./routes/UserRouter')
@@ -13,12 +14,19 @@ const router=require('./routes/index')
 const cookiesParser=require('cookie-parser')
 const {app, server}=require('./socket/index')
 
+cloudinary.config({
+   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+   api_key:process.env.CLOUDINARY_API_KEY,
+   api_secret:process.env.CLOUDINARY_API_SECRET
+})
 
 //const app= express()
 app.use(cors({
    origin: process.env.FRONTEND_URL,
    credentials:true
 }))
+
+
 
 app.use(express.json())
 app.use(cookiesParser())
