@@ -1,7 +1,14 @@
 const express = require('express');
 const cors = require('cors')
 require('dotenv').config()
+
 const connectDB=require('./config/connectDB')
+const userRouter=require('./routes/UserRouter')
+const conversationRouter=require('./routes/ConversationRouter')
+const messageRouter=require('./routes/MessageRouter')
+const groupRouter=require('./routes/GroupRouter')
+const postRouter=require('./routes/PostRouter')
+const commentRouter=require('./routes/CommentRouter')
 const router=require('./routes/index')
 const cookiesParser=require('cookie-parser')
 const {app, server}=require('./socket/index')
@@ -26,6 +33,12 @@ app.get('/',(req,res)=>{
 
 //api endpoint
 app.use('/api',router)
+app.use('/user',userRouter)
+app.use('/conversation',conversationRouter)
+app.use('/message',messageRouter)
+app.use('/group',groupRouter)
+app.use('/post',postRouter)
+app.use('/comment',commentRouter)
 
 connectDB().then(()=>{
    server.listen(PORT,()=>{

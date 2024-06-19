@@ -1,4 +1,4 @@
-const UserModel=require('../models/UserModel')
+const UserModel=require('../../models/UserModel')
 async function searchUser(request, response){
    try{
       const {search}=request.body

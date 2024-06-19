@@ -17,7 +17,43 @@ const userSchema=new mongoose.Schema({
    profile_pic:{
       type:String,
       default:''
-   }
+   },
+   cover_pic:{
+      type:String,
+      default:''
+   },
+   phone:{
+      type:String,
+      default:''
+   },
+   address:{
+      type:String,
+      default:''
+   },
+   dob:{
+      type:Date,
+      default:null
+   },
+   friends:[
+      {
+         type:mongoose.Schema.Types.ObjectId,
+         ref:'User',
+         default:[]
+      }
+   ],
+   friend_requests:[
+      {
+         type:mongoose.Schema.Types.ObjectId,
+         ref:'User',
+         default:[]
+      }
+   ],
+   storagedVideo:[
+      {
+         type:String,
+         default:[]
+      }
+   ]
 },{
    timestamps: true
 })

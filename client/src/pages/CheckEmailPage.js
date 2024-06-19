@@ -21,7 +21,9 @@ const CheckEmailPage = () => {
 	const handleSubmit=async(e) => {
 		e.preventDefault()
 		e.stopPropagation()
+      console.log(1)
 		const response=await checkEmail(data)
+      console.log(2)
 		if (response?.success) {
 			setData({
 				email:''

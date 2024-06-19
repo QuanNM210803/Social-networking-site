@@ -1,4 +1,4 @@
-const getConversation = require("../helpers/getConversation")
+const getConversation = require("../../helpers/getConversation")
 
 async function conversationById(request, response){
    try{

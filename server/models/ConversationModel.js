@@ -1,32 +1,5 @@
 const mongoose=require('mongoose')
 
-const messageSchema=new mongoose.Schema({
-	text:{
-		type: String,
-		default:''
-	},
-	imageUrl:{
-		type: String,
-		default:''
-	},
-	videoUrl:{
-		type: String,
-		default:false
-	},
-   seen:{
-      type: Boolean,
-      default:false
-   },
-   msgByUserId:{
-      type: mongoose.Schema.ObjectId,
-      required:true,
-      ref:'User'
-   }
-
-}, {
-	timestamps:true
-})
-
 const conversationSchema=new mongoose.Schema({
 	sender:{
 		type: mongoose.Schema.ObjectId,
@@ -49,10 +22,5 @@ const conversationSchema=new mongoose.Schema({
 	timestamps: true
 })
 
-const MessageModel=mongoose.model('Message', messageSchema)
 const ConversationModel=mongoose.model('Conversation', conversationSchema)
-
-module.exports={
-	MessageModel,
-	ConversationModel
-}
+module.exports=ConversationModel

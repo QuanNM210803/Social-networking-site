@@ -7,17 +7,6 @@ export const api=axios.create({
 	baseURL : 'http://localhost:8080'
 })
 
-export async function registerUser(data) {
-	try {
-		const response=await api.post('/api/register', data)
-		toast.success(response.data.message)
-		return response.data
-	} catch (error) {
-		toast.error(error?.response?.data?.message)
-		console.log(error)
-	}
-}
-
 export async function checkEmail(data) {
 	try {
 		const response=await api.post('/api/email', data)
@@ -42,9 +31,20 @@ export async function checkPassword(data) {
 	}
 }
 
+export async function registerUser(data) {
+	try {
+		const response=await api.post('/user/register', data)
+		toast.success(response.data.message)
+		return response.data
+	} catch (error) {
+		toast.error(error?.response?.data?.message)
+		console.log(error)
+	}
+}
+
 export async function getUserDetails() {
 	try {
-		const response=await api.get('/api/user-details', { withCredentials: true })
+		const response=await api.get('/user/user-details', { withCredentials: true })
 		console.log('api  ', response.data)
 		//toast.success(response.data.message)
 		return response.data
@@ -56,7 +56,7 @@ export async function getUserDetails() {
 
 export async function editUserDetails(data) {
 	try {
-		const response=await api.put('/api/update-user', data, { withCredentials:true })
+		const response=await api.put('/user/update-user', data, { withCredentials:true })
 		toast.success(response.data.message)
 		console.log(response.data)
 		return response.data
@@ -68,7 +68,7 @@ export async function editUserDetails(data) {
 
 export async function searchUserApi(data) {
 	try {
-		const response=await api.post('/api/search-user', data, { withCredentials: true })
+		const response=await api.post('/user/search-user', data, { withCredentials: true })
 		console.log(response.data)
 		//toast.success(response.date.message)
 		return response.data
@@ -81,7 +81,7 @@ export async function searchUserApi(data) {
 export async function getConversationsApi(userId) {
 	try {
 		console.log('userId', userId)
-		const response=await api.get(`/api/conversations/${userId}`, { withCredentials:true })
+		const response=await api.get(`/conversation/conversations/${userId}`, { withCredentials:true })
 		console.log(response.data)
 		return response.data
 	} catch (error) {
