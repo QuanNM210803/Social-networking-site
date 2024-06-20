@@ -4,7 +4,7 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
-import { getUserDetails } from '../../apis/CallAPI'
+import { getUserDetails } from '../../apis/UserApi'
 import { useDispatch, useSelector } from 'react-redux'
 import { logout, setOnlineUsers, setSocketConnection, setUser } from '../../redux/userSlice'
 import Sidebar from '../../components/chat/sidebar/Sidebar'
@@ -22,7 +22,7 @@ const Home = () => {
 	const [userDetails, setUserDetails]=useState({})
 	useEffect(() => {
 		getUserDetails().then((data) => {
-			if (data?.data?.logout) {
+			if (!data?.data) {
 				dispatch(logout())
 				navigate('/email')
 			} else {

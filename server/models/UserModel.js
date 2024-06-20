@@ -36,16 +36,26 @@ const userSchema=new mongoose.Schema({
    },
    friends:[
       {
-         type:mongoose.Schema.Types.ObjectId,
-         ref:'User',
-         default:[]
+         user: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User'
+         },
+         createdAt: {
+            type: Date,
+            default: Date.now
+         }
       }
    ],
    friend_requests:[
       {
-         type:mongoose.Schema.Types.ObjectId,
-         ref:'User',
-         default:[]
+         user: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User'
+         },
+         createdAt: {
+            type: Date,
+            default: Date.now
+         }
       }
    ],
    storagedVideo:[

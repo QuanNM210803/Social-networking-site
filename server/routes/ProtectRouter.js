@@ -1,6 +1,6 @@
-const User=require('../../models/UserModel')
 const jwt=require('jsonwebtoken')
-async function userDetails(request, response){
+const User=require('../models/UserModel')
+async function protectRouter(request,response, next){
    try{
       const token=request?.cookies?.token || ''
       if(!token){
@@ -23,16 +23,14 @@ async function userDetails(request, response){
             error:true
          })
       }
-      return response.status(200).json({
-         message:'User details',
-         data: user
-      })
+      request.user=user
+      next()
    }catch(error){
       return response.status(500).json({
-         message: error.message || error,
-         error: true
+         message:error.message|| error,
+         error:true
       })
    }
 }
 
-module.exports=userDetails
+module.exports=protectRouter

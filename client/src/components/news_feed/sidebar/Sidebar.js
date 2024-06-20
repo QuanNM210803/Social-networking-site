@@ -1,7 +1,7 @@
 /* eslint-disable no-unexpected-multiline */
 /* eslint-disable react/jsx-key */
 /* eslint-disable no-unused-vars */
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { IoPeopleSharp } from 'react-icons/io5'
 import { BiSolidVideos } from 'react-icons/bi'
 import { MdGroups } from 'react-icons/md'
@@ -9,61 +9,66 @@ import { IoGameControllerSharp } from 'react-icons/io5'
 import { IoIosArrowDown } from 'react-icons/io'
 import { IoIosArrowUp } from 'react-icons/io'
 import { Link } from 'react-router-dom'
+import { getGroupByUserId } from '../../../apis/GroupApi'
 
-const Sidebar = () => {
+const Sidebar = ({ user }) => {
 	const [showMore, setShowMore]=useState(false)
-	const [userId, setUserId]=useState('123')
 	const [groups, setGroups]=useState([
-		{
-			avatar: 'https://www.w3schools.com/howto/img_avatar.png',
-			name: 'Code ptit'
-		},
-		{
-			avatar: 'https://www.w3schools.com/howto/img_avatar.png',
-			name: 'Hưng Yên quê tôi'
-		},
-		{
-			avatar: 'https://www.w3schools.com/howto/img_avatar.png',
-			name: 'Mùa lúa chín'
-		},
-		{
-			avatar: 'https://www.w3schools.com/howto/img_avatar.png',
-			name: 'Câu chuyện công sở'
-		},
-		{
-			avatar: 'https://www.w3schools.com/howto/img_avatar.png',
-			name: 'Vua đầu bếp'
-		},
-		{
-			avatar: 'https://www.w3schools.com/howto/img_avatar.png',
-			name: 'Code ptit'
-		},
-		{
-			avatar: 'https://www.w3schools.com/howto/img_avatar.png',
-			name: 'Code ptit'
-		},
-		{
-			avatar: 'https://www.w3schools.com/howto/img_avatar.png',
-			name: 'Code ptit'
-		},
-		{
-			avatar: 'https://www.w3schools.com/howto/img_avatar.png',
-			name: 'Code ptit'
-		}
+		// {
+		// 	avatar: 'https://www.w3schools.com/howto/img_avatar.png',
+		// 	name: 'Code ptit'
+		// },
+		// {
+		// 	avatar: 'https://www.w3schools.com/howto/img_avatar.png',
+		// 	name: 'Hưng Yên quê tôi'
+		// },
+		// {
+		// 	avatar: 'https://www.w3schools.com/howto/img_avatar.png',
+		// 	name: 'Mùa lúa chín'
+		// },
+		// {
+		// 	avatar: 'https://www.w3schools.com/howto/img_avatar.png',
+		// 	name: 'Câu chuyện công sở'
+		// },
+		// {
+		// 	avatar: 'https://www.w3schools.com/howto/img_avatar.png',
+		// 	name: 'Vua đầu bếp'
+		// },
+		// {
+		// 	avatar: 'https://www.w3schools.com/howto/img_avatar.png',
+		// 	name: 'Code ptit'
+		// },
+		// {
+		// 	avatar: 'https://www.w3schools.com/howto/img_avatar.png',
+		// 	name: 'Code ptit'
+		// },
+		// {
+		// 	avatar: 'https://www.w3schools.com/howto/img_avatar.png',
+		// 	name: 'Code ptit'
+		// },
+		// {
+		// 	avatar: 'https://www.w3schools.com/howto/img_avatar.png',
+		// 	name: 'Code ptit'
+		// }
 	])
+	useEffect(() => {
+		getGroupByUserId().then((data) => {
+			setGroups(data?.data)
+		})
+	}, [groups])
 	const handleShowMore=() => {
 		setShowMore(!showMore)
 	}
 	return (
 		<div className='w-[365px]'>
 			<div className='w-full h-auto py-2'>
-				<Link to={`/profileUser/${userId}`} className='flex gap-3 py-2 px-5 items-center cursor-pointer hover:bg-slate-200 rounded-lg'>
+				<Link to={`/profileUser/${user?._id}`} className='flex gap-3 py-2 px-5 items-center cursor-pointer hover:bg-slate-200 rounded-lg'>
 					<img
-						src='https://www.w3schools.com/howto/img_avatar.png'
+						src={user?.profile_pic}
 						alt='profile'
 						className='rounded-full w-10 h-10'
 					/>
-					<p className='text-nomal font-semibold'>Nguyễn Minh Quân</p>
+					<p className='text-nomal font-semibold'>{user?.name}</p>
 				</Link>
 				<Link to={'/friend-request'} className='flex gap-5 py-2 px-5 items-center cursor-pointer hover:bg-slate-200 rounded-lg'>
 					<IoPeopleSharp className='w-8 h-8 text-blue-600 cursor-pointer'/>
@@ -96,7 +101,7 @@ const Sidebar = () => {
 						return (
 							<div className='flex items-center gap-5 py-2 px-5 cursor-pointer hover:bg-slate-200 rounded-lg'>
 								<img
-									src={group?.avatar}
+									src={group?.profile_pic}
 									width={35}
 									height={35}
 									className='rounded'

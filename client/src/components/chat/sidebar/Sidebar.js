@@ -16,7 +16,7 @@ import SearchUser from '../../SearchUser'
 import { FaImage } from 'react-icons/fa6'
 import { FaVideo } from 'react-icons/fa6'
 import { logout } from '../../../redux/userSlice'
-import { getConversationsApi, getUserDetails } from '../../../apis/CallAPI'
+import { logoutServer } from '../../../apis/IndexApi'
 
 const Sidebar = () => {
 	const user=useSelector(state => state?.user)
@@ -54,8 +54,9 @@ const Sidebar = () => {
 		}
 	}, [socketConnection, user])
 
-	const handleLogout=() => {
+	const handleLogout=async () => {
 		dispatch(logout())
+		await logoutServer()
 		navigate('/email')
 		localStorage.clear()
 	}

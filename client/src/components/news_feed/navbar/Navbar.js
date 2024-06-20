@@ -12,7 +12,7 @@ import { BiSolidMessageRounded } from 'react-icons/bi'
 import { IoNotifications } from 'react-icons/io5'
 import { Link, useLocation } from 'react-router-dom'
 
-const navbar = () => {
+const navbar = ({ user }) => {
 	const location = useLocation()
 	return (
 		<div className='w-full h-14 flex items-center justify-between'>
@@ -21,7 +21,7 @@ const navbar = () => {
 					<img
 						src={logo}
 						alt='logo'
-						className='rounded-full w-10 h-10 bg-slate-300'
+						className='rounded-full w-10 h-10'
 					/>
 				</Link>
 				<div className=''>
@@ -62,7 +62,7 @@ const navbar = () => {
 				</div>
 				<div className='cursor-pointer'>
 					<img
-						src={logo}
+						src={user?.profile_pic}
 						alt='logo'
 						className='rounded-full w-[38px] h-[38px] bg-slate-300'
 					/>

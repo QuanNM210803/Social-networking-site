@@ -15,7 +15,10 @@ async function friendRequest(request, response){
       if(!sender?.friends.includes(toId) && !receiver?.friend_requests.includes(fromId)){
          await receiver?.updateOne({
             $push:{
-               friend_requests:fromId
+               friend_requests:{
+                  user:fromId,
+                  createdAt: Date.now()
+               }
             }
          })
          return response.status(200).json({

@@ -1,30 +1,31 @@
 /* eslint-disable react/jsx-key */
 /* eslint-disable no-unused-vars */
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { IoSearchOutline } from 'react-icons/io5'
 import ChatWindow from '../ChatWindow'
 import { Link } from 'react-router-dom'
+import { getFriendRequest } from '../../../apis/UserApi'
 
 const Rightbar = () => {
 	const [inviteFriend, setInviteFriend]=useState([
-		{
-			avatar: 'https://www.w3schools.com/howto/img_avatar.png',
-			name: 'Nguyễn Văn A',
-			inviteTime: '1 giờ trước',
-			mutualFriends: 3
-		},
-		{
-			avatar: 'https://www.w3schools.com/howto/img_avatar.png',
-			name: 'Nguyễn Văn A',
-			inviteTime: '1 giờ trước',
-			mutualFriends: 3
-		},
-		{
-			avatar: 'https://www.w3schools.com/howto/img_avatar.png',
-			name: 'Nguyễn Văn A',
-			inviteTime: '1 giờ trước',
-			mutualFriends: 3
-		}
+		// {
+		// 	avatar: 'https://www.w3schools.com/howto/img_avatar.png',
+		// 	name: 'Nguyễn Văn A',
+		// 	inviteTime: '1 giờ trước',
+		// 	mutualFriends: 3
+		// },
+		// {
+		// 	avatar: 'https://www.w3schools.com/howto/img_avatar.png',
+		// 	name: 'Nguyễn Văn A',
+		// 	inviteTime: '1 giờ trước',
+		// 	mutualFriends: 3
+		// },
+		// {
+		// 	avatar: 'https://www.w3schools.com/howto/img_avatar.png',
+		// 	name: 'Nguyễn Văn A',
+		// 	inviteTime: '1 giờ trước',
+		// 	mutualFriends: 3
+		// }
 	])
 	const [friendsChat, setFriendsChat]=useState([
 		{
@@ -83,6 +84,11 @@ const Rightbar = () => {
 		}
    
 	])
+	useEffect(() => {
+		getFriendRequest().then((data) => {
+			setInviteFriend(data?.data)
+		})
+	}, [])
 	const [isOpenChatWindow, setIsOpenChatWindow]=useState(false)
 	const [IdFriendChat, setIdFriendChat]=useState('')
 	const handleOpenChatWindow=(id) => {
@@ -102,15 +108,13 @@ const Rightbar = () => {
 				{inviteFriend.length>0 && (
 					inviteFriend.slice(0, 2).map((friend, index) => (
 						<div className='flex gap-2 px-3 py-2'>
-							<div className=''>
+							<div className='w-14 h-14 flex-shrink-0'>
 								<img
-									src={friend?.avatar}
-									width={55}
-									height={55}
-									className='rounded-full'
+									src={friend?.profile_pic}
+									className='object-cover rounded-full w-full h-full'
 								/>
 							</div>
-							<div className=' w-full h-auto'>
+							<div className='flex-grow'>
 								<div className='flex justify-between'>
 									<p className='text-sm font-semibold'>{friend?.name}</p>
 									<p className='text-sm'>{friend?.inviteTime}</p>

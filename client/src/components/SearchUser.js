@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react'
 import { IoSearchOutline } from 'react-icons/io5'
 import Loading from './Loading'
 import UserSearchCard from './UserSearchCard'
-import { searchUserApi } from '../apis/CallAPI'
+import { searchUserApi } from '../apis/UserApi'
 import { IoClose } from 'react-icons/io5'
 
 const SearchUser = ({ onClose }) => {

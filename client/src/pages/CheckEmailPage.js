@@ -4,7 +4,7 @@
 import React, { useState } from 'react'
 import { PiUserCircle } from 'react-icons/pi'
 import { Link, useNavigate } from 'react-router-dom'
-import { checkEmail } from '../apis/CallAPI'
+import { checkEmail } from '../apis/IndexApi'
 
 const CheckEmailPage = () => {
 

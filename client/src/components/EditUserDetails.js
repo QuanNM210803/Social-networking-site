@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import Avatar from './Avatar'
 import uploadFile from '../helpers/UploadFile'
 import Divider from './Divider'
-import { editUserDetails } from '../apis/CallAPI'
+import { editUserDetails } from '../apis/UserApi'
 import { useDispatch } from 'react-redux'
 import { setUser } from '../redux/userSlice'
 

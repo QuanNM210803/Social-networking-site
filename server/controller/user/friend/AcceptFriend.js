@@ -1,4 +1,5 @@
 const User=require('../../../models/UserModel')
+const friendRequest = require('./FriendRequest')
 async function acceptFriend(request, response){
    try{
       const {fromId , toId}=request?.body
@@ -12,18 +13,27 @@ async function acceptFriend(request, response){
          })
       }
 
-      if(self?.friend_requests.includes(toId) && !self?.friends.includes(toId)){
+      if(self?.friend_requests.some(friendRequest=>friendRequest?.user?.toString()===toId) 
+         && !self?.friends.some(friend=>friend?.user?.toString()===toId)){
          await self?.updateOne({
             $pull:{
-               friend_requests:toId
+               friend_requests:{
+                  user:toId
+               }
             },
             $push:{
-               friends:toId
+               friends:{
+                  user:toId,
+                  createdAt:Date.now()
+               }
             }
          })
          await other?.updateOne({
             $push:{
-               friends:fromId
+               friends:{
+                  user:fromId,
+                  createdAt:Date.now()
+               }
             }
          })
          return response.status(200).json({

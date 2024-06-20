@@ -1,7 +1,6 @@
 const Group=require('../../models/GroupModel')
 const User=require('../../models/UserModel')
 const Post=require('../../models/PostModel')
-const createPost = require('../post/CreatePost')
 async function createPostInGroup(request, response){
    try{
       const {groupId, posterId, content}=request?.body

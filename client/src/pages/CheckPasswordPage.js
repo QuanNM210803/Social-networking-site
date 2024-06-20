@@ -5,7 +5,7 @@
 
 import React, { useEffect, useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
-import { checkPassword } from '../apis/CallAPI'
+import { checkPassword } from '../apis/IndexApi'
 import Avatar from '../components/Avatar'
 import { useDispatch } from 'react-redux'
 import { setToken } from '../redux/userSlice'

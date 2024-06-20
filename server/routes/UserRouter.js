@@ -8,6 +8,8 @@ const cancelFriendRequest = require('../controller/user/friend/CancelFriendReque
 const acceptFriend = require('../controller/user/friend/AcceptFriend')
 const deleteFriendRequest = require('../controller/user/friend/DeleteFriendRequest')
 const unfriend = require('../controller/user/friend/Unfriend')
+const getFriendRequest = require('../controller/user/friend/GetFriendRequest')
+const protectRouter = require('./ProtectRouter')
 
 const userRouter=express.Router()
 
@@ -21,5 +23,7 @@ userRouter.put('/cancelFriendRequest',cancelFriendRequest)
 userRouter.put('/acceptFriend',acceptFriend)
 userRouter.put('/deleteFriendRequest',deleteFriendRequest)
 userRouter.put('/unfriend',unfriend)
+
+userRouter.get('/getFriendRequest',protectRouter,getFriendRequest)
 
 module.exports=userRouter

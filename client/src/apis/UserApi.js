@@ -2,34 +2,9 @@
 import axios from 'axios'
 import toast from 'react-hot-toast'
 
-
 export const api=axios.create({
-	baseURL : 'http://localhost:8080'
+	baseURL:'http://localhost:8080'
 })
-
-export async function checkEmail(data) {
-	try {
-		const response=await api.post('/api/email', data)
-		toast.success(response.data.message)
-		console.log(response)
-		return response.data
-	} catch (error) {
-		toast.error(error?.response?.data?.message)
-		console.log(error)
-	}
-}
-
-export async function checkPassword(data) {
-	try {
-		const response=await api.post('/api/password', data, { withCredentials: true })
-		toast.success(response.data.message)
-		console.log(response)
-		return response.data
-	} catch (error) {
-		toast.error(error?.response?.data?.message)
-		console.log(error)
-	}
-}
 
 export async function registerUser(data) {
 	try {
@@ -78,14 +53,12 @@ export async function searchUserApi(data) {
 	}
 }
 
-export async function getConversationsApi(userId) {
+export async function getFriendRequest() {
 	try {
-		console.log('userId', userId)
-		const response=await api.get(`/conversation/conversations/${userId}`, { withCredentials:true })
-		console.log(response.data)
-		return response.data
+		const response=await api.get('/user/getFriendRequest', { withCredentials:true })
+		return response?.data
 	} catch (error) {
-		console.log(error)
 		toast.error(error?.response?.data?.message)
+		console.log(error)
 	}
 }

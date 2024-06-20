@@ -8,6 +8,14 @@ const initialState = {
 	name:'',
 	email:'',
 	profile_pic:'',
+	cover_pic:'',
+	phone:'',
+	address:'',
+	dob:'',
+	friends:[],
+	friend_requests:[],
+	storagedVideo:[],
+
 	token:'',
 	onlineUsers:[],
 	socketConnection: null
@@ -23,6 +31,13 @@ export const userSlice = createSlice({
 			state.name=action?.payload?.name,
 			state.email=action?.payload?.email,
 			state.profile_pic=action?.payload?.profile_pic
+			state.cover_pic=action?.payload?.cover_pic
+			state.phone=action?.payload?.phone
+			state.address=action?.payload?.address
+			state.dob=action?.payload?.dob
+			state.friends=action?.payload?.friends
+			state.friend_requests=action?.payload?.friend_requests
+			state.storagedVideo=action?.payload?.storagedVideo
 		},
 		setToken:(state, action) => {
 			state.token=action.payload
