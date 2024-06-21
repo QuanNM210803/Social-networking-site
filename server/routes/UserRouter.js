@@ -13,16 +13,16 @@ const protectRouter = require('./ProtectRouter')
 
 const userRouter=express.Router()
 
-userRouter.get('/user-details', userDetails)
+userRouter.get('/user-details',protectRouter, userDetails)
 userRouter.post('/register',registerUser)
-userRouter.put('/update-user',updateUserDetails)
-userRouter.post('/search-user',searchUser)
+userRouter.put('/update-user',protectRouter,updateUserDetails)
+userRouter.post('/search-user',protectRouter,searchUser)
 
-userRouter.post('/friendRequest',friendRequest)
-userRouter.put('/cancelFriendRequest',cancelFriendRequest)
-userRouter.put('/acceptFriend',acceptFriend)
-userRouter.put('/deleteFriendRequest',deleteFriendRequest)
-userRouter.put('/unfriend',unfriend)
+userRouter.post('/friendRequest',protectRouter,friendRequest)
+userRouter.put('/cancelFriendRequest',protectRouter,cancelFriendRequest)
+userRouter.put('/acceptFriend',protectRouter,acceptFriend)
+userRouter.put('/deleteFriendRequest',protectRouter,deleteFriendRequest)
+userRouter.put('/unfriend',protectRouter,unfriend)
 
 userRouter.get('/getFriendRequest',protectRouter,getFriendRequest)
 

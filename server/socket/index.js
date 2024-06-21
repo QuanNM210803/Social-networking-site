@@ -201,6 +201,7 @@ io.on('connection', async (socket)=>{
 
    socket.on('disconnect',()=>{
       onlineUsers.delete(user?._id?.toString())
+      io.emit('onlineUsers', Array.from(onlineUsers))
       console.log('disconnect user', socket.id)
    })
 })

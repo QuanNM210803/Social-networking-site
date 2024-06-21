@@ -97,7 +97,7 @@ const Sidebar = ({ user }) => {
 					<p className='text-base'>Lối tắt của bạn</p>
 				</div>
 				<div className='mt-2'>
-					{groups.slice(0, 5).map((group, index) => {
+					{groups.length>=5 && groups.slice(0, 5).map((group, index) => {
 						return (
 							<div className='flex items-center gap-5 py-2 px-5 cursor-pointer hover:bg-slate-200 rounded-lg'>
 								<img
@@ -110,6 +110,26 @@ const Sidebar = ({ user }) => {
 							</div>
 						)
 					})}
+					{groups.length>0 && groups.length<5 && groups.map((group, index) => {
+						return (
+							<div className='flex items-center gap-5 py-2 px-5 cursor-pointer hover:bg-slate-200 rounded-lg'>
+								<img
+									src={group?.profile_pic}
+									width={35}
+									height={35}
+									className='rounded'
+								/>
+								<p className='text-base font-semibold'>{group?.name}</p>
+							</div>
+						)
+					})}
+					{
+						groups.length === 0 && (
+							<div className='flex items-center justify-center w-full h-16'>
+								<p className='text-slate-500 text-center'>Bạn chưa tham gia nhóm nào</p>
+							</div>
+						)
+					}
 					{groups.length > 5 && !showMore && (
 						<div className='flex items-center gap-5 py-2 px-5 cursor-pointer hover:bg-slate-200 rounded-lg'
 							onClick={handleShowMore}>

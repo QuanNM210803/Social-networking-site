@@ -4,19 +4,20 @@ const cloudinary=require('cloudinary').v2
 
 async function createPost(request,response){
    try{
-      const {posterId,content}=request.body
-      const text=content?.text || ''
-      const image=content?.image || []
-      const video=content?.video || []
-      const userId=posterId
-
-      const user=await User.findById(userId)
+      const user=request?.user
       if(!user){
          return response.status(404).json({
             message:'User not found',
             error:true
          })
       }
+
+      const {content}=request.body
+      const text=content?.text || ''
+      const image=content?.image || []
+      const video=content?.video || []
+      const userId=user?._id.toString()
+      
       if(!text && !image?.length && !video?.length){
          return response.status(400).json({
             message:'Post requires content',

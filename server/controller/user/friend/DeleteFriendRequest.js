@@ -1,9 +1,10 @@
 const User=require('../../../models/UserModel')
 async function deleteFriendRequest(request, response){
    try{
-      const {fromId , toId}=request?.body
+      const user=request?.user
+      const { toId}=request?.body
 
-      const self=await User.findById(fromId)
+      const self=user
       const other=await User.findById(toId)
       if(!self || !other){
          return response.status(404).json({
@@ -11,11 +12,15 @@ async function deleteFriendRequest(request, response){
             error:true
          })
       }
+      const fromId=user?._id.toString()
 
-      if(self?.friend_requests.includes(toId) && !self?.friends.includes(toId)){
+      if(self?.friend_requests.some(friendRequest=>friendRequest?.user.toString()===toId) 
+         && !self?.friends.some(friend=>friend?.user.toString()===toId) ){
          await self?.updateOne({
             $pull:{
-               friend_requests:toId
+               friend_requests:{
+                  user:toId
+               }
             }
          })
          return response.status(200).json({

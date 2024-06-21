@@ -1,9 +1,10 @@
 const User=require('../../../models/UserModel')
-async function cancelFriendRequest(request, response){
+async function CancelFriendRequest(request, response){
    try{
-      const {fromId, toId}=request?.body
+      const user=request?.user
+      const {toId}=request?.body
 
-      const sender=await User.findById(fromId)
+      const sender=user
       const receiver=await User.findById(toId)
       if(!sender || !receiver){
          return response.status(404).json({
@@ -11,10 +12,15 @@ async function cancelFriendRequest(request, response){
             error:true
          })
       }
-      if(receiver?.friend_requests.includes(fromId) && !sender?.friends.includes(toId)){
+      const fromId=user?._id.toString()
+
+      if(receiver?.friend_requests.some(friendRequest=>friendRequest?.user.toString()===fromId) 
+         && !sender?.friends.some(friend=>friend?.user.toString()===toId) ){
          await receiver?.updateOne({
             $pull:{
-               friend_requests:fromId
+               friend_requests:{
+                  user:fromId
+               }
             }
          })
          return response.status(200).json({
@@ -32,4 +38,4 @@ async function cancelFriendRequest(request, response){
    }
 }
 
-module.exports=cancelFriendRequest
+module.exports=CancelFriendRequest

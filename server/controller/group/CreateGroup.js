@@ -3,16 +3,17 @@ const Group=require('../../models/GroupModel')
 const cloudinary=require('cloudinary').v2
 async function createGroup(request,response){
    try{
-      const {name, privacy, creatorId}=request?.body
-      let {profile_pic, cover_pic}=request?.body
-
-      const creator=await User.findById(creatorId)
-      if(!creator){
+      const user=request?.user
+      if(!user){
          return response.status(404).json({
             message:'User not found',
             error:true
          })
       }
+      const creatorId=user?._id.toString()
+      const {name, privacy}=request?.body
+      let {profile_pic, cover_pic}=request?.body
+
       if(profile_pic){
          const uploadProfilePic=await cloudinary.uploader.upload(profile_pic)
          profile_pic=uploadProfilePic.secure_url

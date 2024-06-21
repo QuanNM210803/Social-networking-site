@@ -2,9 +2,10 @@ const User=require('../../../models/UserModel')
 const friendRequest = require('./FriendRequest')
 async function acceptFriend(request, response){
    try{
-      const {fromId , toId}=request?.body
+      const user=request?.user
+      const { toId}=request?.body
 
-      const self=await User.findById(fromId)
+      const self=user
       const other=await User.findById(toId)
       if(!self || !other){
          return response.status(404).json({
@@ -12,6 +13,7 @@ async function acceptFriend(request, response){
             error:true
          })
       }
+      const fromId=user?._id.toString()
 
       if(self?.friend_requests.some(friendRequest=>friendRequest?.user?.toString()===toId) 
          && !self?.friends.some(friend=>friend?.user?.toString()===toId)){

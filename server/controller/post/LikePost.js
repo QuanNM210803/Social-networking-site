@@ -3,8 +3,8 @@ const Post=require('../../models/PostModel')
 
 async function likePost(request, response){
    try{
-      const {postId, userId}=request?.body
-      const user=await User.findById(userId)
+      const {postId}=request?.body
+      const user=request?.user
       const post=await Post.findById(postId)
       if(!user){
          return response.status(404).json({
@@ -18,6 +18,7 @@ async function likePost(request, response){
             error:true
          })
       }
+      const userId=user?._id.toString()
       if(!post?.likes?.includes(userId)){
          await Post.updateOne(
             {

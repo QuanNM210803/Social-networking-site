@@ -55,6 +55,9 @@ const Sidebar = () => {
 	}, [socketConnection, user])
 
 	const handleLogout=async () => {
+		if (socketConnection) {
+			socketConnection.disconnect()
+		}
 		dispatch(logout())
 		await logoutServer()
 		navigate('/email')

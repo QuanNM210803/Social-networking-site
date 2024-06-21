@@ -3,15 +3,16 @@ const Comment=require('../../models/CommentModel')
 
 async function likeComment(request, response){
    try{
-      const {commentId, userId}=request?.body
-      const user=await User.findById(userId)
-      const comment=await Comment.findById(commentId)
+      const user=request?.user
       if(!user){
          return response.status(404).json({
             message:'User not found',
             error:true
          })
       }
+      const userId=user?._id.toString()
+      const {commentId}=request?.body
+      const comment=await Comment.findById(commentId)
       if(!comment){
          return response.status(404).json({
             message:'Comment not found',

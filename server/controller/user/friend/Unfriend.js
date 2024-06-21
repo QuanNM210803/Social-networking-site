@@ -1,26 +1,39 @@
 const User=require('../../../models/UserModel')
 async function unfriend(request, response){
    try{
-      const {fromId , toId}=request?.body
-
-      const self=await User.findById(fromId)
-      const other=await User.findById(toId)
-      if(!self || !other){
+      const user=request?.user
+      if(!user){
          return response.status(404).json({
             message:'User not found',
             error:true
          })
       }
+      const fromId=user?._id.toString()
+      const {toId}=request?.body
 
-      if(self?.friends.includes(toId) && other?.friends.includes(fromId)){
+      const self=user
+      const other=await User.findById(toId)
+      if(!other){
+         return response.status(404).json({
+            message:'User not found',
+            error:true
+         })
+      }
+      console.log(fromId, toId)
+      if(self?.friends.some(friend=>friend?.user.toString()===toId) 
+         && other?.friends.some(friend=>friend?.user.toString()===fromId)){
          await self?.updateOne({
             $pull:{
-               friends:toId
+               friends:{
+                  user:toId
+               }
             }
          })
          await other?.updateOne({
             $pull:{
-               friends:fromId
+               friends:{
+                  user:fromId
+               }
             }
          })
          return response.status(200).json({

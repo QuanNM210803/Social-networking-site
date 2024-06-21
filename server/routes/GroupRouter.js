@@ -7,9 +7,9 @@ const protectRouter = require('./ProtectRouter')
 
 const groupRouter=express.Router()
 
-groupRouter.post('/create',createGroup)
-groupRouter.get('/groupDetails/:groupId',groupDetails)
-groupRouter.post('/createPostInGroup',createPostInGroup)
+groupRouter.post('/create',protectRouter,createGroup)
+groupRouter.get('/groupDetails/:groupId',protectRouter,groupDetails)
+groupRouter.post('/createPostInGroup',protectRouter,createPostInGroup)
 groupRouter.get('/getGroupOfUser',protectRouter,getGroupByUserId)
 
 module.exports=groupRouter

@@ -3,13 +3,13 @@ const User=require('../../models/UserModel')
 const Post=require('../../models/PostModel')
 async function createPostInGroup(request, response){
    try{
-      const {groupId, posterId, content}=request?.body
+      const user=request?.user
+      const {groupId, content}=request?.body
       const text=content?.text || ''
       const image=content?.image || []
       const video=content?.video || []
 
       const group=await Group.findById(groupId)
-      const user=await User.findById(posterId)
       if(!group){
          return response.status(404).json({
             message:'Group not found',
@@ -22,6 +22,7 @@ async function createPostInGroup(request, response){
             error:true
          })
       }
+      const posterId=user?._id.toString()
       if(!group?.members.includes(posterId)){
          return response.status(403).json({
             message:'User is not a member of the group',

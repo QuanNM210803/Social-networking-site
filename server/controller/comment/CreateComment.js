@@ -5,7 +5,15 @@ const cloudinary=require('cloudinary').v2
 
 async function createComment(request, response){
    try{
-      const {postId, commenterId, content}=request?.body
+      const user=request?.user
+      if(!user){
+         return response.status(404).json({
+            message:'User not found',
+            error:true
+         })
+      }
+      const commenterId=user?._id.toString()  
+      const {postId, content}=request?.body
       const text=content?.text || ''
       let image=content?.image || ''
       let video=content?.video || ''
@@ -16,19 +24,13 @@ async function createComment(request, response){
          })
       }
       const post=await Post.findById(postId)
-      const commenter=await User.findById(commenterId)
       if(!post){
          return response.status(404).json({
             message:'Post not found',
             error:true
          })
       }
-      if(!commenter){
-         return response.status(404).json({
-            message:'Commenter not found',
-            error:true
-         })
-      }
+      
       if(image){
          const uploadImageResponse=await cloudinary.uploader.upload(image)
          image=uploadImageResponse.secure_url

@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react'
@@ -8,7 +9,8 @@ import Content from '../../components/news_feed/news/Content.js'
 import { getUserDetails } from '../../apis/UserApi.js'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { logout, setUser } from '../../redux/userSlice.js'
+import { logout, setOnlineUsers, setSocketConnection, setUser } from '../../redux/userSlice.js'
+import { io } from 'socket.io-client'
 
 const HomePage = () => {
 	const user=useSelector(state => state?.user)
@@ -24,6 +26,17 @@ const HomePage = () => {
 			}
 		})
 	}, [])
+	useEffect(() => {
+		const socketConnection=io(process.env.REACT_APP_BACKEND_URL, {
+			auth:{
+				token:localStorage.getItem('token')
+			}
+		})
+		socketConnection.on('onlineUsers', (data) => {
+			dispatch(setOnlineUsers(data))
+		})
+		dispatch(setSocketConnection(socketConnection))
+	}, [])
 	return (
 		<div>
 			<div className='sticky top-0 bg-slate-500'>
@@ -37,7 +50,7 @@ const HomePage = () => {
 					<Content/>
 				</div>
 				<div className='h-[calc(100vh-56px)] w-[22%] overflow-auto scrollbar-newsfeed'>
-					<Rightbar/>
+					<Rightbar user={user}/>
 				</div>
 			</div>
 		</div>
