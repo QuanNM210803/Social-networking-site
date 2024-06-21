@@ -4,8 +4,11 @@ import React, { useEffect, useState } from 'react'
 import Navbar from '../../components/news_feed/navbar/Navbar'
 import Sidebar_videoPage from '../../components/news_feed/sidebar/Sidebar_videoPage'
 import ContentVideoPage from '../../components/news_feed/DetailsObject/videoPage/ContentVideoPage'
+import { useDispatch, useSelector } from 'react-redux'
+import { initializeSocketConnection } from '../../socket/SocketUtils'
 
 const VideoPage = () => {
+	const user=useSelector(state => state?.user)
 	const [option, setOption]=useState(1)
 	const [listVideo, setListVideo]=useState([
 		{
@@ -230,10 +233,20 @@ const VideoPage = () => {
 			console.log('Option 2')
 		}
 	}, [option])
+
+	const [socketConnection, setSocketConnection]=useState(null)
+	const dispatch=useDispatch()
+	useEffect(() => {
+		const socketConnection=initializeSocketConnection(dispatch)
+		setSocketConnection(socketConnection)
+		return () => {
+			socketConnection.disconnect()
+		}
+	}, [dispatch])
 	return (
 		<div>
-			<div className='sticky top-0 bg-slate-500'>
-				<Navbar/>
+			<div className='sticky top-0 bg-slate-500' style={{ zIndex:1000 }}>
+				<Navbar user={user}/>
 			</div>
 			<div className='flex top-14 left-0 right-0 bottom-0'>
 				<div className='h-[calc(100vh-56px)] w-[20%] bg-slate-100'>

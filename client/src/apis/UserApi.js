@@ -62,3 +62,13 @@ export async function getFriendRequest() {
 		console.log(error)
 	}
 }
+
+export async function getUserById(userId) {
+	try {
+		const response=await api.get(`/user/getUserById/${userId}`, { withCredentials:true })
+		return response?.data
+	} catch (error) {
+		toast.error(error?.response?.data?.message)
+		console.log(error)
+	}
+}

@@ -18,12 +18,11 @@ import { FaVideo } from 'react-icons/fa6'
 import { logout } from '../../../redux/userSlice'
 import { logoutServer } from '../../../apis/IndexApi'
 
-const Sidebar = () => {
+const Sidebar = ({ socketConnection }) => {
 	const user=useSelector(state => state?.user)
 	const [editUserOpen, setEditUserOpen]=useState(false)
 	const [allUser, setAllUser]=useState([])
 	const [openSearchUser, setOpenSearchUser]=useState(false)
-	const socketConnection=useSelector(state => state?.user?.socketConnection)
 	const dispatch=useDispatch()
 	const navigate=useNavigate()
 
@@ -54,15 +53,6 @@ const Sidebar = () => {
 		}
 	}, [socketConnection, user])
 
-	const handleLogout=async () => {
-		if (socketConnection) {
-			socketConnection.disconnect()
-		}
-		dispatch(logout())
-		await logoutServer()
-		navigate('/email')
-		localStorage.clear()
-	}
 
 	return (
 		<div className='w-full h-full grid grid-cols-[48px,1fr] bg-white'>
@@ -81,17 +71,12 @@ const Sidebar = () => {
 					<button className='mx-auto' title={user?.name}
 						onClick={() => setEditUserOpen(true)}>
 						<Avatar
-							width={40}
-							height={40}
+							width={37}
+							height={37}
 							name={user?.name}
 							imageUrl={user?.profile_pic}
 							userId={user?._id}
 						/>
-					</button>
-					<button onClick={handleLogout} className='w-12 h-12 flex justify-center items-center hover:bg-slate-200 rounded' title='Logout'>
-						<span className='-ml-2'>
-					      <BiLogOut size={20}/>
-						</span>
 					</button>
 				</div>
 			</div>

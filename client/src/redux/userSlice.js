@@ -15,10 +15,8 @@ const initialState = {
 	friends:[],
 	friend_requests:[],
 	storagedVideo:[],
-
 	token:'',
-	onlineUsers:[],
-	socketConnection: null
+	onlineUsers:[]
 }
 
 export const userSlice = createSlice({
@@ -47,14 +45,18 @@ export const userSlice = createSlice({
 			state.name='',
 			state.email='',
 			state.profile_pic='',
+			state.cover_pic='',
+			state.phone='',
+			state.address='',
+			state.dob='',
+			state.friends=[],
+			state.friend_requests=[],
+			state.storagedVideo=[],
 			state.token='',
-			state.socketConnection=null
+			state.onlineUsers=[]
 		},
 		setOnlineUsers:(state, action) => {
 			state.onlineUsers=action?.payload
-		},
-		setSocketConnection :(state, action) => {
-			state.socketConnection=action?.payload
 		}
 	}
 })

@@ -32,7 +32,7 @@ const Avatar = ({ userId, name, imageUrl, width, height }) => {
 					<img 
 						src={imageUrl}
 						alt={name}
-						className='overflow-hidden rounded-full'
+						className='overflow-hidden rounded-full object-cover border-[1px] border-slate-400'
 						style={{ width:width+'px', height:height+'px' }}
 					>
 					</img>

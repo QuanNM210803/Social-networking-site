@@ -10,7 +10,7 @@ import { FaLink } from 'react-icons/fa'
 import { MdOutlineEmail } from 'react-icons/md'
 import ShowFile from './ShowFile'
 
-const Rightbar = ({ receiver }) => {
+const Rightbar = ({ receiver, socketConnection }) => {
 	const user=useSelector(state => state?.user)
 	const [isOpenFile, setIsOpenFile]=useState(false)
 	const [isOpenPrivate, setIsOpenPrivate]=useState(false)
@@ -159,7 +159,7 @@ const Rightbar = ({ receiver }) => {
 				</div>)}
 			{
 				showFile && (
-					<ShowFile handleShowFile={handleShowFile} content={content}/>
+					<ShowFile handleShowFile={handleShowFile} content={content} socketConnection={socketConnection}/>
 				)
 			}
 		</>

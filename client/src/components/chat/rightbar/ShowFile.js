@@ -11,11 +11,10 @@ import LinkTab from './LinkTab'
 import { useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 
-const showFile = ({ handleShowFile, content }) => {
+const showFile = ({ handleShowFile, content, socketConnection }) => {
 	const [activeTab, setActiveTab] =useState(content)
 	const params=useParams()
 	const user=useSelector(state => state?.user)
-	const socketConnection=useSelector(state => state?.user?.socketConnection)
 	const [media, setMedia]=useState([])
 	const [file, setFile]=useState([
 		{

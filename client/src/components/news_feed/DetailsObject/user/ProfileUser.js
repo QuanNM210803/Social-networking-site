@@ -1,27 +1,30 @@
 /* eslint-disable no-unused-vars */
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Tab from '../../../chat/rightbar/Tab'
 import Posts from '../Posts'
 import Images from '../Images'
 import Videos from '../Videos'
 import IntroductionUser from './IntroductionUser'
 import FriendUser from './FriendUser'
+import { getUserById } from '../../../../apis/UserApi'
+import { useSelector } from 'react-redux'
+import { RiVerifiedBadgeFill } from 'react-icons/ri'
 
 const ProfileUser = ({ idFriend }) => {
+	const self=useSelector(state => state?.user)
 	const [activeTab, setActiveTab] =useState('Bài viết')
-	const [user, setUser] = useState({
-		_id: idFriend,
-		name: 'Nguyễn Văn A',
-		avatar: 'https://i.imgur.com/5JfZJfP.jpg',
-		coverPhoto: 'https://www.w3schools.com/howto/img_avatar.png',
-		mutualFriends: 5
-	})
+	const [user, setUser] = useState({})
+	useEffect(() => {
+		getUserById(idFriend).then((data) => {
+			setUser(data?.data)
+		})
+	}, [idFriend])
 	return (
 		<div className='w-full h-auto'>
 			<div className='relative w-full h-[500px] bg-slate-200'>
 				<div className='flex justify-center rounded-b-md'>
 					<img
-						src={user?.coverPhoto}
+						src={user?.cover_pic}
 						className={'w-[80%] h-[350px] object-cover rounded-b-md'}
 					/>
 				</div>
@@ -30,19 +33,22 @@ const ProfileUser = ({ idFriend }) => {
 						<div className='flex gap-5'>
 							<div className='ml-10'>
 								<img
-									src={user?.avatar}
+									src={user?.profile_pic}
 									className='w-[180px] h-[180px] object-cover rounded-full border-4 border-slate-300'
 								/>
 							</div>
 							<div className='items-center mt-16'>
-								<p className='font-bold text-3xl'>{user?.name}</p>
-								<p>{user?.mutualFriends} bạn chung</p>
+								<div className='flex items-center gap-2'>
+									<p className='font-bold text-3xl'>{user?.name}</p>
+									{self?._id===user?._id && <RiVerifiedBadgeFill className='text-blue-600'/>}
+								</div>
+								{self?._id!==user?._id && <p>{user?.mutualFriends} bạn chung</p>}
 							</div>
 						</div>
-						<div className='mt-16 mr-10 flex items-end gap-2'>
+						{self?._id!==user?._id && <div className='mt-16 mr-10 flex items-end gap-2'>
 							<button className='bg-blue-600 text-white hover:bg-blue-800 rounded-md px-3 py-1'>Kết bạn</button>
 							<button className='bg-slate-500 text-white hover:bg-slate-700 rounded-md px-3 py-1'>Nhắn tin</button>
-						</div>
+						</div>}
 					</div>
 				</div>
 			</div>

@@ -26,7 +26,7 @@ const onlineUsers= new Set()
  * với socket của client đó
  */
 io.on('connection', async (socket)=>{
-
+   console.log('connect user', socket.id)
    const token=socket.handshake.auth.token
    // current user userDetails
    const user= await getUserDetailsFromToken(token)

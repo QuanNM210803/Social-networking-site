@@ -55,7 +55,7 @@ const Sidebar = ({ user }) => {
 		getGroupByUserId().then((data) => {
 			setGroups(data?.data)
 		})
-	}, [groups])
+	}, [])
 	const handleShowMore=() => {
 		setShowMore(!showMore)
 	}

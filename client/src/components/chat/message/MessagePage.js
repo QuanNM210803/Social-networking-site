@@ -4,7 +4,7 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useRef, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useOutletContext, useParams } from 'react-router-dom'
 import Avatar from '../../Avatar'
 import { HiDotsVertical } from 'react-icons/hi'
 import { FaAngleLeft } from 'react-icons/fa6'
@@ -22,8 +22,8 @@ import { IoCall } from 'react-icons/io5'
 import Rightbar from '../rightbar/Rightbar'
 
 const MessagePage = () => {
+	const socketConnection=useOutletContext()
 	const params= useParams()
-	const socketConnection=useSelector(state => state?.user?.socketConnection)
 	const user=useSelector(state => state?.user)
 	const [dataUser, setDataUser]=useState({
 		_id:'',
@@ -365,7 +365,7 @@ const MessagePage = () => {
 			{
 				openDetailsConversation && (
 					<div className='w-80 fixed right-0 top-14 z-0 h-full'>
-						<Rightbar receiver={dataUser}/>
+						<Rightbar receiver={dataUser} socketConnection={socketConnection}/>
 					</div>
 				)
 			}

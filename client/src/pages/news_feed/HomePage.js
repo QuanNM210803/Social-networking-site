@@ -9,13 +9,14 @@ import Content from '../../components/news_feed/news/Content.js'
 import { getUserDetails } from '../../apis/UserApi.js'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { logout, setOnlineUsers, setSocketConnection, setUser } from '../../redux/userSlice.js'
-import { io } from 'socket.io-client'
+import { logout, setUser } from '../../redux/userSlice.js'
+import { initializeSocketConnection } from '../../socket/SocketUtils.js'
 
 const HomePage = () => {
 	const user=useSelector(state => state?.user)
 	const dispatch=useDispatch()
 	const navigate=useNavigate()
+	const [socketConnection, setSocketConnection]=useState(null)
 	useEffect(() => {
 		getUserDetails().then((data) => {
 			if (!data?.data) {
@@ -27,19 +28,15 @@ const HomePage = () => {
 		})
 	}, [])
 	useEffect(() => {
-		const socketConnection=io(process.env.REACT_APP_BACKEND_URL, {
-			auth:{
-				token:localStorage.getItem('token')
-			}
-		})
-		socketConnection.on('onlineUsers', (data) => {
-			dispatch(setOnlineUsers(data))
-		})
-		dispatch(setSocketConnection(socketConnection))
-	}, [])
+		const socketConnection=initializeSocketConnection(dispatch)
+		setSocketConnection(socketConnection)
+		return () => {
+			socketConnection.disconnect()
+		}
+	}, [dispatch])
 	return (
 		<div>
-			<div className='sticky top-0 bg-slate-500'>
+			<div className='sticky top-0 bg-slate-500' style={{ zIndex:1000 }}>
 				<Navbar user={user}/>
 			</div>
 			<div className='bg-slate-300 flex top-14 left-0 right-0 bottom-0'>
@@ -50,7 +47,7 @@ const HomePage = () => {
 					<Content/>
 				</div>
 				<div className='h-[calc(100vh-56px)] w-[22%] overflow-auto scrollbar-newsfeed'>
-					<Rightbar user={user}/>
+					<Rightbar user={user} socketConnection={socketConnection}/>
 				</div>
 			</div>
 		</div>

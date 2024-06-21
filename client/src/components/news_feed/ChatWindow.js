@@ -6,32 +6,27 @@ import { IoIosCall } from 'react-icons/io'
 import { FaFileImage } from 'react-icons/fa'
 import { FaFileVideo } from 'react-icons/fa6'
 import { IoMdSend } from 'react-icons/io'
+import { useSelector } from 'react-redux'
 
-const ChatWindow = ({ handleCloseChatWindow, IdFriendChat }) => {
+const ChatWindow = ({ handleCloseChatWindow, friendChat }) => {
 	const textareaRef = useRef(null)
-
+	const onlineUsers=useSelector(state => state?.user?.onlineUsers)
 	const handleInput = () => {
 		const textarea = textareaRef.current
 		textarea.style.height = 'auto'
 		textarea.style.height = `${textarea.scrollHeight}px`
 	}
-	const [friendChat, setFriendsChat]=useState({
-		name: 'Nguyên Thị Thảo Vân',
-		avatar: 'https://www.w3schools.com/howto/img_avatar.png',
-		online: true
-	})
+	
 	return (
 		<div className='absolute w-[22%] h-[65%] bottom-0 right-16 bg-blue-200 rounded-t-lg'>
 			<div className='flex items-center justify-between w-full h-[52px] bg-blue-500 rounded-t-lg px-2'>
 				<div className='flex items-center gap-3 '>
-					<div className='relative'>
+					<div className='relative w-10 h-10 flex-shrink-0'>
 						<img
-							src={friendChat?.avatar}
-							width={40}
-							height={40}
-							className='rounded-full'
+							src={friendChat?.profile_pic}
+							className='rounded-full w-full h-full object-cover'
 						/>
-						{friendChat?.online && <div className='absolute bottom-0 right-0 w-[9px] h-[9px] rounded-full bg-green-500'></div>}
+						{onlineUsers?.includes(friendChat?._id) && <div className='absolute bottom-0 right-0 w-[9px] h-[9px] rounded-full bg-green-500'></div>}
 					</div>
 					<p className='font-semibold'>{friendChat?.name}</p>
 				</div>

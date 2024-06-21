@@ -10,6 +10,7 @@ const deleteFriendRequest = require('../controller/user/friend/DeleteFriendReque
 const unfriend = require('../controller/user/friend/Unfriend')
 const getFriendRequest = require('../controller/user/friend/GetFriendRequest')
 const protectRouter = require('./ProtectRouter')
+const getUserById = require('../controller/user/GetUserById')
 
 const userRouter=express.Router()
 
@@ -25,5 +26,6 @@ userRouter.put('/deleteFriendRequest',protectRouter,deleteFriendRequest)
 userRouter.put('/unfriend',protectRouter,unfriend)
 
 userRouter.get('/getFriendRequest',protectRouter,getFriendRequest)
+userRouter.get('/getUserById/:userId',protectRouter,getUserById)
 
 module.exports=userRouter

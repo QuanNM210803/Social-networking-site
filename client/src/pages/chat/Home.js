@@ -2,37 +2,46 @@
 /* eslint-disable no-console */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import Sidebar from '../../components/chat/sidebar/Sidebar'
 import Navbar from '../../components/news_feed/navbar/Navbar'
 import logo from '../../assets/xing.svg'
+import { initializeSocketConnection } from '../../socket/SocketUtils'
 
 const Home = () => {
-	//Khi trạng thái user trong Redux store thay đổi, useSelector sẽ tự động cập nhật lại giá trị của user và re-render component.
 	const user=useSelector(state => state?.user)// chính là user trong store.js
-	const location=useLocation()
+
 	const navigate=useNavigate()
+	const location=useLocation()
 	const basePath=location.pathname === '/chat'
 
+	const dispatch=useDispatch()
+	const [socketConnection, setSocketConnection]=useState(null)
 	useEffect(() => {
 		if (!user?._id) {
 			navigate('/email')
 		}
-	}, [user])
+		const socketConnection=initializeSocketConnection(dispatch)
+		setSocketConnection(socketConnection)
+		return () => {
+			socketConnection.disconnect()
+		}
+	}, [dispatch])
+
 	return (
 		<div>
-			<div className='sticky top-0 bg-slate-500'>
-				<Navbar/>
+			<div className='sticky top-0 bg-slate-500' style={{ zIndex:1000 }}>
+				<Navbar user={user} socketConnection={socketConnection}/>
 			</div>
 			<div className='flex top-14 left-0 right-0 bottom-0'>
 				<div className='h-[calc(100vh-56px)] w-[20%]'>
-					<Sidebar />
+					<Sidebar socketConnection={socketConnection}/>
 				</div>
 				<div className='h-[calc(100vh-56px)] w-[80%]'>
 					<section className={`${basePath && 'hidden'} h-full w-full`}>
-						<Outlet />
+						<Outlet context={socketConnection}/>
 					</section>
 					<div className={`justify-center items-center flex-col gap-2 w-full h-full
                   ${!basePath ? 'hidden':'lg:flex'}`}>

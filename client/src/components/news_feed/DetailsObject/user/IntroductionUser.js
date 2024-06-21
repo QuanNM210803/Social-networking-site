@@ -1,17 +1,19 @@
 /* eslint-disable no-unused-vars */
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { MdEmail } from 'react-icons/md'
 import { MdPhoneAndroid } from 'react-icons/md'
 import { FaBirthdayCake } from 'react-icons/fa'
 import { PiMapPinAreaFill } from 'react-icons/pi'
+import { getUserById } from '../../../../apis/UserApi'
 
 const IntroductionUser = ({ objectId }) => {
-	const [userInformation, setUserInformation]=useState({
-		email: 'aaaaaa@gmail.com',
-		phone: '0482363574',
-		birthday: '21/08/2003',
-		address: 'Xuân quan, Văn Giang, Hưng Yên'
-	})
+	const [userInformation, setUserInformation]=useState({})
+	useEffect(() => {
+		getUserById(objectId).then((data) => {
+			setUserInformation(data?.data)
+		})
+	}, [objectId])
+	
 	return (
 		<div className='bg-slate-200 rounded-md h-auto'>
 			<div className='flex justify-between px-3 py-2'>

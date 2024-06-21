@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/jsx-key */
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react'
@@ -7,12 +8,11 @@ import { Link } from 'react-router-dom'
 import { getFriendRequest } from '../../../apis/UserApi'
 import { useSelector } from 'react-redux'
 
-const Rightbar = ({ user }) => {
-	const socketConnection=useSelector(state => state?.user?.socketConnection)
+const Rightbar = ({ user, socketConnection }) => {
 	const [inviteFriend, setInviteFriend]=useState([])
 	const [friendsChat, setFriendsChat]=useState([])
 	const onlineUsers=useSelector(state => state?.user?.onlineUsers)
-   console.log('onlineUsers', onlineUsers)
+
 	useEffect(() => {
 		getFriendRequest().then((data) => {
 			setInviteFriend(data?.data)
@@ -40,12 +40,12 @@ const Rightbar = ({ user }) => {
 				setFriendsChat(conversationUserData)
 			})
 		}
-	}, [socketConnection, user])
+	}, [user])
 
 	const [isOpenChatWindow, setIsOpenChatWindow]=useState(false)
-	const [IdFriendChat, setIdFriendChat]=useState('')
-	const handleOpenChatWindow=(id) => {
-		setIdFriendChat(id)
+	const [friendChat, setFriendChat]=useState({})
+	const handleOpenChatWindow=(user) => {
+		setFriendChat(user)
 		setIsOpenChatWindow(true)
 	}
 	const handleCloseChatWindow=() => {
@@ -61,15 +61,15 @@ const Rightbar = ({ user }) => {
 				{inviteFriend.length>=2 && (
 					inviteFriend.slice(0, 2).map((friend, index) => (
 						<div className='flex gap-2 px-3 py-2'>
-							<div className='w-14 h-14 flex-shrink-0'>
+							<Link to={`/profileUser/${friend?._id}`} className='w-14 h-14 flex-shrink-0'>
 								<img
 									src={friend?.profile_pic}
 									className='object-cover rounded-full w-full h-full'
 								/>
-							</div>
+							</Link>
 							<div className='flex-grow'>
 								<div className='flex justify-between'>
-									<p className='text-sm font-semibold'>{friend?.name}</p>
+									<Link to={`/profileUser/${friend?._id}`} className='text-sm font-semibold'>{friend?.name}</Link>
 									<p className='text-sm'>{friend?.inviteTime}</p>
 								</div>
 								<div>
@@ -86,15 +86,15 @@ const Rightbar = ({ user }) => {
 				{inviteFriend.length>0 && inviteFriend.length<2 && (
 					inviteFriend.map((friend, index) => (
 						<div className='flex gap-2 px-3 py-2'>
-							<div className='w-14 h-14 flex-shrink-0'>
+							<Link to={`/profileUser/${friend?._id}`} className='w-14 h-14 flex-shrink-0'>
 								<img
 									src={friend?.profile_pic}
 									className='object-cover rounded-full w-full h-full'
 								/>
-							</div>
+							</Link>
 							<div className='flex-grow'>
 								<div className='flex justify-between'>
-									<p className='text-sm font-semibold'>{friend?.name}</p>
+									<Link to={`/profileUser/${friend?._id}`} className='text-sm font-semibold'>{friend?.name}</Link>
 									<p className='text-sm'>{friend?.inviteTime}</p>
 								</div>
 								<div>
@@ -132,7 +132,7 @@ const Rightbar = ({ user }) => {
 			)}
 			{friendsChat.length>0 && (
 				friendsChat.map((friend, index) => (
-					<div className='flex gap-3 px-3 py-2 cursor-pointer hover:bg-slate-200 rounded-md' onClick={() => handleOpenChatWindow(friend?._id)}>
+					<div className='flex gap-3 px-3 py-2 cursor-pointer hover:bg-slate-200 rounded-md' onClick={() => handleOpenChatWindow(friend?.userDetails)}>
 						<div className='relative w-11 h-11 flex-shrink-0'>
 							<img
 								src={friend?.userDetails?.profile_pic}
@@ -149,7 +149,7 @@ const Rightbar = ({ user }) => {
 			)}
 			{
 				isOpenChatWindow && (
-					<ChatWindow handleCloseChatWindow={handleCloseChatWindow} IdFriendChat={IdFriendChat}/>
+					<ChatWindow handleCloseChatWindow={handleCloseChatWindow} friendChat={friendChat}/>
 				)
 			}
 		</div>
