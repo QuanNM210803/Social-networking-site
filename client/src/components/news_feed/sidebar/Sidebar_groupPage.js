@@ -172,7 +172,7 @@ const Sidebar_groupPage = ({ handleClickGroup }) => {
 				</div>
 			)}
 			{onOpenCreateGroup && (
-				<div className='fixed top-0 bottom-0 left-0 right-0 z-50 bg-gray-700 bg-opacity-70
+				<div className='fixed top-14 bottom-0 left-0 right-0 z-50 bg-gray-700 bg-opacity-70
                   flex justify-center items-center'>
 					<div className='bg-slate-300 w-[500px] h-auto rounded-md py-2'>
 						<div className='w-full h-auto flex justify-center items-center py-2'> 
@@ -204,9 +204,9 @@ const Sidebar_groupPage = ({ handleClickGroup }) => {
 						</div>
 					</div>
 					<div className='absolute top-0 right-0 mt-2 mr-3 text-3xl hover:bg-slate-50 
-                     w-12 h-12 bg-slate-300 flex items-center justify-center rounded-full cursor-pointer' onClick={handleOpenCreateGroup}>
+                     w-11 h-11 bg-slate-300 flex items-center justify-center rounded-full cursor-pointer' onClick={handleOpenCreateGroup}>
 						<button>
-							<IoMdClose/>
+							<IoMdClose size={30}/>
 						</button>
 					</div>
 				</div>

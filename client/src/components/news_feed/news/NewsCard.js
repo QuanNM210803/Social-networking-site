@@ -13,7 +13,7 @@ import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import DetailsLike from './DetailsLike'
 
-const NewsCard = ({ news, handleLikePost }) => {
+const NewsCard = ({ news, handleLikePost, handleCommentPost }) => {
 	const user=useSelector(state => state?.user)
 	const [post, setPost]=useState()
 	const listMedia=news?.content?.video.concat(news?.content?.image)
@@ -227,7 +227,7 @@ const NewsCard = ({ news, handleLikePost }) => {
 			}
 			{
 				isOpenComment && (
-					<Comment handleOpenComment={handleOpenComment} news={news}/>
+					<Comment handleOpenComment={handleOpenComment} news={news} handleCommentPost={handleCommentPost}/>
 				)
 			}
 			{

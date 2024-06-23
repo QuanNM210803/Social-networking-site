@@ -99,6 +99,17 @@ const HomePage = () => {
 			console.error(error)
 		}
 	}
+	const handleCommentPost=async (postId) => {
+		try {
+			setNews(prevNews => (
+				prevNews.map(post =>
+					post._id===postId ? { ...post, comment:post?.comment+1 } : post
+				)
+			))
+		} catch (error) {
+			console.error(error)
+		}
+	}
 	return (
 		<div>
 			<div className='sticky top-0 bg-slate-500' style={{ zIndex:1000 }}>
@@ -109,7 +120,7 @@ const HomePage = () => {
 					<Sidebar user={user}/>
 				</div>
 				<div className='h-[calc(100vh-56px)] w-[63%] overflow-auto scrollbar-newsfeed' onScroll={handldScroll}>
-					<Content news={news} loading={loading} handleLikePost={handleLikePost}/>
+					<Content news={news} loading={loading} handleLikePost={handleLikePost} handleCommentPost={handleCommentPost}/>
 				</div>
 				<div className='h-[calc(100vh-56px)] w-[22%] overflow-auto scrollbar-newsfeed'>
 					<Rightbar user={user} socketConnection={socketConnection}/>

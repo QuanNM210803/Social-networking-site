@@ -1,68 +1,74 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable no-mixed-spaces-and-tabs */
 /* eslint-disable react/jsx-key */
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useRef, useState } from 'react'
 import { AiFillLike, AiOutlineLike } from 'react-icons/ai'
-import { FaRegComment, FaVideo } from 'react-icons/fa'
+import { FaRegComment } from 'react-icons/fa'
 import { IoMdSend } from 'react-icons/io'
 import { IoCloseOutline } from 'react-icons/io5'
 import { FaImage } from 'react-icons/fa'
+import { createComment, getCommentsByPostId } from '../../../apis/CommentApi'
+import { Link } from 'react-router-dom'
+import Loading from '../../Loading'
 
-const Comment = ({ handleOpenComment, news }) => {
+const Comment = ({ handleOpenComment, news, handleCommentPost }) => {
 	const [post, setPost]=useState()
 	const listMedia=news?.content?.video.concat(news?.content?.image)
 	const numImage = news?.content?.image?.length
 	const numVideo = news?.content?.video?.length
 	const numMedia = numImage + numVideo
-	const [comments, setComments]=useState([
-		{
-			content: {
-				text: 'Day la comment 1 Day la comment 1 Day la comment 1 Day la comment 1 Day la comment 1 Day la comment 1',
-				image: ['https://www.w3schools.com/howto/img_avatar.png'],
-				video: []
-			},
-			poster: {
-				name: 'Nguyễn Minh Quân',
-				avatar: 'https://www.w3schools.com/howto/img_avatar.png'
-			},
-			createdAt: '54 phút'
-		},
-		{
-			content: {
-				text: 'Day la comment 2',
-				image: [],
-				video: ['https://www.w3schools.com/html/mov_bbb.mp4']
-			},
-			poster: {
-				name: 'Nguyễn Minh Quân',
-				avatar: 'https://www.w3schools.com/howto/img_avatar.png'
-			},
-			createdAt: '54 phút'
-		},
-		{
-			content: {
-				text: 'Day la comment 3',
-				image: [],
-				video: []
-			},
-			poster: {
-				name: 'Nguyễn Minh Quân',
-				avatar: 'https://www.w3schools.com/howto/img_avatar.png'
-			},
-			createdAt: '54 phút'
-		}
-	])
-	const [commenter, setCommenter]=useState({
-		name:'Nguyễn Minh Quân',
-		avatar:'https://www.w3schools.com/howto/img_avatar.png'
-	})
+	const [comments, setComments]=useState([])
+	useEffect(() => {
+		getCommentsByPostId(news?._id).then((data) => {
+			setComments(data?.data)
+		})
+	}, [comments])
 
 	const textareaRef = useRef(null)
-	const handleInput = () => {
-		const textarea = textareaRef.current
-		textarea.style.height = 'auto'
-		textarea.style.height = `${textarea.scrollHeight}px`
+	const [contentText, setContentText] = useState('')
+	const [contentImage, setContentImage] = useState(null)
+	const [contentVideo, setContentVideo] = useState(null)
+	const [loading, setLoading] = useState(false)
+
+	const handleImageClick=() => {
+		document.getElementById('fileInput').click()
 	}
 
+	const handleFileChange=async(event) => {
+		const file=event?.target?.files[0]
+		file.type.startsWith('image') ? setContentImage(file) : setContentVideo(file)
+	}
+
+	const handleRemoveFile=() => {
+		setContentImage(null)
+		setContentVideo(null)
+   
+	}
+
+	const handleChange = (event) => {
+		setContentText(event.target.value)
+		autoResize()
+	}
+
+	const autoResize = () => {
+		if (textareaRef.current) {
+			textareaRef.current.style.height = 'auto'
+			textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`
+		}
+	}
+
+	const handleSendComment=async() => {
+		setLoading(true)
+		await createComment(news?._id, contentText, contentImage, contentVideo).then((data) => {
+			setComments([data?.data, ...comments])
+			setContentText('')
+			setContentImage(null)
+			setContentVideo(null)
+			handleCommentPost(news?._id)
+		})
+		setLoading(false)
+	}
 	useEffect(() => {
 		setPost(news)
 	}, [news])
@@ -75,7 +81,7 @@ const Comment = ({ handleOpenComment, news }) => {
 				<IoCloseOutline size={40}/>
 			</div>
 			<div className='relative w-[50%] h-[600px] bg-slate-200 rounded-md'>
-				<div className='w-full h-[580px] bg-slate-200 px-4 py-2 rounded-t-md space-y-2 overflow-auto'>
+				<div className='w-full h-[550px] bg-slate-200 px-4 py-2 rounded-t-md space-y-2 overflow-auto'>
 					<div className='flex items-center gap-4'>
 						<div className='w-[40px] h-[40px]'>
 							<img
@@ -193,10 +199,10 @@ const Comment = ({ handleOpenComment, news }) => {
 					<div className='flex justify-between px-2'>
 						<div className='flex items-center gap-1'>
 							<AiFillLike className='text-blue-600'/>
-							<p>{post?.like}</p>
+							<p>{post?.like?.length}</p>
 						</div>
 						<div className='flex items-center gap-1'>
-							<p>{post?.like} Comment</p>
+							<p>{comments && comments?.length} Comment</p>
 						</div>
 					</div>
 					<div>
@@ -219,33 +225,31 @@ const Comment = ({ handleOpenComment, news }) => {
 					<div className='space-y-3'>
 						<p>Tất cả bình luận</p>
 						{
-							comments.length>0 && comments.map((comment, index) => (
+							comments && comments.map((comment, index) => (
 								<div className='space-y-1'>
 									<div key={index} className='flex gap-3'>
-										<div className=''>
+										<Link to={`/profileUser/${comment?.commenter?._id}`} className=''>
 											<img
-												src={comment?.poster?.avatar}
-												width={40}
-												height={40}
-												className='rounded-full'
+												src={comment?.commenter?.profile_pic}
+												className='rounded-full object-cover cursor-pointer w-[40px] h-[40px]'
 											/>
-										</div>
+										</Link>
 										<div className='space-y-1 w-auto max-w-md'>
 											<div className='bg-slate-300 py-1 px-2 rounded-md'>
-												<p className='font-semibold'>{comment?.poster?.name}</p>
+												<p className='font-semibold'>{comment?.commenter?.name}</p>
 												<p className='text-mini-1 text-justify leading-4 py-1'>{comment?.content?.text}</p>
 											</div>
 											<div>
-												{comment?.content?.image.length>0 && (
+												{comment?.content?.image && (
 													<img
-														src={comment?.content?.image[0]}
+														src={comment?.content?.image}
 														className='w-[250px] h-auto object-cover rounded-md'
 													/>
 												)}
 												{
-													comment?.content?.video.length>0 && (
+													comment?.content?.video && (
 														<video
-															src={comment?.content?.video[0]}
+															src={comment?.content?.video}
 															controls
 															className='w-[250px] h-auto object-cover rounded-md'
 														/>
@@ -258,31 +262,51 @@ const Comment = ({ handleOpenComment, news }) => {
 											</div>
 										</div>
 									</div>
-									
 								</div>
 							))
 						}
 					</div>
 				</div>
-				<div className='bg-slate-300 absolute px-1 py-2 w-full h-auto bottom-0 flex items-end gap-1 rounded-b-md'>
-					<div className=''>
-						<button className='px-1 py-[6px] rounded hover:bg-blue-300'>
-							<FaImage size={20}/>
-						</button>
-						<button className='px-1 py-[6px] rounded hover:bg-blue-300'>
-							<FaVideo size={20}/>
+				{!loading ? (<div className='bg-slate-300 absolute px-1 py-2 w-full h-auto bottom-0 rounded-b-md space-y-1'>
+					{(contentImage || contentVideo) && 
+                  <div className='flex items-center gap-2 px-2'>
+                  	<p>{contentImage?.name || contentVideo?.name}</p>
+                  	<IoCloseOutline size={20} className='hover:bg-slate-200 cursor-pointer rounded-full'
+                  		onClick={() => handleRemoveFile()}/>
+                  </div>}
+					<div className='flex gap-2 items-end'>
+						<div className='flex items-center'>
+							<button className='px-1 py-1 rounded' onClick={handleImageClick}>
+								<FaImage size={25} className='text-green-700'/>
+							</button>
+							<input
+								type='file'
+								id='fileInput'
+								className='hidden'
+								multiple
+								accept='image/*,video/*'
+								onChange={handleFileChange}
+							/>
+						</div>
+						<textarea type='text'
+							ref={textareaRef}
+							className='flex-grow w-56 h-[34px] max-h-[150px] rounded-lg py-1 px-2 resize-none'
+							placeholder='Aa'
+							onChange={handleChange}
+							value={contentText}
+							rows={1}
+						/>
+						<button className='px-1 py-1 rounded-lg' onClick={() => handleSendComment()}>
+							<IoMdSend size={25} className='hover:text-blue-600'/>
 						</button>
 					</div>
-					<textarea type='text'
-						ref={textareaRef}
-						className='flex-grow w-56 h-[34px] max-h-[200px] rounded-lg py-1 px-2 resize-none overflow-hidden'
-						placeholder='Aa'
-						onInput={handleInput}
-					/>
-					<button className='px-1 py-1 rounded-lg hover:bg-blue-300'>
-						<IoMdSend size={25}/>
-					</button>
-				</div>
+				</div>):(
+					<div className='bg-slate-300 absolute px-1 py-2 w-full h-auto bottom-0 rounded-b-md space-y-1'>
+						<div className='flex justify-center items-center'>
+							<Loading/>
+						</div>
+					</div>
+				)}
 			</div>
 		</div>
 	)

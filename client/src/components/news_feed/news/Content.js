@@ -11,7 +11,7 @@ import CreatePost from '../DetailsObject/post/CreatePost'
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 
-const Content = ({ news, loading, handleLikePost }) => {
+const Content = ({ news, loading, handleLikePost, handleCommentPost }) => {
 	const [showCreatePost, setShowCreatePost] = useState(false)
 	const user=useSelector(state => state?.user)
 	const handleCreatePost=() => {
@@ -58,7 +58,7 @@ const Content = ({ news, loading, handleLikePost }) => {
 				<div className='w-full h-auto space-y-3'>
 					{news.length>0 ? (
 						news.map((item, index) => (
-							<NewsCard news={item} handleLikePost={handleLikePost}/>
+							<NewsCard news={item} handleLikePost={handleLikePost} handleCommentPost={handleCommentPost}/>
 						))
 					):(
 						<div className='w-full h-20 bg-slate-200 rounded-md flex justify-center items-center'>

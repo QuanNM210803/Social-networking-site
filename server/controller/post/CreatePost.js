@@ -54,7 +54,6 @@ const fs = require('fs');
 const path = require('path');
 const Post = require('../../models/PostModel');
 const protectRouter = require('../../routes/ProtectRouter');
-const uploadFile = require('../../helpers/UploadFile');
 
 // Cấu hình Multer để lưu trữ các file tạm thời
 const uploadDir = path.join(__dirname, 'uploads');

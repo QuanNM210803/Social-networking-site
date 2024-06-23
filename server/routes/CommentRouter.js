@@ -7,7 +7,8 @@ const protectRouter = require('./ProtectRouter')
 
 const commentRouter=express.Router()
 
-commentRouter.post('/create-comment',protectRouter,createComment)
+// commentRouter.post('/create-comment',protectRouter,createComment)
+
 commentRouter.get('/getCommentsByPostId/:postId',protectRouter,getCommentsByPostId)
 commentRouter.put('/like-comment',protectRouter,likeComment)
 commentRouter.get('/getLike',protectRouter,getLikeByCommentId)
