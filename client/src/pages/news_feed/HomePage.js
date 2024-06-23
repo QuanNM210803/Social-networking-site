@@ -1,3 +1,5 @@
+/* eslint-disable no-unsafe-optional-chaining */
+/* eslint-disable no-console */
 /* eslint-disable no-undef */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
@@ -11,6 +13,7 @@ import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { logout, setUser } from '../../redux/userSlice.js'
 import { initializeSocketConnection } from '../../socket/SocketUtils.js'
+import { getPostsPagination, likePost } from '../../apis/PostApi.js'
 
 const HomePage = () => {
 	const user=useSelector(state => state?.user)
@@ -34,6 +37,68 @@ const HomePage = () => {
 			socketConnection.disconnect()
 		}
 	}, [dispatch])
+
+	const limit=5
+	const [loading, setLoading] = useState(false)
+	const [currentPage, setCurrentPage] = useState(1)
+	const [totalPages, setTotalPages] = useState(1)
+	const [maxPulled, setMaxPulled] = useState(0)
+	const [news, setNews]=useState([])
+
+	useEffect(() => {
+		let mounted = true // Biến để đánh dấu component đã mount
+		const fetchData = async () => {
+			setLoading(true)
+			try {
+				const data = await getPostsPagination(currentPage, limit)
+				if (mounted) {
+					setNews(prevNews => [...prevNews, ...data?.data])
+					setTotalPages(data.totalPages)
+				}
+			} catch (error) {
+				console.error('Error fetching data:', error)
+			}
+			setLoading(false)
+		}
+		if (mounted) {
+			fetchData()
+		}
+		return () => {
+			mounted = false
+		}
+	}, [currentPage])
+	
+	const handldScroll=(event) => {
+		const scrollTop=event.target.scrollTop
+		const clientHeight=event.target.clientHeight
+		const scrollHeight=event.target.scrollHeight
+		setMaxPulled(Math.max(scrollTop, maxPulled))
+		if (!loading && (maxPulled + clientHeight >= scrollHeight - 1000)) {
+			if (currentPage < totalPages) {
+				setCurrentPage(prevPages => prevPages + 1)
+			}
+		}
+	}
+	const handleLikePost=async (postId) => {
+		try {
+			const response=await likePost(postId)
+			if (response?.liked) {
+				setNews(prevNews => (
+					prevNews.map(post => 
+						post._id===postId ? { ...post, like:[...post?.like, user?._id] } : post
+					)
+				))
+			} else {
+				setNews(prevNews => (
+					prevNews.map(post => 
+						post._id===postId ? { ...post, like: post?.like.filter(userId => userId!==user?._id) } : post
+					)
+				))
+			}
+		} catch (error) {
+			console.error(error)
+		}
+	}
 	return (
 		<div>
 			<div className='sticky top-0 bg-slate-500' style={{ zIndex:1000 }}>
@@ -43,8 +108,8 @@ const HomePage = () => {
 				<div className='h-[calc(100vh-56px)] w-[27%] overflow-auto scrollbar-newsfeed'>
 					<Sidebar user={user}/>
 				</div>
-				<div className='h-[calc(100vh-56px)] w-[63%] overflow-auto scrollbar-newsfeed'>
-					<Content/>
+				<div className='h-[calc(100vh-56px)] w-[63%] overflow-auto scrollbar-newsfeed' onScroll={handldScroll}>
+					<Content news={news} loading={loading} handleLikePost={handleLikePost}/>
 				</div>
 				<div className='h-[calc(100vh-56px)] w-[22%] overflow-auto scrollbar-newsfeed'>
 					<Rightbar user={user} socketConnection={socketConnection}/>

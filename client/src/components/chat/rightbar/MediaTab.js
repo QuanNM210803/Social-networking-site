@@ -48,13 +48,13 @@ function MediaTab({ media }) {
 			}
 			{
 				showDatailMedia && (
-					<div className='fixed top-0 bottom-0 left-0 right-0 bg-gray-700 bg-opacity-60
+					<div className='fixed top-14 bottom-0 left-0 right-0 bg-gray-700 bg-opacity-70
                   flex justify-center items-center'>
 						{
 							url.endsWith('.mp4') ? (
 								<video
 									src={url}
-									className='w-auto h-full cursor-pointer'
+									className='w-auto h-full cursor-pointer rounded'
 									controls
 									autoPlay
 								/>
@@ -64,7 +64,7 @@ function MediaTab({ media }) {
 										<img
 											src={url}
 											alt='Media'
-											className='w-auto h-[600px]'
+											className='w-auto h-[600px] rounded'
 										/>
 									</TransformComponent>
 								</TransformWrapper>

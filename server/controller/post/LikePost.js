@@ -32,6 +32,7 @@ async function likePost(request, response){
          )
          return response.status(200).json({
             message:'Post liked successfully',
+            liked:true,
             success:true
          })
       }else{
@@ -47,6 +48,7 @@ async function likePost(request, response){
          )
          return response.status(200).json({
             message:'Post unliked successfully',
+            liked:false,
             success:true
          })
       }

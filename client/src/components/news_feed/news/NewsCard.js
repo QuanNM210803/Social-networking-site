@@ -9,8 +9,12 @@ import { AiOutlineLike } from 'react-icons/ai'
 import DetailsMedia from '../../DetailsMedia'
 import Comment from './Comment'
 import { FaRegPlayCircle } from 'react-icons/fa'
+import { Link } from 'react-router-dom'
+import { useSelector } from 'react-redux'
+import DetailsLike from './DetailsLike'
 
-const NewsCard = ({ news }) => {
+const NewsCard = ({ news, handleLikePost }) => {
+	const user=useSelector(state => state?.user)
 	const [post, setPost]=useState()
 	const listMedia=news?.content?.video.concat(news?.content?.image)
 	const numImage = news?.content?.image?.length
@@ -20,6 +24,8 @@ const NewsCard = ({ news }) => {
 	const [currentMedia, setCurrentMedia]=useState(0)
 	const [isOpenDetailMedia, setIsOpenDetailMedia]=useState(false)
 	const [isOpenComment, setIsOpenComment]=useState(false)
+	const [isOpenDetailsLike, setIsOpenDetailsLike]=useState(false)
+
 	useEffect(() => {
 		setPost(news)
 	}, [news])
@@ -32,6 +38,9 @@ const NewsCard = ({ news }) => {
 		setIsOpenDetailMedia(false)
 	}
 
+	const handleOpenDetailsLike=() => {
+		setIsOpenDetailsLike(!isOpenDetailsLike)
+	}
 	const handleOpenComment=() => {
 		setIsOpenComment(!isOpenComment)
 	}
@@ -39,14 +48,23 @@ const NewsCard = ({ news }) => {
 		<div>
 			<div className='w-full h-auto bg-slate-200 px-4 py-2 rounded-md space-y-2'>
 				<div className='flex items-center gap-4'>
-					<img
-						src={post?.poster?.avatar}
-						width={40}
-						height={40}
-						className='rounded-full'
-					/>
+					<Link to={`/profileUser/${post?.poster?._id}`} className='w-[40px] h-[40px]'>
+						<img
+							src={post?.poster?.profile_pic}
+							className='rounded-full w-full h-full object-cover cursor-pointer'
+						/>
+					</Link>
 					<div className='space-y-0'>
-						<p className='font-semibold'>{post?.poster?.name}</p>
+						<div className='flex gap-2 items-center'>
+							<Link to={`/profileUser/${post?.poster?._id}`} className='font-semibold'>{post?.poster?.name}</Link>
+							{
+								post?.group && (
+									<p className='text-xs text-gray-500'>
+                              đã đăng trong nhóm <strong className='cursor-pointer hover:underline'>{post?.group?.name}</strong>
+									</p>
+								)
+							}
+						</div>
 						<p className='text-mini'>{post?.createdAt}</p>
 					</div>
 				</div>
@@ -175,21 +193,22 @@ const NewsCard = ({ news }) => {
 					</div>
 				</div>
 				<div className='flex justify-between px-2'>
-					<div className='flex items-center gap-1'>
+					<div className='flex items-center gap-1 cursor-pointer' onClick={() => handleOpenDetailsLike()}>
 						<AiFillLike className='text-blue-600'/>
-						<p>{post?.like}</p>
+						<p>{post?.like?.length}</p>
 					</div>
 					<div className='flex items-center gap-1 cursor-pointer hover:underline' onClick={handleOpenComment}>
-						<p>{post?.like} Comment</p>
+						<p>{post?.comment} Comment</p>
 					</div>
 				</div>
 				<div>
 					<hr className='border-gray-300'/>
 				</div>
 				<div className='flex justify-between px-2'>
-					<div className='w-[45%] h-9 flex justify-center items-center gap-2 hover:bg-slate-300 rounded cursor-pointer'>
-						<AiOutlineLike size={25}/>
-						<p className='font-semibold'>Thích</p>
+					<div className='w-[45%] h-9 flex justify-center items-center gap-2 hover:bg-slate-300 rounded cursor-pointer'
+						onClick={() => handleLikePost(post?._id)}>
+						<AiOutlineLike size={25} className={`${Array.isArray(post?.like) && post?.like.includes(user?._id) && 'text-blue-600'}`}/>
+						<p className={`${Array.isArray(post?.like) && post?.like.includes(user?._id) && 'text-blue-600'}`}>Thích</p>
 					</div>
 					<div className='w-[45%] h-9 flex justify-center items-center gap-2 hover:bg-slate-300 rounded cursor-pointer'
 						onClick={handleOpenComment}
@@ -209,6 +228,11 @@ const NewsCard = ({ news }) => {
 			{
 				isOpenComment && (
 					<Comment handleOpenComment={handleOpenComment} news={news}/>
+				)
+			}
+			{
+				isOpenDetailsLike && (
+					<DetailsLike handleOpenDetailsLike={handleOpenDetailsLike} likes={post?.like}/>
 				)
 			}
 		</div>

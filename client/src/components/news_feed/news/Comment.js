@@ -68,21 +68,21 @@ const Comment = ({ handleOpenComment, news }) => {
 	}, [news])
 
 	return (
-		<div className='fixed top-0 bottom-0 left-0 right-0 bg-slate-700 bg-opacity-70
+		<div className='fixed top-14 bottom-0 left-0 right-0 bg-gray-700 bg-opacity-70
          z-50 flex justify-center items-center'>
 			<div className='absolute top-0 right-0 mt-2 mr-3 p-1 rounded-full hover:bg-slate-100 hover:text-black cursor-pointer
             bg-slate-300 text-slate-600' onClick={handleOpenComment}>
 				<IoCloseOutline size={40}/>
 			</div>
-			<div className='relative w-[50%] h-[650px] bg-slate-200 rounded-md'>
+			<div className='relative w-[50%] h-[600px] bg-slate-200 rounded-md'>
 				<div className='w-full h-[580px] bg-slate-200 px-4 py-2 rounded-t-md space-y-2 overflow-auto'>
 					<div className='flex items-center gap-4'>
-						<img
-							src={post?.poster?.avatar}
-							width={40}
-							height={40}
-							className='rounded-full'
-						/>
+						<div className='w-[40px] h-[40px]'>
+							<img
+								src={post?.poster?.profile_pic}
+								className='rounded-full w-full h-full object-cover cursor-pointer'
+							/>
+						</div>
 						<div className='space-y-0'>
 							<p className='font-semibold'>{post?.poster?.name}</p>
 							<p className='text-mini'>{post?.createdAt}</p>

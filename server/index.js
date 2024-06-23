@@ -12,7 +12,8 @@ const postRouter=require('./routes/PostRouter')
 const commentRouter=require('./routes/CommentRouter')
 const router=require('./routes/index')
 const cookiesParser=require('cookie-parser')
-const {app, server}=require('./socket/index')
+const {app, server}=require('./socket/index');
+const createAPost = require('./controller/post/CreatePost');
 
 cloudinary.config({
    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -39,7 +40,7 @@ app.get('/',(req,res)=>{
    })
 })
 
-//api endpoint
+//cái này lấy qua hàm tổng hợp router
 app.use('/api',router)
 app.use('/user',userRouter)
 app.use('/conversation',conversationRouter)
@@ -47,6 +48,9 @@ app.use('/message',messageRouter)
 app.use('/group',groupRouter)
 app.use('/post',postRouter)
 app.use('/comment',commentRouter)
+
+// cái này lấy thẳng từ controller
+app.use('/post',createAPost) 
 
 connectDB().then(()=>{
    server.listen(PORT,()=>{
