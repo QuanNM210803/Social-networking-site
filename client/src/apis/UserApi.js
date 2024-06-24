@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-console */
 import axios from 'axios'
 import toast from 'react-hot-toast'
@@ -66,6 +67,16 @@ export async function getFriendRequest() {
 export async function getUserById(userId) {
 	try {
 		const response=await api.get(`/user/getUserById/${userId}`, { withCredentials:true })
+		return response?.data
+	} catch (error) {
+		toast.error(error?.response?.data?.message)
+		console.log(error)
+	}
+}
+
+export async function getListFriend(objectId, search) {
+	try {
+		const response=await api.get('/user/getFriends', { params:{ objectId, search }, withCredentials:true })
 		return response?.data
 	} catch (error) {
 		toast.error(error?.response?.data?.message)

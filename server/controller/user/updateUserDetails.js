@@ -10,8 +10,13 @@ async function updateUserDetails(request,response){
             error:true
          })
       }
-      const {name, profile_pic}=request.body
-      const updateUser= await UserModel.updateOne({_id:user._id},{name, profile_pic})
+      const {name, profile_pic, cover_pic, phone, address, dob}=request.body
+      const updateUser= await UserModel.updateOne(
+         {
+            _id:user._id
+         },
+         {name, profile_pic, cover_pic, phone, address, dob}
+      )
 
       const userInfornation=await UserModel.findById(user._id).select('-password')
       return response.status(200).json({

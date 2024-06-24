@@ -13,7 +13,7 @@ async function getUserById(request,response){
       }
       const manualFriends=self?.friends.filter((friend)=>
          user?.friends.some((f)=>f?.user?.toString()===friend?.user?.toString()))
-      const mutualFriends=manualFriends?.length
+      const mutualFriends=manualFriends.map((friend)=>friend?.user?.toString())
       return response.status(200).json({
          data:{
             _id:user?._id,

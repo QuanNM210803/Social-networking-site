@@ -6,25 +6,19 @@
 import React, { useEffect, useState } from 'react'
 import { IoChatbubbleEllipses } from 'react-icons/io5'
 import { FaUserPlus } from 'react-icons/fa'
-import { NavLink, useNavigate } from 'react-router-dom'
-import { BiLogOut } from 'react-icons/bi'
+import { Link, NavLink } from 'react-router-dom'
 import Avatar from '../../Avatar'
-import { useDispatch, useSelector } from 'react-redux'
-import EditUserDetails from '../../EditUserDetails'
+import { useSelector } from 'react-redux'
 import { FiArrowUpLeft } from 'react-icons/fi'
 import SearchUser from '../../SearchUser'
 import { FaImage } from 'react-icons/fa6'
 import { FaVideo } from 'react-icons/fa6'
-import { logout } from '../../../redux/userSlice'
-import { logoutServer } from '../../../apis/IndexApi'
+
 
 const Sidebar = ({ socketConnection }) => {
 	const user=useSelector(state => state?.user)
-	const [editUserOpen, setEditUserOpen]=useState(false)
 	const [allUser, setAllUser]=useState([])
 	const [openSearchUser, setOpenSearchUser]=useState(false)
-	const dispatch=useDispatch()
-	const navigate=useNavigate()
 
 	useEffect(() => {
 		if (socketConnection) {
@@ -68,8 +62,7 @@ const Sidebar = ({ socketConnection }) => {
 				</div>
 
 				<div className='flex flex-col items-center'>
-					<button className='mx-auto' title={user?.name}
-						onClick={() => setEditUserOpen(true)}>
+					<Link to={`/profileUser/${user?._id}`} className='mx-auto' title={user?.name}>
 						<Avatar
 							width={37}
 							height={37}
@@ -77,7 +70,7 @@ const Sidebar = ({ socketConnection }) => {
 							imageUrl={user?.profile_pic}
 							userId={user?._id}
 						/>
-					</button>
+					</Link>
 				</div>
 			</div>
 			<div className='w-full h-full'>
@@ -150,13 +143,6 @@ const Sidebar = ({ socketConnection }) => {
 					}
 				</div>
 			</div>
-
-			{/**edit user */}
-			{
-				editUserOpen && (
-					<EditUserDetails onClose={() => setEditUserOpen(false)} user={user}/>
-				)
-			}
 			{/**search */}
 			{
 				openSearchUser && (

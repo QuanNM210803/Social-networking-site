@@ -1,3 +1,4 @@
+/* eslint-disable no-mixed-spaces-and-tabs */
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react'
 import Tab from '../../../chat/rightbar/Tab'
@@ -9,16 +10,36 @@ import FriendUser from './FriendUser'
 import { getUserById } from '../../../../apis/UserApi'
 import { useSelector } from 'react-redux'
 import { RiVerifiedBadgeFill } from 'react-icons/ri'
+import EditUserDetails from '../../../EditUserDetails'
+import { Link } from 'react-router-dom'
+import DetailsMutualFriend from '../DetailsMutualFriend'
 
 const ProfileUser = ({ idFriend }) => {
 	const self=useSelector(state => state?.user)
 	const [activeTab, setActiveTab] =useState('Bài viết')
 	const [user, setUser] = useState({})
 	useEffect(() => {
-		getUserById(idFriend).then((data) => {
-			setUser(data?.data)
-		})
-	}, [idFriend])
+		if (idFriend!==self?._id) {
+			getUserById(idFriend).then((data) => {
+				setUser(data?.data)
+			})
+		} else {
+			setUser(self)
+		}
+	}, [idFriend, self])
+	const [showEdit, setShowEdit] = useState(false)
+
+	const handleShowEdit=() => {
+		setShowEdit(!showEdit)
+	}
+
+	const [isOpenDetailsMutualFriend, setIsOpenDetailsMutualFriend]=useState(false)
+	const [mutualFriendWith, setMutualFriendWith]=useState({})
+	const handleOpenDetailsMutualFriend=() => {
+		setMutualFriendWith(user)
+		setIsOpenDetailsMutualFriend(!isOpenDetailsMutualFriend)
+	}
+
 	return (
 		<div className='w-full h-auto'>
 			<div className='relative w-full h-[500px] bg-slate-200'>
@@ -42,12 +63,35 @@ const ProfileUser = ({ idFriend }) => {
 									<p className='font-bold text-3xl'>{user?.name}</p>
 									{self?._id===user?._id && <RiVerifiedBadgeFill className='text-blue-600'/>}
 								</div>
-								{self?._id!==user?._id && <p>{user?.mutualFriends} bạn chung</p>}
+								{
+									self?._id!==user?._id && 
+                           <p className='cursor-pointer hover:underline' onClick={() => handleOpenDetailsMutualFriend()}>
+                           	{user?.mutualFriends?.length} bạn chung
+                           </p>
+								}
 							</div>
 						</div>
 						{self?._id!==user?._id && <div className='mt-16 mr-10 flex items-end gap-2'>
-							<button className='bg-blue-600 text-white hover:bg-blue-800 rounded-md px-3 py-1'>Kết bạn</button>
-							<button className='bg-slate-500 text-white hover:bg-slate-700 rounded-md px-3 py-1'>Nhắn tin</button>
+							{
+								self?.friends.some((friend) => friend?.user===user?._id) &&
+								<button className='bg-slate-400 text-white hover:bg-slate-700 rounded-md px-3 py-1'>Hủy kết bạn</button>
+							}
+							{
+								self?.friend_requests.some((friend) => friend?.user===user?._id) &&
+                        <button className='bg-blue-600 text-white hover:bg-blue-800 rounded-md px-3 py-1'>Chấp nhận lời mời</button>
+							}
+							{
+								!self?.friends.some((friend) => friend?.user===user?._id) &&
+                        !self?.friend_requests.some((friend) => friend?.user===user?._id) &&
+                        <button className='bg-blue-600 text-white hover:bg-blue-800 rounded-md px-3 py-1'>Kết bạn</button>
+							}
+							<Link to={`/chat/${user?._id}`} className='bg-slate-500 text-white hover:bg-slate-700 rounded-md px-3 py-1'>Nhắn tin</Link>
+						</div>}
+						{self?._id===user?._id && <div className='mt-16 mr-10 flex items-end gap-2'>
+							<button className='bg-slate-400 text-white hover:bg-slate-600 rounded-md px-3 py-1'
+								onClick={() => handleShowEdit()}>
+                        Chỉnh sửa thông tin
+							</button>
 						</div>}
 					</div>
 				</div>
@@ -83,6 +127,16 @@ const ProfileUser = ({ idFriend }) => {
 					)}
 				</div>
 			</div>
+			{
+				showEdit && (
+					<EditUserDetails onClose={() => handleShowEdit()}/>
+				)
+			}
+			{
+				isOpenDetailsMutualFriend && (
+					<DetailsMutualFriend setIsOpenDetailsMutualFriend={setIsOpenDetailsMutualFriend} mutualFriendWith={mutualFriendWith}/>
+				)
+			}
 		</div>
 	)
 }

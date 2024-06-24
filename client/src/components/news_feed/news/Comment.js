@@ -205,7 +205,7 @@ const Comment = ({ handleOpenComment, news, handleCommentPost }) => {
 							<p>{comments && comments?.length} Comment</p>
 						</div>
 					</div>
-					<div>
+					{/* <div>
 						<hr className='border-gray-300'/>
 					</div>
 					<div className='flex justify-between px-2'>
@@ -218,7 +218,7 @@ const Comment = ({ handleOpenComment, news, handleCommentPost }) => {
 							<FaRegComment size={23}/>
 							<p className='font-semibold'>Comment</p>
 						</div>
-					</div>
+					</div> */}
 					<div>
 						<hr className='border-gray-300'/>
 					</div>

@@ -15,12 +15,20 @@ import { IoLogOut } from 'react-icons/io5'
 import { useDispatch } from 'react-redux'
 import { logout } from '../../../redux/userSlice'
 import { logoutServer } from '../../../apis/IndexApi'
+import EditUserDetails from '../../EditUserDetails'
+import { FaEdit } from 'react-icons/fa'
 
 const navbar = ({ user, socketConnection }) => {
 	const location = useLocation()
 	const dispatch=useDispatch()
 	const navigate=useNavigate()
 	const [showOptions, setShowOptions] = useState(false)
+	const [showEdit, setShowEdit] = useState(false)
+
+	const handleShowEdit=() => {
+		setShowEdit(!showEdit)
+		setShowOptions(false)
+	}
 	const handleLogout=async() => {
 		if (socketConnection) {
 			socketConnection.disconnect()
@@ -101,7 +109,13 @@ const navbar = ({ user, socketConnection }) => {
 									<p className='text-blue-600 hover:text-blue-800'>Go your profile</p>
 								</Link>
 							</div>
-							<div className='w-full h-auto hover:bg-slate-200 rounded py-2 px-2 mt-2 cursor-pointer' onClick={() => handleLogout()}>
+							<div className='w-full h-auto hover:bg-slate-200 rounded py-2 px-2 mt-2 cursor-pointer' onClick={() => handleShowEdit()}>
+								<div className='flex items-center gap-2'>
+									<FaEdit size={23} className=''/>
+									<p className='text-nomal font-semibold'>Edit profile</p>
+								</div>
+							</div>
+							<div className='w-full h-auto hover:bg-slate-200 rounded py-2 px-2 mt-1 cursor-pointer' onClick={() => handleLogout()}>
 								<div className='flex items-center gap-2'>
 									<IoLogOut size={23} className=''/>
 									<p className='text-nomal font-semibold'>Logout</p>
@@ -111,6 +125,9 @@ const navbar = ({ user, socketConnection }) => {
 					)}
 				</div>
 			</div>
+			{
+				showEdit && (<EditUserDetails onClose={() => handleShowEdit()}/>)
+			}
 		</div>
 	)
 }
