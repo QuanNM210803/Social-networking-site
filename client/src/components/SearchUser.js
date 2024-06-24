@@ -22,7 +22,6 @@ const SearchUser = ({ onClose }) => {
 	return (
 		<div className='fixed top-14 bottom-0 left-0 right-0 bg-slate-700 bg-opacity-40 p-2 z-50'>
 			<div className='w-full max-w-lg mx-auto mt-10'>
-				{/**input search user */}
 				<div className='bg-white rounded h-14 overflow-hidden flex '>
 					<input
 						type='text'
@@ -35,29 +34,31 @@ const SearchUser = ({ onClose }) => {
 						<IoSearchOutline size={20}/>
 					</div>
 				</div>
-				{/**display search user */}
-				<div className='bg-white mt-2 w-full p-4 rounded'>
-					{/** not fount user */}
-					{
-						searchUser.length===0 && !loading && (
+				{
+					searchUser?.length===0 && search!=='' && !loading && (
+						<div className='bg-white mt-2 w-full p-4 rounded'>
 							<p className='text-center text-slate-500'> Not user found!</p>
-						)
-					}
-					{
-						loading && (
+						</div>
+					)
+				}
+				{
+					loading && (
+						<div className='bg-white mt-2 w-full p-4 rounded'>
 							<p><Loading/></p>
-						)
-					}
-					{
-						searchUser.length!==0 && !loading &&(
-							searchUser.map((user, index) => {
+						</div>
+					)
+				}
+				{
+					searchUser.length!==0 && !loading &&(
+						<div className='bg-white mt-2 w-full p-4 rounded'>
+							{searchUser.map((user, index) => {
 								return (
 									<UserSearchCard key={user._id} user={user} onClose={onClose}/>
 								)
-							})
-						)
-					}
-				</div>
+							})}
+						</div>
+					)
+				}
 			</div>
 			<div className='absolute top-0 right-0 text-2xl mt-2 mr-2 lg:text-3xl cursor-pointer
             hover:text-slate-300 hover:bg-slate-900 bg-slate-300 rounded-full w-12 h-12 flex justify-center items-center'>

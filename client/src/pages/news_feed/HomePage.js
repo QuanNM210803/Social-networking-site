@@ -68,7 +68,7 @@ const HomePage = () => {
 		}
 	}, [currentPage])
 	
-	const handldScroll=(event) => {
+	const handleScroll=(event) => {
 		const scrollTop=event.target.scrollTop
 		const clientHeight=event.target.clientHeight
 		const scrollHeight=event.target.scrollHeight
@@ -119,7 +119,7 @@ const HomePage = () => {
 				<div className='h-[calc(100vh-56px)] w-[27%] overflow-auto scrollbar-newsfeed'>
 					<Sidebar user={user}/>
 				</div>
-				<div className='h-[calc(100vh-56px)] w-[63%] overflow-auto scrollbar-newsfeed' onScroll={handldScroll}>
+				<div className='h-[calc(100vh-56px)] w-[63%] overflow-auto scrollbar-newsfeed' onScroll={handleScroll}>
 					<Content news={news} loading={loading} handleLikePost={handleLikePost} handleCommentPost={handleCommentPost}/>
 				</div>
 				<div className='h-[calc(100vh-56px)] w-[22%] overflow-auto scrollbar-newsfeed'>

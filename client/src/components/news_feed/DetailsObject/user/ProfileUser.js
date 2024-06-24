@@ -2,7 +2,7 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react'
 import Tab from '../../../chat/rightbar/Tab'
-import Posts from '../Posts'
+import Posts from './Posts'
 import Images from '../Images'
 import Videos from '../Videos'
 import IntroductionUser from './IntroductionUser'
@@ -14,7 +14,7 @@ import EditUserDetails from '../../../EditUserDetails'
 import { Link } from 'react-router-dom'
 import DetailsMutualFriend from '../DetailsMutualFriend'
 
-const ProfileUser = ({ idFriend }) => {
+const ProfileUser = ({ idFriend, news, loading, handleLikePost, handleCommentPost }) => {
 	const self=useSelector(state => state?.user)
 	const [activeTab, setActiveTab] =useState('Bài viết')
 	const [user, setUser] = useState({})
@@ -83,7 +83,12 @@ const ProfileUser = ({ idFriend }) => {
 							{
 								!self?.friends.some((friend) => friend?.user===user?._id) &&
                         !self?.friend_requests.some((friend) => friend?.user===user?._id) &&
+                        !user?.friend_requests?.some((friend) => friend?.user===self?._id) && 
                         <button className='bg-blue-600 text-white hover:bg-blue-800 rounded-md px-3 py-1'>Kết bạn</button>
+							}
+							{
+								user?.friend_requests?.some((friend) => friend?.user===self?._id) && 
+                        <button className='bg-slate-400 text-white hover:bg-slate-700 rounded-md px-3 py-1'>Hủy yêu cầu kết bạn</button>
 							}
 							<Link to={`/chat/${user?._id}`} className='bg-slate-500 text-white hover:bg-slate-700 rounded-md px-3 py-1'>Nhắn tin</Link>
 						</div>}
@@ -111,7 +116,7 @@ const ProfileUser = ({ idFriend }) => {
 			<div className='flex justify-center'>
 				<div className={'w-[80%] h-auto py-5'}>
 					{activeTab==='Bài viết' && (
-						<Posts objectId={user?._id}/>
+						<Posts objectId={user?._id} news={news} loading={loading} handleLikePost={handleLikePost} handleCommentPost={handleCommentPost}/>
 					)}
 					{activeTab==='Giới thiệu' && (
 						<IntroductionUser objectId={user?._id}/>
@@ -120,10 +125,10 @@ const ProfileUser = ({ idFriend }) => {
 						<FriendUser objectId={user?._id}/>
 					)}
 					{activeTab==='Ảnh' && (
-						<Images objectId={user?._id}/>
+						<Images objectId={user?._id} typeObject={'user'}/>
 					)}
 					{activeTab==='Video' && (
-						<Videos objectId={user?._id}/>
+						<Videos objectId={user?._id} typeObject={'user'}/>
 					)}
 				</div>
 			</div>

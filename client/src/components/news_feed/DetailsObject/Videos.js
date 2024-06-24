@@ -1,7 +1,9 @@
+/* eslint-disable no-empty */
 /* eslint-disable no-unused-vars */
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { FaRegPlayCircle } from 'react-icons/fa'
 import DetailsMedia from '../../DetailsMedia'
+import { getVideosByUserId } from '../../../apis/UserApi'
 
 const Videos = ({ objectId, typeObject }) => {
 	const name='Nguyễn Minh Quân'
@@ -15,21 +17,16 @@ const Videos = ({ objectId, typeObject }) => {
 	const handleCloseDetailMedia = () => {
 		setIsOpenDetailMedia(false)
 	}
-	const [videos, setVideos]=useState([
-		'https://www.w3schools.com/html/mov_bbb.mp4',
-		'https://www.w3schools.com/html/mov_bbb.mp4',
-		'https://www.w3schools.com/html/mov_bbb.mp4',
-		'https://www.w3schools.com/html/mov_bbb.mp4',
-		'https://www.w3schools.com/html/movie.mp4',
-		'https://www.w3schools.com/html/movie.mp4',
-		'https://www.w3schools.com/html/movie.mp4',
-		'https://www.w3schools.com/html/mov_bbb.mp4',
-		'https://www.w3schools.com/html/movie.mp4',
-		'https://www.w3schools.com/html/mov_bbb.mp4',
-		'https://www.w3schools.com/html/movie.mp4',
-		'https://www.w3schools.com/html/mov_bbb.mp4',
-		'https://www.w3schools.com/html/movie.mp4'
-	])
+	const [videos, setVideos]=useState([])
+	useEffect(() => {
+		if (typeObject==='user') {
+			getVideosByUserId(objectId).then((data) => {
+				setVideos(data?.data)
+			})
+		} else if (typeObject==='group') {
+			
+		}
+	}, [objectId, typeObject])
 	return (
 		<div>
 			<div className='bg-slate-200 rounded-md h-auto'>
@@ -49,7 +46,7 @@ const Videos = ({ objectId, typeObject }) => {
 							{
 								videos?.map((video, index) => (
 									<div key={index} className='cursor-pointer relative opacity-80' onClick={() => handleOpenDetailMedia(index)}>
-										<video src={video} alt='video' className='w-auto h-[200px] object-cover rounded-md'/>
+										<video src={video} alt='video' className='w-full h-[200px] object-cover rounded-md'/>
 										<div className='absolute top-0 left-0 right-0 bottom-0 flex items-center justify-center'>
 											<FaRegPlayCircle size={50}/>
 										</div>

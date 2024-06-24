@@ -1,6 +1,8 @@
+/* eslint-disable no-mixed-spaces-and-tabs */
+/* eslint-disable react/jsx-key */
 /* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable no-unused-vars */
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import logo from '../../../assets/xing.svg'
 import { IoHome } from 'react-icons/io5'
 import { IoPeopleSharp } from 'react-icons/io5'
@@ -17,6 +19,8 @@ import { logout } from '../../../redux/userSlice'
 import { logoutServer } from '../../../apis/IndexApi'
 import EditUserDetails from '../../EditUserDetails'
 import { FaEdit } from 'react-icons/fa'
+import { searchUserGroup } from '../../../apis/UserApi'
+import Tab from '../../chat/rightbar/Tab'
 
 const navbar = ({ user, socketConnection }) => {
 	const location = useLocation()
@@ -38,6 +42,17 @@ const navbar = ({ user, socketConnection }) => {
 		localStorage.clear()
 		navigate('/email')
 	}
+	const [search, setSearch]=useState('')
+	const [resultSearchUser, setResultSearchUser]=useState([])
+	const [resultSearchGroup, setResultSearchGroup]=useState([])
+	useEffect(() => {
+		searchUserGroup(search==='' ? null: search).then((data) => {
+			setResultSearchUser(data?.dataUser)
+			setResultSearchGroup(data?.dataGroup)
+		})
+	}, [search])
+
+	const [activeTab, setActiveTab] =useState('Nguời dùng')
 	return (
 		<div className='w-full h-14 flex items-center justify-between'>
 			<div className='h-auto w-auto flex items-center gap-3 px-5'>
@@ -48,12 +63,77 @@ const navbar = ({ user, socketConnection }) => {
 						className='rounded-full w-10 h-10'
 					/>
 				</Link>
-				<div className=''>
+				<div className='relative'>
 					<input
 						type='text'
+						name='search'
+						value={search}
+						onChange={(e) => setSearch(e?.target?.value)}
 						placeholder='Search'
 						className='bg-slate-400 rounded-lg py-1 px-2 placeholder:text-slate-300'
 					/>
+					{
+						search!=='' && (
+							<div className='absolute left-0 mt-2 p-2 w-72 bg-white rounded-lg shadow-xl'>
+								<div className='flex justify-center'>
+									<div className={'w-full flex items-center gap-1'}>
+										<Tab label="Nguời dùng" isActive={activeTab === 'Nguời dùng'} onClick={() => setActiveTab('Nguời dùng')}/>
+										<Tab label="Nhóm" isActive={activeTab === 'Nhóm'} onClick={() => setActiveTab('Nhóm')}/>
+									</div>
+								</div>
+								{
+									activeTab==='Nguời dùng' && (
+										<div className='bg-slate-200 rounded-md'>
+											{resultSearchUser?.length===0 &&(
+												<p className='text-center text-slate-500 py-2'>Not user found!</p>
+											)}
+											{resultSearchUser?.length>0 && (
+												<div className='h-auto max-h-[200px] scroll-container'>
+													{resultSearchUser.map((user, index) => {
+														return (
+															<Link to={`/profileUser/${user?._id}`} className='flex items-center gap-2 p-2 hover:bg-slate-300 rounded cursor-pointer'>
+																<img
+																	src={user?.profile_pic}
+																	alt='logo'
+																	className='rounded-full w-10 h-10 object-cover'
+																/>
+																<p>{user?.name}</p>
+															</Link>
+														)
+													})}
+												</div>
+											)}
+										</div>
+									)
+								}
+								{
+									activeTab==='Nhóm' && (
+										<div className='bg-slate-200 rounded-md'>
+											{resultSearchGroup?.length===0 &&(
+												<p className='text-center text-slate-500 py-2'>Not group found!</p>
+											)}
+											{resultSearchGroup?.length>0 && (
+												<div className='h-auto max-h-[200px] scroll-container'>
+													{resultSearchGroup.map((group, index) => {
+														return (
+															<Link to={`/profileGroup/${group?._id}`} className='flex items-center gap-2 p-2 hover:bg-slate-300 rounded cursor-pointer'>
+																<img
+																	src={group?.profile_pic}
+																	alt='logo'
+																	className='rounded-full w-10 h-10 object-cover'
+																/>
+																<p>{group?.name}</p>
+															</Link>
+														)
+													})}
+												</div>
+											)}
+										</div>
+									)
+								}
+							</div>
+						)
+					}
 				</div>
 			</div>
 			<div className='h-auto w-auto flex items-center gap-5'>

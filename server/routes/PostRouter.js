@@ -9,7 +9,7 @@ const getPostsPagination = require('../controller/post/GetPostsPagination')
 const postRouter=express.Router()
 
 // postRouter.post('/create',protectRouter,createPost)
-postRouter.get('/all/user/:userId',protectRouter,getPostsByUserId)
+postRouter.get('/all/user',protectRouter,getPostsByUserId)
 postRouter.delete('/delete',protectRouter,deletePost)
 postRouter.put('/like-post',protectRouter,likePost)
 postRouter.get('/getLike',protectRouter,getLikeByPostId)

@@ -83,3 +83,33 @@ export async function getListFriend(objectId, search) {
 		console.log(error)
 	}
 }
+
+export async function getImagesByUserId(userId) {
+	try {
+		const response=await api.get('/user/getImagesByUserId', { params:{ userId }, withCredentials:true })
+		return response?.data
+	} catch (error) {
+		toast.error(error?.response?.data?.message)
+		console.log(error)
+	}
+}
+
+export async function getVideosByUserId(userId) {
+	try {
+		const response=await api.get('/user/getVideosByUserId', { params:{ userId }, withCredentials:true })
+		return response?.data
+	} catch (error) {
+		toast.error(error?.response?.data?.message)
+		console.log(error)
+	}
+}
+
+export async function searchUserGroup(search) {
+	try {
+		const response=await api.post('/user/search-user-group', { search }, { withCredentials:true })
+		return response?.data
+	} catch (error) {
+		toast.error(error?.response?.data?.message)
+		console.log(error)
+	}
+}

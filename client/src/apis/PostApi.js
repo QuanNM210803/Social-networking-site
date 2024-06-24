@@ -36,6 +36,16 @@ export const getPostsPagination=async (page, limit) => {
 	}
 }
 
+export const getPostsByUserId=async (userId, page, limit) => {
+	try {
+		const response=await api.get(`/post/all/user?userId=${userId}&page=${page}&limit=${limit}`, { withCredentials:true })
+		return response?.data
+	} catch (error) {
+		console.error(error)
+		toast.error('Can\'t load more')
+	}
+}
+
 export const likePost=async (postId) => {
 	try {
 		const response=await api.put('/post/like-post', { postId }, { withCredentials:true })

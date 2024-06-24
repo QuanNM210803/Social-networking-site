@@ -2,7 +2,7 @@
 /* eslint-disable react/jsx-key */
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react'
-import { IoSearchOutline } from 'react-icons/io5'
+import { IoClose, IoSearchOutline } from 'react-icons/io5'
 import ChatWindow from '../ChatWindow'
 import { Link } from 'react-router-dom'
 import { getFriendRequest } from '../../../apis/UserApi'
@@ -13,11 +13,14 @@ const Rightbar = ({ user, socketConnection }) => {
 	const [friendsChat, setFriendsChat]=useState([])
 	const onlineUsers=useSelector(state => state?.user?.onlineUsers)
 
+	// get friend request
 	useEffect(() => {
 		getFriendRequest().then((data) => {
 			setInviteFriend(data?.data)
 		})
 	}, [])
+
+	// get conversation
 	useEffect(() => {
 		if (socketConnection) {
 			socketConnection.emit('sidebar', user?._id)
@@ -42,6 +45,7 @@ const Rightbar = ({ user, socketConnection }) => {
 		}
 	}, [user])
 
+	// set chat window
 	const [isOpenChatWindow, setIsOpenChatWindow]=useState(false)
 	const [friendChat, setFriendChat]=useState({})
 	const handleOpenChatWindow=(user) => {
@@ -51,6 +55,29 @@ const Rightbar = ({ user, socketConnection }) => {
 	const handleCloseChatWindow=() => {
 		setIsOpenChatWindow(false)
 	}
+
+	// search user
+	const [activeSearch, setActiveSearch] = useState(false)
+	const [search, setSearch]=useState('')
+	const [resultSearchUser, setResultSearchUser]=useState([])
+	useEffect(() => {
+		if (search==='') {
+			setResultSearchUser(friendsChat)
+		} else {
+			const searchUser=friendsChat.filter((user) => {
+				return user?.userDetails?.name?.toLowerCase().includes(search.toLowerCase())
+			})
+			setResultSearchUser(searchUser)
+		}
+	}, [search, friendsChat])
+
+	const handleActiveSearch = () => {
+		if (activeSearch) {
+			setSearch('')
+		}
+		setActiveSearch(!activeSearch)
+	}
+
 	return (
 		<div className='z-0 w-[295px]'>
 			<div className='w-full h-auto'>
@@ -118,20 +145,29 @@ const Rightbar = ({ user, socketConnection }) => {
 				<hr className='bg-slate-200 h-[1.5px] w-[80%]'/>
 			</div>
 			<div className='w-full h-auto'>
-				<div className='flex justify-between px-3 py-2'>
-					<p className='font-semibold'>Người liên lạc</p>
-					<div className='flex justify-center items-center p-1 cursor-pointer hover:bg-slate-200 rounded'>
-						<IoSearchOutline size={20}/>
+				<div className='flex justify-between items-center px-3 py-2 gap-2'>
+					{!activeSearch?(<p className='font-semibold px-1' >Người liên lạc</p>):
+						(<input
+							type='text'
+							name='search'
+							value={search}
+							onChange={(e) => setSearch(e?.target?.value)}
+							placeholder='Search contact'
+							className='bg-slate-300 rounded-lg py-[2px] px-2 placeholder:text-slate-500 focus:outline-none w-full'
+						/>)}
+					<div className='flex justify-center items-center p-1 cursor-pointer hover:bg-slate-200 rounded-md'
+						onClick={() => handleActiveSearch()}>
+						{!activeSearch ? <IoSearchOutline size={20}/> : <IoClose size={20}/>}
 					</div>
 				</div>
 			</div>
-			{friendsChat.length===0 && (
+			{resultSearchUser.length===0 && (
 				<div className='flex items-center justify-center w-full h-40 px-5'>
 					<p className='text-slate-500 text-center'>Bạn chưa có cuộc trò chuyện nào. Hãy bắt đầu ngay</p>
 				</div>
 			)}
-			{friendsChat.length>0 && (
-				friendsChat.map((friend, index) => (
+			{resultSearchUser.length>0 && (
+				resultSearchUser.map((friend, index) => (
 					<div className='flex gap-3 px-3 py-2 cursor-pointer hover:bg-slate-200 rounded-md' onClick={() => handleOpenChatWindow(friend?.userDetails)}>
 						<div className='relative w-11 h-11 flex-shrink-0'>
 							<img

@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React, { useState } from 'react'
 import Tab from '../../../chat/rightbar/Tab'
-import Posts from '../Posts'
+import Posts from '../user/Posts'
 import Images from '../Images'
 import Videos from '../Videos'
 import IntroductionGroup from './IntroductionGroup'
@@ -60,7 +60,7 @@ const ProfileGroup = ({ idGroup }) => {
 			<div className='flex justify-center'>
 				<div className={'w-[80%] h-auto py-5'}>
 					{activeTab==='Bài viết' && (
-						<Posts objectId={group?._id} typeObject={'group'}/>
+						<Posts objectId={group?._id}/>
 					)}
 					{activeTab==='Giới thiệu' && (
 						<IntroductionGroup objectId={group?._id}/>

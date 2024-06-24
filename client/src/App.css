@@ -39,3 +39,12 @@
 .scrollbar-newsfeed::-webkit-scrollbar-thumb{
    @apply bg-slate-400 rounded-full
 }
+
+.scroll-container {
+   overflow-y: scroll; /* Cho phép cuộn dọc */
+ }
+ 
+ /* Ẩn thanh cuộn nhưng vẫn cho phép cuộn */
+ .scroll-container::-webkit-scrollbar {
+   display: none; /* Đối với trình duyệt WebKit (Chrome, Safari) */
+ }
