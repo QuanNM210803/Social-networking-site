@@ -13,44 +13,7 @@ import { getGroupByUserId } from '../../../apis/GroupApi'
 
 const Sidebar = ({ user }) => {
 	const [showMore, setShowMore]=useState(false)
-	const [groups, setGroups]=useState([
-		// {
-		// 	avatar: 'https://www.w3schools.com/howto/img_avatar.png',
-		// 	name: 'Code ptit'
-		// },
-		// {
-		// 	avatar: 'https://www.w3schools.com/howto/img_avatar.png',
-		// 	name: 'Hưng Yên quê tôi'
-		// },
-		// {
-		// 	avatar: 'https://www.w3schools.com/howto/img_avatar.png',
-		// 	name: 'Mùa lúa chín'
-		// },
-		// {
-		// 	avatar: 'https://www.w3schools.com/howto/img_avatar.png',
-		// 	name: 'Câu chuyện công sở'
-		// },
-		// {
-		// 	avatar: 'https://www.w3schools.com/howto/img_avatar.png',
-		// 	name: 'Vua đầu bếp'
-		// },
-		// {
-		// 	avatar: 'https://www.w3schools.com/howto/img_avatar.png',
-		// 	name: 'Code ptit'
-		// },
-		// {
-		// 	avatar: 'https://www.w3schools.com/howto/img_avatar.png',
-		// 	name: 'Code ptit'
-		// },
-		// {
-		// 	avatar: 'https://www.w3schools.com/howto/img_avatar.png',
-		// 	name: 'Code ptit'
-		// },
-		// {
-		// 	avatar: 'https://www.w3schools.com/howto/img_avatar.png',
-		// 	name: 'Code ptit'
-		// }
-	])
+	const [groups, setGroups]=useState([])
 	useEffect(() => {
 		getGroupByUserId().then((data) => {
 			setGroups(data?.data)
@@ -99,7 +62,7 @@ const Sidebar = ({ user }) => {
 				<div className='mt-2'>
 					{groups.length>=5 && groups.slice(0, 5).map((group, index) => {
 						return (
-							<div className='flex items-center gap-5 py-2 px-5 cursor-pointer hover:bg-slate-200 rounded-lg'>
+							<Link to={`/profileGroup/${group?._id}`} className='flex items-center gap-5 py-2 px-5 cursor-pointer hover:bg-slate-200 rounded-lg'>
 								<img
 									src={group?.profile_pic}
 									width={35}
@@ -107,12 +70,12 @@ const Sidebar = ({ user }) => {
 									className='rounded'
 								/>
 								<p className='text-base font-semibold'>{group?.name}</p>
-							</div>
+							</Link>
 						)
 					})}
 					{groups.length>0 && groups.length<5 && groups.map((group, index) => {
 						return (
-							<div className='flex items-center gap-5 py-2 px-5 cursor-pointer hover:bg-slate-200 rounded-lg'>
+							<Link to={`/profileGroup/${group?._id}`} className='flex items-center gap-5 py-2 px-5 cursor-pointer hover:bg-slate-200 rounded-lg'>
 								<img
 									src={group?.profile_pic}
 									width={35}
@@ -120,7 +83,7 @@ const Sidebar = ({ user }) => {
 									className='rounded'
 								/>
 								<p className='text-base font-semibold'>{group?.name}</p>
-							</div>
+							</Link>
 						)
 					})}
 					{
@@ -142,15 +105,15 @@ const Sidebar = ({ user }) => {
 					{showMore && (
 						<>
 							{groups.slice(5).map((group, index) => (
-								<div className='flex items-center gap-5 py-2 px-5 cursor-pointer hover:bg-slate-200 rounded-lg'>
+								<Link to={`/profileGroup/${group?._id}`} className='flex items-center gap-5 py-2 px-5 cursor-pointer hover:bg-slate-200 rounded-lg'>
 									<img
 										src={group?.avatar}
 										width={35}
 										height={35}
 										className='rounded'
 									/>
-									<p className='text-base font-semibold'>{group?.name}</p>
-								</div>
+									<p className='text-base font-semibold'>{group?.profile_pic}</p>
+								</Link>
 							))}
 							<div className='flex items-center gap-5 py-2 px-5 cursor-pointer hover:bg-slate-200 rounded-lg'
 								onClick={handleShowMore}>

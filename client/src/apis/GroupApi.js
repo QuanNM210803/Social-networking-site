@@ -16,3 +16,33 @@ export async function getGroupByUserId() {
 		console.log(error)
 	}
 }
+
+export async function getGroupById(groupId) {
+	try {
+		const response=await api.get(`/group/groupDetails/${groupId}`, { withCredentials:true })
+		return response.data
+	} catch (error) {
+		toast.error(error?.response?.data?.message)
+		console.log(error)
+	}
+}
+
+export async function getImagesByGroupId(groupId) {
+	try {
+		const response=await api.get(`/group/getImagesByGroupId?groupId=${groupId}`, { withCredentials:true })
+		return response.data
+	} catch (error) {
+		toast.error(error?.response?.data?.message)
+		console.log(error)
+	}
+}
+
+export async function getVideosByGroupId(groupId) {
+	try {
+		const response=await api.get(`/group/getVideosByGroupId?groupId=${groupId}`, { withCredentials:true })
+		return response.data
+	} catch (error) {
+		toast.error(error?.response?.data?.message)
+		console.log(error)
+	}
+}

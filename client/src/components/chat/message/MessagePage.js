@@ -7,7 +7,6 @@ import { useSelector } from 'react-redux'
 import { Link, useOutletContext, useParams } from 'react-router-dom'
 import Avatar from '../../Avatar'
 import { HiDotsVertical } from 'react-icons/hi'
-import { FaAngleLeft } from 'react-icons/fa6'
 import { FaPlus } from 'react-icons/fa'
 import { FaImage } from 'react-icons/fa6'
 import { FaVideo } from 'react-icons/fa6'
@@ -160,13 +159,9 @@ const MessagePage = () => {
 		<div className='w-full h-full'>
 			<div style={{ backgroundImage: `url(${backgroundImage})` }} className={`
             bg-no-repeat bg-cover z-0 ${openDetailsConversation ? 'mr-80':''}`}>
-            
 				<header className='sticky top-0 h-16 bg-white flex justify-between items-center px-4'>
 					<div className='flex items-center gap-4'>
-						<Link to={'/'} className='lg:hidden'>
-							<FaAngleLeft size={20}/>
-						</Link>
-						<div>
+						<Link to={`/profileUser/${dataUser?._id}`}>
 							<Avatar
 								width={50}
 								height={50}
@@ -174,11 +169,13 @@ const MessagePage = () => {
 								name={dataUser?.name}
 								userId={dataUser?._id}
 							/>
-						</div>
+						</Link>
 						<div>
-							<h3 className='font-semibold text-lg my-0 text-ellipsis line-clamp-1'>
-								{dataUser?.name}
-							</h3>
+							<Link to={`/profileUser/${dataUser?._id}`}>
+								<h3 className='font-semibold text-lg my-0 text-ellipsis line-clamp-1'>
+									{dataUser?.name}
+								</h3>
+							</Link>
 							<p className='-my-1 text-sm'>
 								{
 									dataUser?.online ? (

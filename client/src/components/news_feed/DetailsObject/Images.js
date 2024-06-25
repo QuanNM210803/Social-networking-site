@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react'
 import DetailsMedia from '../../DetailsMedia'
 import { useSelector } from 'react-redux'
 import { getImagesByUserId } from '../../../apis/UserApi'
+import { getImagesByGroupId } from '../../../apis/GroupApi'
 
 const Images = ({ objectId, typeObject }) => {
 	const user=useSelector(state => state?.user)
@@ -24,7 +25,9 @@ const Images = ({ objectId, typeObject }) => {
 				setImages(data?.data)
 			})
 		} else if (typeObject==='group') {
-			
+			getImagesByGroupId(objectId).then((data) => {
+				setImages(data?.data)
+			})
 		}
 	}, [objectId, typeObject])
 	return (
@@ -32,7 +35,7 @@ const Images = ({ objectId, typeObject }) => {
 			<div className='bg-slate-200 rounded-md h-auto'>
 				<div className='flex justify-between px-3 py-2'>
 					<div className='flex items-center gap-7'>
-						<p className='text-2xl font-bold px-3'>Ảnh của {typeObject==='user' ? (words[words?.length-1]):(name)}</p>
+						<p className='text-2xl font-bold px-3'>Ảnh của {typeObject==='user' ? (words[words?.length-1]):'nhóm'}</p>
 						<p>{images?.length} ảnh</p>
 					</div>
 				</div>
@@ -57,7 +60,7 @@ const Images = ({ objectId, typeObject }) => {
 			{
 				isOpenDetailMedia && (
 					<DetailsMedia handleCloseDetailMedia={handleCloseDetailMedia} currentMedia={currentMedia}
-						listMedia={images} numMedia={images.length}
+						listMedia={images} numMedia={images?.length}
 					/>
 				)
 			}

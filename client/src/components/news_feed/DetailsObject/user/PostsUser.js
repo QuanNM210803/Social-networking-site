@@ -1,27 +1,24 @@
-/* eslint-disable no-mixed-spaces-and-tabs */
 /* eslint-disable react/jsx-key */
 /* eslint-disable no-unused-vars */
-
 import React, { useState } from 'react'
+import NewsCard from '../../news/NewsCard'
 import { IoIosVideocam } from 'react-icons/io'
-import { FaImages } from 'react-icons/fa'
+import { FaImages } from 'react-icons/fa6'
 import { MdEmojiEmotions } from 'react-icons/md'
-import NewsCard from './NewsCard'
-import CreatePost from '../DetailsObject/post/CreatePost'
 import { useSelector } from 'react-redux'
+import CreatePost from '../post/CreatePost'
 import { Link } from 'react-router-dom'
-import Loading from '../../Loading'
 
-const Content = ({ news, loading, handleLikePost, handleCommentPost }) => {
+const PostsUser = ({ objectId, news, loading, handleLikePost, handleCommentPost }) => {
 	const [showCreatePost, setShowCreatePost] = useState(false)
 	const user=useSelector(state => state?.user)
 	const handleCreatePost=() => {
 		setShowCreatePost(!showCreatePost)
 	}
 	return (
-		<div>
-			<div className='w-[850px] space-y-3 px-20'>
-				<div className='w-full h-auto bg-slate-200 px-4 py-2 space-y-2 rounded-md'>
+		<div className='flex justify-center'>
+			<div className='w-[80%] space-y-3 h-auto'>
+				{user?._id===objectId && <div className='w-full h-auto bg-slate-200 px-4 py-2 space-y-2 rounded-md'>
 					<div className='flex items-center gap-4'>
 						<Link to={`/profileUser/${user?._id}`} className='w-12 h-12 flex-shrink-0'>
 							<img
@@ -55,22 +52,16 @@ const Content = ({ news, loading, handleLikePost, handleCommentPost }) => {
 							<p>Cảm xúc/hoạt động</p>
 						</div>
 					</div>
-				</div>
+				</div>}
 				<div className='w-full h-auto space-y-3'>
 					{news.length>0 ? (
 						news.map((item, index) => (
 							<NewsCard news={item} handleLikePost={handleLikePost} handleCommentPost={handleCommentPost}/>
 						))
 					):(
-						loading ? (
-							<div className='w-full h-20 bg-slate-200 rounded-md flex justify-center items-center'>
-								<Loading/>
-							</div>
-						):(
-							<div className='w-full h-20 bg-slate-200 rounded-md flex justify-center items-center'>
-								<p className='text-slate-500'>Không có bài đăng nào xuất hiện trên bản tin của bạn!</p>
-							</div>
-						)
+						<div className='w-full h-20 bg-slate-200 rounded-md flex justify-center items-center'>
+							<p className='text-slate-500'>Không có bài đăng nào!</p>
+						</div>
 					)}
 				</div>
 			</div>
@@ -81,4 +72,4 @@ const Content = ({ news, loading, handleLikePost, handleCommentPost }) => {
 	)
 }
 
-export default Content
+export default PostsUser

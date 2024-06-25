@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-console */
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react'
@@ -6,6 +7,7 @@ import Sidebar_videoPage from '../../components/news_feed/sidebar/Sidebar_videoP
 import ContentVideoPage from '../../components/news_feed/DetailsObject/videoPage/ContentVideoPage'
 import { useDispatch, useSelector } from 'react-redux'
 import { initializeSocketConnection } from '../../socket/SocketUtils'
+import { useNavigate } from 'react-router-dom'
 
 const VideoPage = () => {
 	const user=useSelector(state => state?.user)
@@ -233,10 +235,13 @@ const VideoPage = () => {
 			console.log('Option 2')
 		}
 	}, [option])
-
+	const navigate=useNavigate()
 	const [socketConnection, setSocketConnection]=useState(null)
 	const dispatch=useDispatch()
 	useEffect(() => {
+		if (!user?._id) {
+			navigate('/email')
+		}
 		const socketConnection=initializeSocketConnection(dispatch)
 		setSocketConnection(socketConnection)
 		return () => {

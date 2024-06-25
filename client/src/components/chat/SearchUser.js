@@ -2,9 +2,9 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react'
 import { IoSearchOutline } from 'react-icons/io5'
-import Loading from './Loading'
+import Loading from '../Loading'
 import UserSearchCard from './UserSearchCard'
-import { searchUserApi } from '../apis/UserApi'
+import { searchUserApi } from '../../apis/UserApi'
 import { IoClose } from 'react-icons/io5'
 
 const SearchUser = ({ onClose }) => {
@@ -50,7 +50,7 @@ const SearchUser = ({ onClose }) => {
 				}
 				{
 					searchUser.length!==0 && !loading &&(
-						<div className='bg-white mt-2 w-full p-4 rounded'>
+						<div className='bg-white mt-2 w-full p-4 rounded h-auto max-h-[350px] overflow-auto'>
 							{searchUser.map((user, index) => {
 								return (
 									<UserSearchCard key={user._id} user={user} onClose={onClose}/>

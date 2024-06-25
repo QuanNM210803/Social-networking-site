@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react'
 import { FaRegPlayCircle } from 'react-icons/fa'
 import DetailsMedia from '../../DetailsMedia'
 import { getVideosByUserId } from '../../../apis/UserApi'
+import { getVideosByGroupId } from '../../../apis/GroupApi'
 
 const Videos = ({ objectId, typeObject }) => {
 	const name='Nguyễn Minh Quân'
@@ -24,7 +25,9 @@ const Videos = ({ objectId, typeObject }) => {
 				setVideos(data?.data)
 			})
 		} else if (typeObject==='group') {
-			
+			getVideosByGroupId(objectId).then((data) => {
+				setVideos(data?.data)
+			})
 		}
 	}, [objectId, typeObject])
 	return (
@@ -32,12 +35,12 @@ const Videos = ({ objectId, typeObject }) => {
 			<div className='bg-slate-200 rounded-md h-auto'>
 				<div className='flex justify-between px-3 py-2'>
 					<div className='flex items-center gap-7'>
-						<p className='text-2xl font-bold px-3'>Video của {typeObject==='user' ? (words[words?.length-1]):(name)}</p>
-						<p>{videos.length} video</p>
+						<p className='text-2xl font-bold px-3'>Video của {typeObject==='user' ? (words[words?.length-1]):'nhóm'}</p>
+						<p>{videos?.length} video</p>
 					</div>
 				</div>
 				{
-					videos.length===0 ? (
+					videos?.length===0 ? (
 						<div className='w-full h-20 flex justify-center items-center'>
 							<p className='text-slate-500 text-lg'>Không có video nào.</p>
 						</div>

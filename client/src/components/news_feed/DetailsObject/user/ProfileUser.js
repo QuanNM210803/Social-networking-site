@@ -2,7 +2,6 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react'
 import Tab from '../../../chat/rightbar/Tab'
-import Posts from './Posts'
 import Images from '../Images'
 import Videos from '../Videos'
 import IntroductionUser from './IntroductionUser'
@@ -13,6 +12,7 @@ import { RiVerifiedBadgeFill } from 'react-icons/ri'
 import EditUserDetails from '../../../EditUserDetails'
 import { Link } from 'react-router-dom'
 import DetailsMutualFriend from '../DetailsMutualFriend'
+import PostsUser from './PostsUser'
 
 const ProfileUser = ({ idFriend, news, loading, handleLikePost, handleCommentPost }) => {
 	const self=useSelector(state => state?.user)
@@ -116,7 +116,7 @@ const ProfileUser = ({ idFriend, news, loading, handleLikePost, handleCommentPos
 			<div className='flex justify-center'>
 				<div className={'w-[80%] h-auto py-5'}>
 					{activeTab==='Bài viết' && (
-						<Posts objectId={user?._id} news={news} loading={loading} handleLikePost={handleLikePost} handleCommentPost={handleCommentPost}/>
+						<PostsUser objectId={user?._id} news={news} loading={loading} handleLikePost={handleLikePost} handleCommentPost={handleCommentPost}/>
 					)}
 					{activeTab==='Giới thiệu' && (
 						<IntroductionUser objectId={user?._id}/>

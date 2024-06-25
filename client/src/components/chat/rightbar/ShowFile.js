@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-console */
 /* eslint-disable no-undef */
 /* eslint-disable react-hooks/rules-of-hooks */
@@ -155,7 +156,7 @@ const showFile = ({ handleShowFile, content, socketConnection }) => {
 				setMedia(data)
 			})
 		}
-	}, [socketConnection, user, params?.userId, media])
+	}, [socketConnection, user, params?.userId])
 	return (
 		<div className='overflow-auto scrollbar w-full h-full'>
 			<div className='w-full h-14 flex items-center gap-0'>

@@ -9,6 +9,7 @@ import { FaFile } from 'react-icons/fa'
 import { FaLink } from 'react-icons/fa'
 import { MdOutlineEmail } from 'react-icons/md'
 import ShowFile from './ShowFile'
+import { Link } from 'react-router-dom'
 
 const Rightbar = ({ receiver, socketConnection }) => {
 	const user=useSelector(state => state?.user)
@@ -34,7 +35,7 @@ const Rightbar = ({ receiver, socketConnection }) => {
 		<>
 			{!showFile && (
 				<div className='w-full h-full bg-slate-200 overflow-auto'>
-					<div className='flex items-center justify-center mt-8'>
+					<Link to={`/profileUser/${receiver?._id}`} className='flex items-center justify-center mt-8'>
 						<Avatar
 							imageUrl={receiver?.profile_pic}
 							name={receiver?.name}
@@ -42,7 +43,7 @@ const Rightbar = ({ receiver, socketConnection }) => {
 							height={90}
 							userId={receiver?._id}
 						/>
-					</div>
+					</Link>
 					<div className='text-base mt-4 flex justify-center items-center gap-2'>
 						<MdOutlineEmail/>
 						<p className='font-semibold mb-1'>{receiver?.email}</p>

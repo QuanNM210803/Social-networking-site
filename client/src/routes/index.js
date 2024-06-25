@@ -13,6 +13,7 @@ import VideoPage from '../pages/news_feed/VideoPage'
 import GroupPage from '../pages/news_feed/GroupPage'
 import GamePage from '../pages/news_feed/GamePage'
 import ProfileUserPage from '../pages/news_feed/ProfileUserPage'
+import ProfileGroupPage from '../pages/news_feed/ProfileGroupPage'
 
 const router = createBrowserRouter([
 	{
@@ -68,6 +69,10 @@ const router = createBrowserRouter([
 			{
 				path: 'profileUser/:userId',
 				element: <ProfileUserPage/>
+			},
+			{
+				path: 'profileGroup/:groupId',
+				element: <ProfileGroupPage/>
 			}
 		]
 	}

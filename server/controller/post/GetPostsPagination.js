@@ -11,7 +11,7 @@ async function getPostsPagination(request, response){
          })
       }
       const page=parseInt(request?.query?.page)||1
-      const limit=parseInt(request?.query?.limit) || 10
+      const limit=parseInt(request?.query?.limit) || 5
       const skip=(page-1)*limit
       const posts=await Post.find()
                         .sort({createdAt:-1})

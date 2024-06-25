@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react'
 import Navbar from '../../components/news_feed/navbar/Navbar'
@@ -5,9 +6,11 @@ import Sidebar_groupPage from '../../components/news_feed/sidebar/Sidebar_groupP
 import ProfileGroup from '../../components/news_feed/DetailsObject/group/ProfileGroup'
 import { useDispatch, useSelector } from 'react-redux'
 import { initializeSocketConnection } from '../../socket/SocketUtils'
+import { useNavigate } from 'react-router-dom'
 
 const GroupPage = () => {
 	const user=useSelector(state => state?.user)
+	const navigate=useNavigate()
 	const [idGroup, setIdGroup]=useState(null)
 	const handleClickGroup=(id) => {
 		setIdGroup(id)
@@ -16,6 +19,9 @@ const GroupPage = () => {
 	const [socketConnection, setSocketConnection]=useState(null)
 	const dispatch=useDispatch()
 	useEffect(() => {
+		if (!user?._id) {
+			navigate('/email')
+		}
 		const socketConnection=initializeSocketConnection(dispatch)
 		setSocketConnection(socketConnection)
 		return () => {

@@ -18,8 +18,6 @@ const io=new Server(server,{
    }
 })
 
-/** socket running at port 8080 */
-
 
 const onlineUsers= new Set()
 /** đăng kí 1 sự kiện 'connection', khi client kết nối hàm callback sẽ được gọi
@@ -27,8 +25,8 @@ const onlineUsers= new Set()
  */
 io.on('connection', async (socket)=>{
    console.log('connect user', socket.id)
+
    const token=socket.handshake.auth.token
-   // current user userDetails
    const user= await getUserDetailsFromToken(token)
 
    //create a room
@@ -41,7 +39,6 @@ io.on('connection', async (socket)=>{
    /** đăng kí sự kiện */
    socket.on('message-page',async (userId)=>{
       const userDetails=await UserModel.findById(userId).select('-password')
-
       const payload={
          _id: userDetails._id,
          name: userDetails.name,
@@ -63,7 +60,6 @@ io.on('connection', async (socket)=>{
             }
          ]
       }).populate('messages').sort({updatedAt: -1})
-
       socket.emit('message',getConversationMessage?.messages || [])
    })
 
@@ -102,7 +98,6 @@ io.on('connection', async (socket)=>{
          msgByUserId: data?.msgByUserId,
          seen: false
       })
-
       const saveMessage=await message.save()
 
       const updateConversation=await ConversationModel.updateOne(
@@ -139,15 +134,12 @@ io.on('connection', async (socket)=>{
 
    //sidebar
    socket.on('sidebar', async (currentUserId)=>{
-      console.log('current user', currentUserId)
-
       const conversation=await getConversation(currentUserId)
       socket.emit('conversation', conversation)
    })
 
    //seen
    socket.on('seen',async (msgByUserId)=>{
-
       let conversation =await ConversationModel.findOne({
          '$or':[
             {

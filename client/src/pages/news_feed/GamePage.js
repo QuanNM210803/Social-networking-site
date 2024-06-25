@@ -1,15 +1,20 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react'
 import Navbar from '../../components/news_feed/navbar/Navbar'
 import { useDispatch, useSelector } from 'react-redux'
 import { initializeSocketConnection } from '../../socket/SocketUtils'
+import { useNavigate } from 'react-router-dom'
 
 const GamePage = () => {
 	const user=useSelector(state => state?.user)
-
+	const navigate=useNavigate()
 	const [socketConnection, setSocketConnection]=useState(null)
 	const dispatch=useDispatch()
 	useEffect(() => {
+		if (!user?._id) {
+			navigate('/email')
+		}
 		const socketConnection=initializeSocketConnection(dispatch)
 		setSocketConnection(socketConnection)
 		return () => {

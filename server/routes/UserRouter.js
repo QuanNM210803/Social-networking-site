@@ -15,6 +15,7 @@ const getListFriend = require('../controller/user/friend/GetListFriend')
 const getImagesByUserId = require('../controller/user/GetImagesByUserId')
 const getVideosByUserId = require('../controller/user/GetVideosByUserId')
 const searchUserGroup = require('../controller/user/SearchUserGroup')
+const getFriendsSuggest = require('../controller/user/friend/GetFriendsSuggest')
 
 const userRouter=express.Router()
 
@@ -30,8 +31,9 @@ userRouter.put('/deleteFriendRequest',protectRouter,deleteFriendRequest)
 userRouter.put('/unfriend',protectRouter,unfriend)
 
 userRouter.get('/getFriendRequest',protectRouter,getFriendRequest)
-userRouter.get('/getUserById/:userId',protectRouter,getUserById)
 userRouter.get('/getFriends',protectRouter,getListFriend)
+userRouter.get('/getFriendsSuggest',protectRouter,getFriendsSuggest)
+userRouter.get('/getUserById/:userId',protectRouter,getUserById)
 userRouter.get('/getImagesByUserId',protectRouter,getImagesByUserId)
 userRouter.get('/getVideosByUserId',protectRouter,getVideosByUserId)
 userRouter.post('/search-user-group',protectRouter,searchUserGroup)

@@ -1,227 +1,60 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/jsx-key */
 /* eslint-disable no-unused-vars */
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import PersonAddIcon from '@mui/icons-material/PersonAdd'
 import { IoMdPeople } from 'react-icons/io'
 import TipsAndUpdatesIcon from '@mui/icons-material/TipsAndUpdates'
 import { FaAngleRight } from 'react-icons/fa6'
 import { FaArrowLeft } from 'react-icons/fa6'
+import { getFriendRequest, getFriendsSuggest, getListFriend } from '../../../apis/UserApi'
+import { useSelector } from 'react-redux'
+import DetailsMutualFriend from '../DetailsObject/DetailsMutualFriend'
 
 const Sidebar_friendPage = ({ handleClickFriend }) => {
+	const user=useSelector(state => state?.user)
 	const [option, setOption]=useState(null)
-	const [friendRequest, setFriendRequest]=useState([
-		{
-			_id: '1',
-			avatar: 'https://www.w3schools.com/howto/img_avatar.png',
-			name: 'Nguyễn Văn A',
-			inviteTime: '1 giờ trước',
-			mutualFriends: 3
-		},
-		{
-			_id: '2',
-			avatar: 'https://www.w3schools.com/howto/img_avatar.png',
-			name: 'Nguyễn Văn A',
-			inviteTime: '1 giờ trước',
-			mutualFriends: 3
-		},
-		{
-			_id: '3',
-			avatar: 'https://www.w3schools.com/howto/img_avatar.png',
-			name: 'Nguyễn Văn A',
-			inviteTime: '1 giờ trước',
-			mutualFriends: 3
-		},
-		{
-			_id: '4',
-			avatar: 'https://www.w3schools.com/howto/img_avatar.png',
-			name: 'Nguyễn Văn A',
-			inviteTime: '1 giờ trước',
-			mutualFriends: 3
-		},
-		{
-			_id: '5',
-			avatar: 'https://www.w3schools.com/howto/img_avatar.png',
-			name: 'Nguyễn Văn A',
-			inviteTime: '1 giờ trước',
-			mutualFriends: 3
-		},
-		{
-			_id: '6',
-			avatar: 'https://www.w3schools.com/howto/img_avatar.png',
-			name: 'Nguyễn Văn A',
-			inviteTime: '1 giờ trước',
-			mutualFriends: 3
-		},
-		{
-			_id: '7',
-			avatar: 'https://www.w3schools.com/howto/img_avatar.png',
-			name: 'Nguyễn Văn A',
-			inviteTime: '1 giờ trước',
-			mutualFriends: 3
-		},
-		{
-			_id: '8',
-			avatar: 'https://www.w3schools.com/howto/img_avatar.png',
-			name: 'Nguyễn Văn A',
-			inviteTime: '1 giờ trước',
-			mutualFriends: 3
-		},
-		{
-			_id: '9',
-			avatar: 'https://www.w3schools.com/howto/img_avatar.png',
-			name: 'Nguyễn Văn A',
-			inviteTime: '1 giờ trước',
-			mutualFriends: 3
-		},
-		{
-			_id: '10',
-			avatar: 'https://www.w3schools.com/howto/img_avatar.png',
-			name: 'Nguyễn Văn A',
-			inviteTime: '1 giờ trước',
-			mutualFriends: 3
-		},
-		{
-			_id: '11',
-			avatar: 'https://www.w3schools.com/howto/img_avatar.png',
-			name: 'Nguyễn Văn A',
-			inviteTime: '1 giờ trước',
-			mutualFriends: 3
-		},
-		{
-			_id: '12',
-			avatar: 'https://www.w3schools.com/howto/img_avatar.png',
-			name: 'Nguyễn Văn A',
-			inviteTime: '1 giờ trước',
-			mutualFriends: 3
-		}
-	])
-	const [friends, setFriends]=useState([
-		{
-			_id: '1',
-			avatar: 'https://www.w3schools.com/howto/img_avatar.png',
-			name: 'Nguyễn Văn A',
-			mutualFriends: 3
-		},
-		{
-			_id: '2',
-			avatar: 'https://www.w3schools.com/howto/img_avatar.png',
-			name: 'Nguyễn Văn A',
-			mutualFriends: 3
-		},
-		{
-			_id: '3',
-			avatar: 'https://www.w3schools.com/howto/img_avatar.png',
-			name: 'Nguyễn Văn A',
-			mutualFriends: 3
-		},
-		{
-			_id: '4',
-			avatar: 'https://www.w3schools.com/howto/img_avatar.png',
-			name: 'Nguyễn Văn A',
-			mutualFriends: 3
-		},
-		{
-			_id: '5',
-			avatar: 'https://www.w3schools.com/howto/img_avatar.png',
-			name: 'Nguyễn Văn A',
-			mutualFriends: 3
-		},
-		{
-			_id: '6',
-			avatar: 'https://www.w3schools.com/howto/img_avatar.png',
-			name: 'Nguyễn Văn A',
-			mutualFriends: 3
-		},
-		{
-			_id: '7',
-			avatar: 'https://www.w3schools.com/howto/img_avatar.png',
-			name: 'Nguyễn Văn A',
-			mutualFriends: 3
-		},
-		{
-			_id: '8',
-			avatar: 'https://www.w3schools.com/howto/img_avatar.png',
-			name: 'Nguyễn Văn A',
-			mutualFriends: 3
-		},
-		{
-			_id: '9',
-			avatar: 'https://www.w3schools.com/howto/img_avatar.png',
-			name: 'Nguyễn Văn A',
-			mutualFriends: 3
-		},
-		{
-			_id: '10',
-			avatar: 'https://www.w3schools.com/howto/img_avatar.png',
-			name: 'Nguyễn Văn A',
-			mutualFriends: 3
-		}
-	])
-	const [friendsSuggest, setFriendsSuggest]=useState([
-		{
-			_id: '1',
-			avatar: 'https://www.w3schools.com/howto/img_avatar.png',
-			name: 'Nguyễn Văn A',
-			mutualFriends: 3
-		},
-		{
-			_id: '2',
-			avatar: 'https://www.w3schools.com/howto/img_avatar.png',
-			name: 'Nguyễn Văn A',
-			mutualFriends: 3
-		},
-		{
-			_id: '3',
-			avatar: 'https://www.w3schools.com/howto/img_avatar.png',
-			name: 'Nguyễn Văn A',
-			mutualFriends: 3
-		},
-		{
-			_id: '4',
-			avatar: 'https://www.w3schools.com/howto/img_avatar.png',
-			name: 'Nguyễn Văn A',
-			mutualFriends: 3
-		},
-		{
-			_id: '5',
-			avatar: 'https://www.w3schools.com/howto/img_avatar.png',
-			name: 'Nguyễn Văn A',
-			mutualFriends: 3
-		},
-		{
-			_id: '6',
-			avatar: 'https://www.w3schools.com/howto/img_avatar.png',
-			name: 'Nguyễn Văn A',
-			mutualFriends: 3
-		},
-		{
-			_id: '7',
-			avatar: 'https://www.w3schools.com/howto/img_avatar.png',
-			name: 'Nguyễn Văn A',
-			mutualFriends: 3
-		},
-		{
-			_id: '8',
-			avatar: 'https://www.w3schools.com/howto/img_avatar.png',
-			name: 'Nguyễn Văn A',
-			mutualFriends: 3
-		},
-		{
-			_id: '9',
-			avatar: 'https://www.w3schools.com/howto/img_avatar.png',
-			name: 'Nguyễn Văn A',
-			mutualFriends: 3
-		},
-		{
-			_id: '10',
-			avatar: 'https://www.w3schools.com/howto/img_avatar.png',
-			name: 'Nguyễn Văn A',
-			mutualFriends: 3
-		}
-	])
+	const [friendRequest, setFriendRequest]=useState([])
+	const [friends, setFriends]=useState([])
+	const [friendsSuggest, setFriendsSuggest]=useState([])
+
+	// phải setUser trong redux
+	useEffect(() => {
+		getFriendRequest().then((data) => {
+			if (data?.data) {
+				setFriendRequest(data?.data)
+			}
+		})
+	}, [user])
+
+	const [search, setSearch]=useState('')
+	useEffect(() => {
+		getListFriend(user?._id, search).then((data) => {
+			if (data?.data) {
+				setFriends(data?.data)
+			}
+		})
+	}, [user, search])
+   
+	useEffect(() => {
+		getFriendsSuggest().then((data) => {
+			if (data?.data) {
+				setFriendsSuggest(data?.data)
+			}
+		})
+	}, [user])
+
 	const handleClickedOption=(value) => {
 		setOption(value)
 	}
+
+	const [isOpenDetailsMutualFriend, setIsOpenDetailsMutualFriend]=useState(false)
+	const [mutualFriendWith, setMutualFriendWith]=useState({})
+	const handleOpenDetailsMutualFriend=(friend) => {
+		setMutualFriendWith(friend)
+		setIsOpenDetailsMutualFriend(!isOpenDetailsMutualFriend)
+	}
+
 	return (
 		<div className='h-auto'>
 			<div className='px-3 py-2 bg-slate-300'>
@@ -269,16 +102,14 @@ const Sidebar_friendPage = ({ handleClickFriend }) => {
 							</div>
 						):(
 							<div className='p-3 space-y-2 h-[550px] overflow-auto scrollbar-newsfeed'>
-								<div className='w-[335px]'>
+								<div className='w-[360px]'>
 									{
 										friendRequest.map((friend, index) => (
-											<div className='flex gap-3'>
-												<div className=''>
+											<div className='flex gap-3 px-2 py-1 '>
+												<div className='flex-shrink-0'>
 													<img
-														src={friend?.avatar}
-														width={60}
-														height={60}
-														className='rounded-full cursor-pointer'
+														src={friend?.profile_pic}
+														className='rounded-full cursor-pointer w-[60px] h-[60px] object-cover'
 														onClick={() => handleClickFriend(friend?._id)}
 													/>
 												</div>
@@ -289,7 +120,9 @@ const Sidebar_friendPage = ({ handleClickFriend }) => {
 														<p className='text-sm'>{friend?.inviteTime}</p>
 													</div>
 													<div>
-														<p className='text-sm'>{friend?.mutualFriends} bạn chung</p>
+														<p className='text-sm hover:underline cursor-pointer' onClick={() => handleOpenDetailsMutualFriend(friend)}>
+															{friend?.mutualFriends?.length} bạn chung
+														</p>
 													</div>
 													<div className='py-1 flex justify-between'>
 														<button className='bg-blue-500 text-white hover:bg-blue-800 rounded-lg w-[45%] px-2 py-1'>Chấp nhận</button>
@@ -319,31 +152,35 @@ const Sidebar_friendPage = ({ handleClickFriend }) => {
 							</div>
 						):(
 							<div className='p-3 space-y-2 h-[550px] overflow-auto scrollbar-newsfeed'>
-								<div className='w-[335px]'>
+								<div className='w-[360px] space-y-3'>
 									{
 										friendsSuggest.map((friend, index) => (
-											<div className='flex gap-3'>
-												<div className=''>
+											<div className='flex gap-3 px-2 py-1 hover:bg-slate-200 rounded-md'>
+												<div className='flex-shrink-0'>
 													<img
-														src={friend?.avatar}
-														width={60}
-														height={60}
-														className='rounded-full cursor-pointer'
+														src={friend?.profile_pic}
+														className='rounded-full cursor-pointer w-[60px] h-[60px] object-cover'
 														onClick={() => handleClickFriend(friend?._id)}
 													/>
 												</div>
-												<div className=' w-full h-auto'>
+												<div className='w-full h-auto space-y-1'>
 													<div className='flex justify-between'>
 														<p className='text-sm font-semibold cursor-pointer hover:underline'
 															onClick={() => handleClickFriend(friend?._id)}>{friend?.name}</p>
-														<p className='text-sm'>{friend?.inviteTime}</p>
+														<div>
+															<p className='text-sm hover:underline cursor-pointer' onClick={() => handleOpenDetailsMutualFriend(friend)}>
+																{friend?.mutualFriends?.length} bạn chung
+															</p>
+														</div>
 													</div>
-													<div>
-														<p className='text-sm'>{friend?.mutualFriends} bạn chung</p>
-													</div>
-													<div className='py-1 flex justify-between'>
-														<button className='bg-blue-500 text-white hover:bg-blue-800 rounded-lg w-[45%] px-2 py-1'>Thêm bạn bè</button>
-														<button className='bg-slate-400 text-white hover:bg-slate-500 rounded-lg w-[45%] px-2 py-1'>Xóa</button>
+													<div className='py-1'>
+														{
+															user?.friend_requests?.some((f) => f?.user?.toString()===friend?._id?.toString()) ? (
+																<button className='bg-blue-400 text-white hover:bg-blue-600 rounded-lg w-[45%] px-2 py-1'>Chấp nhận</button>
+															):(
+																<button className='bg-blue-400 text-white hover:bg-blue-600 rounded-lg w-[45%] px-2 py-1'>Thêm bạn bè</button>
+															)
+														}
 													</div>
 												</div>
 											</div>
@@ -363,10 +200,16 @@ const Sidebar_friendPage = ({ handleClickFriend }) => {
 								onClick={() => handleClickedOption(null)}/>
 							<p className='font-semibold text-nomal'>Tất cả bạn bè</p>
 						</div>
-						<p className='font-semibold text-mini-1'>{friends.length} người bạn</p>
+						<p className='font-semibold text-mini-1'>{friends?.length} người bạn</p>
 					</div>
 					<div className='flex items-center px-3 py-2 bg-slate-300'>
-						<input type='text' placeholder='Tìm kiếm trong danh sách bạn bè' className='w-full h-8 px-3 bg-slate-200 rounded-md'/>
+						<input 
+							type='text' 
+							name='search'
+							value={search}
+							onChange={(e) => setSearch(e.target.value)}
+							placeholder='Tìm kiếm trong danh sách bạn bè' 
+							className='w-full h-8 px-3 bg-slate-200 rounded-md'/>
 					</div>
 					{
 						friends.length===0 ? (
@@ -375,16 +218,14 @@ const Sidebar_friendPage = ({ handleClickFriend }) => {
 							</div>
 						):(
 							<div className='p-3 h-[510px] overflow-auto scrollbar-newsfeed'>
-								<div className='w-[335px] space-y-3 '>
+								<div className='w-[360px] space-y-3 '>
 									{
 										friends.map((friend, index) => (
-											<div className='flex gap-3 items-center'>
-												<div className=''>
+											<div className='flex gap-3 items-center py-1 px-2 hover:bg-slate-200 rounded-md'>
+												<div className='flex-shrink-0'>
 													<img
-														src={friend?.avatar}
-														width={60}
-														height={60}
-														className='rounded-full cursor-pointer'
+														src={friend?.profile_pic}
+														className='rounded-full w-[60px] h-[60px] object-cover cursor-pointer'
 														onClick={() => handleClickFriend(friend?._id)}
 													/>
 												</div>
@@ -394,10 +235,21 @@ const Sidebar_friendPage = ({ handleClickFriend }) => {
 															onClick={() => handleClickFriend(friend?._id)}>
 															{friend?.name}
 														</p>
-														<p className='text-sm'>{friend?.mutualFriends} bạn chung</p>
+														<p className='text-sm hover:underline cursor-pointer' onClick={() => handleOpenDetailsMutualFriend(friend)}>
+															{friend?.mutualFriends?.length} bạn chung
+														</p>
+													</div>
+												</div>
+												<div className='flex items-center justify-end w-[100px] '>
+													<div className='flex flex-col w-full'>
+														<p className='w-full px-2 py-1'>{friend?.createdAt}</p>
+														<button className='bg-slate-200 rounded px-2 py-1 hover:bg-red-500 hover:text-white'>
+                                             Unfriend
+														</button>
 													</div>
 												</div>
 											</div>
+                                 
 										))
 									}
 								</div>
@@ -406,6 +258,11 @@ const Sidebar_friendPage = ({ handleClickFriend }) => {
 					}
 				</div>
 			)}
+			{
+				isOpenDetailsMutualFriend && <DetailsMutualFriend
+					setIsOpenDetailsMutualFriend={setIsOpenDetailsMutualFriend} 
+					mutualFriendWith={mutualFriendWith}/>
+			}
 		</div>
 	)
 }

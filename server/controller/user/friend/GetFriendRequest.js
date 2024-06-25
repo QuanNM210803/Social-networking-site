@@ -18,15 +18,17 @@ async function getFriendRequest(request,response){
       user.friend_requests.sort((a,b)=>b?.createdAt-a?.createdAt)
       user.friend_requests.forEach((friendRequest)=>{
          const commonFriends=user?.friends.filter((friend)=>
-            friendRequest?.user?.friends.some((f)=>f?.user?.toString()===friend?.user?.toString()))
+            friendRequest?.user?.friends.some((f)=>f?.user?.toString()===friend?.user?.toString())) || []
+         const payloadCommonFriends=commonFriends.map((f)=>f?.user?._id.toString())
          friendRequests.push({
             _id:friendRequest?.user?._id,
             name:friendRequest?.user?.name,
             profile_pic:friendRequest?.user?.profile_pic,
-            mutualFriends:commonFriends?.length,
+            mutualFriends:payloadCommonFriends,
             inviteTime:formatDate(friendRequest?.createdAt)
          })
       })
+      
       return response.status(200).json({
          data:friendRequests,
          message:'Friend Requests',

@@ -1,18 +1,18 @@
-/* eslint-disable no-unsafe-optional-chaining */
 /* eslint-disable no-console */
+/* eslint-disable no-unsafe-optional-chaining */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react'
-import Navbar from '../../components/news_feed/navbar/Navbar.js'
-import ProfileUser from '../../components/news_feed/DetailsObject/user/ProfileUser.js'
-import { useNavigate, useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { initializeSocketConnection } from '../../socket/SocketUtils.js'
-import { getPostsByUserId, likePost } from '../../apis/PostApi.js'
+import { useNavigate, useParams } from 'react-router-dom'
+import { initializeSocketConnection } from '../../socket/SocketUtils'
+import Navbar from '../../components/news_feed/navbar/Navbar.js'
+import ProfileGroup from '../../components/news_feed/DetailsObject/group/ProfileGroup.js'
+import { getPostsPaginationInGroup, likePost } from '../../apis/PostApi.js'
 
-const ProfileUserPage = () => {
+const ProfileGroupPage = () => {
 	const user=useSelector(state => state?.user)
-	const { userId }=useParams()
+	const { groupId }=useParams()
 	const navigate=useNavigate()
 	const [socketConnection, setSocketConnection]=useState(null)
 	const dispatch=useDispatch()
@@ -37,14 +37,14 @@ const ProfileUserPage = () => {
 	useEffect(() => {
 		setNews([])
 		setCurrentPage(1)
-	}, [userId])
+	}, [groupId])
 
 	useEffect(() => {
 		let mounted = true // Biến để đánh dấu component đã mount
 		const fetchData = async () => {
 			setLoading(true)
 			try {
-				const data = await getPostsByUserId(userId, currentPage, limit)
+				const data = await getPostsPaginationInGroup(groupId, currentPage, limit)
 				if (mounted) {
 					setNews(prevNews => [...prevNews, ...data?.data])
 					setTotalPages(data.totalPages)
@@ -60,7 +60,7 @@ const ProfileUserPage = () => {
 		return () => {
 			mounted = false
 		}
-	}, [currentPage, userId])
+	}, [currentPage, groupId])
 	
 	const handleScroll=(event) => {
 		const scrollTop=event.target.scrollTop
@@ -108,10 +108,10 @@ const ProfileUserPage = () => {
 		<div>
 			<div className='sticky top-0 bg-slate-500' style={{ zIndex:1000 }}>
 				<Navbar user={user}/>
-			</div>
+			</div> 
 			<div className='flex top-14 left-0 right-0 bottom-0' style={{ zIndex:0 }}>
 				<div className='h-[calc(100vh-56px)] overflow-auto bg-slate-300 w-full' onScroll={handleScroll}>
-					<ProfileUser idFriend={userId} 
+					<ProfileGroup idGroup={groupId}
 						news={news} loading={loading} handleLikePost={handleLikePost} handleCommentPost={handleCommentPost}/>
 				</div>
 			</div>
@@ -119,4 +119,4 @@ const ProfileUserPage = () => {
 	)
 }
 
-export default ProfileUserPage
+export default ProfileGroupPage

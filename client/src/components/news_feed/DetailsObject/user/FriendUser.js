@@ -17,7 +17,7 @@ const FriendUser = ({ objectId }) => {
 		getListFriend(objectId, search).then((data) => {
 			setFriends(data?.data)
 		})
-	}, [search])
+	}, [search, objectId])
 	const [isOpenDetailsMutualFriend, setIsOpenDetailsMutualFriend]=useState(false)
 	const [mutualFriendWith, setMutualFriendWith]=useState({})
 	const handleOpenDetailsMutualFriend=(friend) => {

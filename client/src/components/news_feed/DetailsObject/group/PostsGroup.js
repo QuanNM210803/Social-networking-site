@@ -1,24 +1,31 @@
 /* eslint-disable react/jsx-key */
 /* eslint-disable no-unused-vars */
-import React, { useState } from 'react'
-import NewsCard from '../../news/NewsCard'
+import React, { useEffect, useState } from 'react'
+import { FaImages } from 'react-icons/fa'
 import { IoIosVideocam } from 'react-icons/io'
-import { FaImages } from 'react-icons/fa6'
 import { MdEmojiEmotions } from 'react-icons/md'
 import { useSelector } from 'react-redux'
-import CreatePost from '../post/CreatePost'
 import { Link } from 'react-router-dom'
+import NewsCard from '../../news/NewsCard'
+import CreatePost from '../post/CreatePost'
+import { getGroupById } from '../../../../apis/GroupApi'
 
-const Posts = ({ objectId, news, loading, handleLikePost, handleCommentPost }) => {
+const PostsGroup = ({ objectId, news, loading, handleLikePost, handleCommentPost }) => {
 	const [showCreatePost, setShowCreatePost] = useState(false)
 	const user=useSelector(state => state?.user)
 	const handleCreatePost=() => {
 		setShowCreatePost(!showCreatePost)
 	}
+	const [group, setGroup] = useState({})
+	useEffect(() => {
+		getGroupById(objectId).then((data) => {
+			setGroup(data?.data)
+		})
+	}, [objectId])
 	return (
 		<div className='flex justify-center'>
 			<div className='w-[80%] space-y-3 h-auto'>
-				{user?._id===objectId && <div className='w-full h-auto bg-slate-200 px-4 py-2 space-y-2 rounded-md'>
+				{group?.members?.some(member => member?._id.toString()===user?._id.toString()) && <div className='w-full h-auto bg-slate-200 px-4 py-2 space-y-2 rounded-md'>
 					<div className='flex items-center gap-4'>
 						<Link to={`/profileUser/${user?._id}`} className='w-12 h-12 flex-shrink-0'>
 							<img
@@ -72,4 +79,4 @@ const Posts = ({ objectId, news, loading, handleLikePost, handleCommentPost }) =
 	)
 }
 
-export default Posts
+export default PostsGroup

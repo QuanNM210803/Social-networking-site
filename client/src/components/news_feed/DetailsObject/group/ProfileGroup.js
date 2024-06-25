@@ -1,27 +1,34 @@
+/* eslint-disable no-mixed-spaces-and-tabs */
 /* eslint-disable no-unused-vars */
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Tab from '../../../chat/rightbar/Tab'
-import Posts from '../user/Posts'
 import Images from '../Images'
 import Videos from '../Videos'
 import IntroductionGroup from './IntroductionGroup'
 import MemberGroup from './MemberGroup'
+import PostsGroup from './PostsGroup'
+import { getGroupById } from '../../../../apis/GroupApi'
+import { useSelector } from 'react-redux'
 
-const ProfileGroup = ({ idGroup }) => {
+const ProfileGroup = ({ idGroup, news, loading, handleLikePost, handleCommentPost }) => {
+	const user=useSelector(state => state?.user)
 	const [activeTab, setActiveTab] =useState('Bài viết')
-	const [group, setGroup] = useState({
-		_id: idGroup,
-		name: 'Học lập trình cùng PTIT',
-		avatar: 'https://i.imgur.com/5JfZJfP.jpg',
-		coverPhoto: 'https://www.w3schools.com/howto/img_avatar.png',
-		memberNumber: 35
-	})
+	const [group, setGroup] = useState({})
+	useEffect(() => {
+		getGroupById(idGroup).then((data) => {
+			setGroup(data?.data)
+		})
+	}, [idGroup])
+
+	const handleOnclickMembers=() => {
+		setActiveTab('Thành viên')
+	}
 	return (
 		<div className='w-full h-auto'>
 			<div className='relative w-full h-[500px] bg-slate-200'>
 				<div className='flex justify-center rounded-b-md'>
 					<img
-						src={group?.coverPhoto}
+						src={group?.cover_pic}
 						className={'w-[80%] h-[350px] object-cover rounded-b-md'}
 					/>
 				</div>
@@ -30,18 +37,44 @@ const ProfileGroup = ({ idGroup }) => {
 						<div className='flex gap-5'>
 							<div className='ml-10'>
 								<img
-									src={group?.avatar}
+									src={group?.profile_pic}
 									className='w-[180px] h-[180px] object-cover rounded-full border-4 border-slate-300'
 								/>
 							</div>
-							<div className='items-center mt-16'>
-								<p className='font-bold text-3xl'>{group?.name}</p>
-								<p>{group?.memberNumber} thành viên</p>
-							</div>
+							{
+								(group?.privacy==='public' || group?.members?.some(member => member?._id.toString()===user?._id.toString())) ? (
+									<div className='items-center mt-16'>
+										<div className='flex items-end gap-4'>
+											<p className='font-bold text-3xl'>{group?.name}</p>
+											<p>{group?.privacy==='private' ? '(Riêng tư)':'(Công khai)'}</p>
+										</div>
+										<p onClick={() => handleOnclickMembers()} className='cursor-pointer'>{group?.members?.length} thành viên</p>
+									</div>
+								):(
+									<div className='items-center mt-16'>
+										<p className='font-bold text-3xl'>{group?.name}</p>
+										<p>Tham gia nhóm ngay</p>
+									</div>
+								)
+							}
 						</div>
-						<div className='mt-16 mr-10 flex items-end gap-2'>
-							<button className='bg-blue-600 text-white hover:bg-blue-800 rounded-md px-3 py-1'>Tham gia nhóm</button>
-						</div>
+						{
+							(group?.admin && group?.admin?.some((ad) => ad?._id===user?._id)) ? (
+								<div className='mt-16 mr-10 flex items-end gap-2'>
+									<button className='bg-slate-400 text-white hover:bg-slate-600 rounded-md px-3 py-1'>Chỉnh sửa thông tin nhóm</button>
+								</div>
+							):(
+								group?.members?.some(member => member?._id.toString()===user?._id.toString()) ? (
+									<div className='mt-16 mr-10 flex items-end gap-2'>
+										<button className='bg-blue-600 text-white hover:bg-blue-800 rounded-md px-3 py-1'>Rời nhóm</button>
+									</div>
+								):(
+									<div className='mt-16 mr-10 flex items-end gap-2'>
+										<button className='bg-blue-600 text-white hover:bg-blue-800 rounded-md px-3 py-1'>Tham gia nhóm</button>
+									</div>
+								)
+							)
+						}
 					</div>
 				</div>
 			</div>
@@ -59,21 +92,31 @@ const ProfileGroup = ({ idGroup }) => {
 			</div>
 			<div className='flex justify-center'>
 				<div className={'w-[80%] h-auto py-5'}>
-					{activeTab==='Bài viết' && (
-						<Posts objectId={group?._id}/>
-					)}
-					{activeTab==='Giới thiệu' && (
-						<IntroductionGroup objectId={group?._id}/>
-					)}
-					{activeTab==='Thành viên' && (
-						<MemberGroup objectId={group?._id}/>
-					)}
-					{activeTab==='Ảnh' && (
-						<Images objectId={group?._id} typeObject={'group'}/>
-					)}
-					{activeTab==='Video' && (
-						<Videos objectId={group?._id} typeObject={'group'}/>
-					)}
+					{
+						group?.privacy==='public' || group?.members?.some(member => member?._id.toString()===user?._id.toString()) ? (
+							<>
+								{activeTab==='Bài viết' && (
+									<PostsGroup objectId={group?._id} news={news} loading={loading} handleLikePost={handleLikePost} handleCommentPost={handleCommentPost}/>
+								)}
+								{activeTab==='Giới thiệu' && (
+									<IntroductionGroup objectId={group?._id}/>
+								)}
+								{activeTab==='Thành viên' && (
+									<MemberGroup objectId={group?._id}/>
+								)}
+								{activeTab==='Ảnh' && (
+									<Images objectId={group?._id} typeObject={'group'}/>
+								)}
+								{activeTab==='Video' && (
+									<Videos objectId={group?._id} typeObject={'group'}/>
+								)}
+							</>
+						):(
+							<div className='bg-white mt-2 w-full p-4 rounded'>
+								<p className='text-center text-slate-500'> Nhóm này là nhóm riêng tư, bạn cần tham gia nhóm để xem nội dung!</p>
+							</div>
+						)
+					}
 				</div>
 			</div>
 		</div>

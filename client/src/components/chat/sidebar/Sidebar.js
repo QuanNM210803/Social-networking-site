@@ -10,7 +10,7 @@ import { Link, NavLink } from 'react-router-dom'
 import Avatar from '../../Avatar'
 import { useSelector } from 'react-redux'
 import { FiArrowUpLeft } from 'react-icons/fi'
-import SearchUser from '../../SearchUser'
+import SearchUser from '../SearchUser'
 import { FaImage } from 'react-icons/fa6'
 import { FaVideo } from 'react-icons/fa6'
 

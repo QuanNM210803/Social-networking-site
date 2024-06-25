@@ -7,11 +7,12 @@ import ChatWindow from '../ChatWindow'
 import { Link } from 'react-router-dom'
 import { getFriendRequest } from '../../../apis/UserApi'
 import { useSelector } from 'react-redux'
+import DetailsMutualFriend from '../DetailsObject/DetailsMutualFriend'
+import Avatar from '../../Avatar'
 
 const Rightbar = ({ user, socketConnection }) => {
 	const [inviteFriend, setInviteFriend]=useState([])
 	const [friendsChat, setFriendsChat]=useState([])
-	const onlineUsers=useSelector(state => state?.user?.onlineUsers)
 
 	// get friend request
 	useEffect(() => {
@@ -78,6 +79,13 @@ const Rightbar = ({ user, socketConnection }) => {
 		setActiveSearch(!activeSearch)
 	}
 
+	const [isOpenDetailsMutualFriend, setIsOpenDetailsMutualFriend]=useState(false)
+	const [mutualFriendWith, setMutualFriendWith]=useState({})
+	const handleOpenDetailsMutualFriend=(friend) => {
+		setMutualFriendWith(friend)
+		setIsOpenDetailsMutualFriend(!isOpenDetailsMutualFriend)
+	}
+
 	return (
 		<div className='z-0 w-[295px]'>
 			<div className='w-full h-auto'>
@@ -100,7 +108,9 @@ const Rightbar = ({ user, socketConnection }) => {
 									<p className='text-sm'>{friend?.inviteTime}</p>
 								</div>
 								<div>
-									<p className='text-sm'>{friend?.mutualFriends} bạn chung</p>
+									<p className='text-sm hover:underline cursor-pointer' onClick={() => handleOpenDetailsMutualFriend(friend)}>
+										{friend?.mutualFriends?.length} bạn chung
+									</p>
 								</div>
 								<div className='py-1 flex justify-between'>
 									<button className='bg-blue-500 text-white hover:bg-blue-800 rounded-lg w-[45%] px-2 py-1'>Chấp nhận</button>
@@ -125,7 +135,9 @@ const Rightbar = ({ user, socketConnection }) => {
 									<p className='text-sm'>{friend?.inviteTime}</p>
 								</div>
 								<div>
-									<p className='text-sm'>{friend?.mutualFriends} bạn chung</p>
+									<p className='text-sm hover:underline cursor-pointer' onClick={() => handleOpenDetailsMutualFriend(friend)}>
+										{friend?.mutualFriends?.length} bạn chung
+									</p>
 								</div>
 								<div className='py-1 flex justify-between'>
 									<button className='bg-blue-500 text-white hover:bg-blue-800 rounded-lg w-[45%] px-2 py-1'>Chấp nhận</button>
@@ -168,14 +180,16 @@ const Rightbar = ({ user, socketConnection }) => {
 			)}
 			{resultSearchUser.length>0 && (
 				resultSearchUser.map((friend, index) => (
-					<div className='flex gap-3 px-3 py-2 cursor-pointer hover:bg-slate-200 rounded-md' onClick={() => handleOpenChatWindow(friend?.userDetails)}>
+					<div className='flex gap-3 px-3 py-2 cursor-pointer hover:bg-slate-200 rounded-md' 
+						onClick={() => handleOpenChatWindow(friend?.userDetails)}>
 						<div className='relative w-11 h-11 flex-shrink-0'>
-							<img
-								src={friend?.userDetails?.profile_pic}
-								className='rounded-full w-full h-full object-cover'
+							<Avatar
+								userId={friend?.userDetails?._id}
+								name={friend?.userDetails?.name}
+								imageUrl={friend?.userDetails?.profile_pic}
+								width={44}
+								height={44}
 							/>
-							{onlineUsers?.includes(friend?.userDetails?._id) 
-                     && <div className='absolute bottom-[2px] right-[1px] w-[9px] h-[9px] rounded-full bg-green-500'></div>}
 						</div>
 						<div className='w-full h-auto flex items-center'>
 							<p className='text-sm font-semibold'>{friend?.userDetails?.name}</p>
@@ -187,6 +201,11 @@ const Rightbar = ({ user, socketConnection }) => {
 				isOpenChatWindow && (
 					<ChatWindow handleCloseChatWindow={handleCloseChatWindow} friendChat={friendChat}/>
 				)
+			}
+			{
+				isOpenDetailsMutualFriend && <DetailsMutualFriend
+					setIsOpenDetailsMutualFriend={setIsOpenDetailsMutualFriend} 
+					mutualFriendWith={mutualFriendWith}/>
 			}
 		</div>
 	)

@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useRef } from 'react'
 import { IoMdClose } from 'react-icons/io'
 import { FaVideo } from 'react-icons/fa'
 import { IoIosCall } from 'react-icons/io'
@@ -7,6 +7,7 @@ import { FaFileImage } from 'react-icons/fa'
 import { FaFileVideo } from 'react-icons/fa6'
 import { IoMdSend } from 'react-icons/io'
 import { useSelector } from 'react-redux'
+import Avatar from '../Avatar'
 
 const ChatWindow = ({ handleCloseChatWindow, friendChat }) => {
 	const textareaRef = useRef(null)
@@ -22,11 +23,13 @@ const ChatWindow = ({ handleCloseChatWindow, friendChat }) => {
 			<div className='flex items-center justify-between w-full h-[52px] bg-blue-500 rounded-t-lg px-2'>
 				<div className='flex items-center gap-3 '>
 					<div className='relative w-10 h-10 flex-shrink-0'>
-						<img
-							src={friendChat?.profile_pic}
-							className='rounded-full w-full h-full object-cover'
+						<Avatar
+							imageUrl={friendChat?.profile_pic}
+							name={friendChat?.name}
+							width={40}
+							height={40}
+							userId={friendChat?._id}
 						/>
-						{onlineUsers?.includes(friendChat?._id) && <div className='absolute bottom-0 right-0 w-[9px] h-[9px] rounded-full bg-green-500'></div>}
 					</div>
 					<p className='font-semibold'>{friendChat?.name}</p>
 				</div>

@@ -25,7 +25,7 @@ const DetailsMedia = ({ handleCloseDetailMedia, currentMedia, listMedia, numMedi
 			<div className='fixed top-14 bottom-0 left-0 right-0 z-50 bg-gray-700 bg-opacity-70
                   flex justify-center items-center'>
 				{
-					listMedia[current].endsWith('.mp4') ? (
+					listMedia[current]?.endsWith('.mp4') ? (
 						<video
 							src={listMedia[current]}
 							ref={videoRef}
@@ -46,7 +46,7 @@ const DetailsMedia = ({ handleCloseDetailMedia, currentMedia, listMedia, numMedi
 					)
 				}
 				{
-					listMedia.length>1 && (
+					listMedia?.length>1 && (
 						<>
 							<div className='absolute top-auto left-5 text-3xl hover:bg-slate-200 hover:text-black text-slate-200
                      w-12 h-12 flex items-center justify-center rounded-full cursor-pointer' onClick={handlePrevMedia}>
@@ -64,7 +64,7 @@ const DetailsMedia = ({ handleCloseDetailMedia, currentMedia, listMedia, numMedi
 					)
 				}
 				<div className='absolute top-0 right-0 mt-2 mr-3 text-3xl hover:bg-slate-50 
-                     w-12 h-12 bg-slate-300 flex items-center justify-center rounded-full cursor-pointer' onClick={handleCloseDetailMedia}>
+                     w-12 h-12 bg-slate-300 flex items-center justify-center rounded-full cursor-pointer' onClick={() => handleCloseDetailMedia()}>
 					<button>
 						<IoMdClose/>
 					</button>
