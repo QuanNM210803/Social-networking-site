@@ -1,5 +1,4 @@
 const User=require('../../../models/UserModel')
-const friendRequest = require('./FriendRequest')
 async function acceptFriend(request, response){
    try{
       const user=request?.user
@@ -15,8 +14,9 @@ async function acceptFriend(request, response){
       }
       const fromId=user?._id.toString()
 
-      if(self?.friend_requests.some(friendRequest=>friendRequest?.user?.toString()===toId) 
-         && !self?.friends.some(friend=>friend?.user?.toString()===toId)){
+      if(self?.friend_requests.some(friendRequest=>friendRequest?.user?.toString()===toId?.toString()) 
+         && !self?.friends.some(friend=>friend?.user?.toString()===toId?.toString())){
+         console.log('1')
          await self?.updateOne({
             $pull:{
                friend_requests:{

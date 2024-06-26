@@ -4,7 +4,7 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react'
 import { IoIosSearch } from 'react-icons/io'
-import { getListFriend } from '../../../../apis/UserApi'
+import { getListFriend, unfriend } from '../../../../apis/UserApi'
 import { useSelector } from 'react-redux'
 import { RiVerifiedBadgeFill } from 'react-icons/ri'
 import DetailsMutualFriend from '../DetailsMutualFriend'
@@ -24,7 +24,14 @@ const FriendUser = ({ objectId }) => {
 		setMutualFriendWith(friend)
 		setIsOpenDetailsMutualFriend(!isOpenDetailsMutualFriend)
 	}
-
+	console.log('friends', friends)
+	const handleUnfriend= async(toId) => {
+		await unfriend({ toId }).then((data) => {
+			if (data?.success) {
+				setFriends(friends.filter((friend) => friend?._id!==toId))
+			}
+		})
+	}
 	return (
 		<div className='bg-slate-200 rounded-md h-auto'>
 			<div className='flex justify-between px-3 py-2'>
@@ -69,11 +76,12 @@ const FriendUser = ({ objectId }) => {
 									</div>
 								</div>
 								{objectId===user?._id && (
-									<div className='flex items-center justify-end w-[100px] '>
+									<div className='flex items-center justify-end w-[250px] '>
 										<div className='flex flex-col w-full'>
-											<p className='w-full px-2 py-1'>{friend?.createdAt}</p>
-											<button className='bg-slate-300 rounded px-2 py-1 hover:bg-red-500 hover:text-white'>
-                                    Unfriend
+											<p className='w-full px-2 py-1 flex justify-end'>{friend?.createdAt}</p>
+											<button className='bg-slate-100 rounded px-2 py-1 hover:bg-red-400 hover:text-white'
+												onClick={() => handleUnfriend(friend?._id)}>
+                                    Huỷ kết bạn
 											</button>
 										</div>
 									</div>

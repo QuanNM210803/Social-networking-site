@@ -5,12 +5,14 @@ import React, { useEffect, useState } from 'react'
 import { IoClose, IoSearchOutline } from 'react-icons/io5'
 import ChatWindow from '../ChatWindow'
 import { Link } from 'react-router-dom'
-import { getFriendRequest } from '../../../apis/UserApi'
-import { useSelector } from 'react-redux'
+import { acceptFriend, deleteFriendRequest, getFriendRequest } from '../../../apis/UserApi'
+import { useDispatch, useSelector } from 'react-redux'
 import DetailsMutualFriend from '../DetailsObject/DetailsMutualFriend'
 import Avatar from '../../Avatar'
+import { setFriendRequests } from '../../../redux/userSlice'
 
 const Rightbar = ({ user, socketConnection }) => {
+	const self=useSelector(state => state?.user)
 	const [inviteFriend, setInviteFriend]=useState([])
 	const [friendsChat, setFriendsChat]=useState([])
 
@@ -20,6 +22,22 @@ const Rightbar = ({ user, socketConnection }) => {
 			setInviteFriend(data?.data)
 		})
 	}, [])
+
+	const handleAcceptFriendRequest = async (toId) => {
+		await acceptFriend({ toId }).then((data) => {
+			if (data?.success) {
+				setInviteFriend(inviteFriend.filter((friend) => friend?._id!==toId))
+			}
+		})
+	}
+
+	const handleDeleteFriendRequest = async (toId) => {
+		await deleteFriendRequest({ toId }).then((data) => {
+			if (data?.success) {
+				setInviteFriend(inviteFriend.filter((friend) => friend?._id!==toId))
+			}
+		})
+	}
 
 	// get conversation
 	useEffect(() => {
@@ -113,8 +131,14 @@ const Rightbar = ({ user, socketConnection }) => {
 									</p>
 								</div>
 								<div className='py-1 flex justify-between'>
-									<button className='bg-blue-500 text-white hover:bg-blue-800 rounded-lg w-[45%] px-2 py-1'>Chấp nhận</button>
-									<button className='bg-slate-400 text-white hover:bg-slate-500 rounded-lg w-[45%] px-2 py-1'>Xóa</button>
+									<button className='bg-blue-500 text-white hover:bg-blue-800 rounded-lg w-[45%] px-2 py-1'
+										onClick={() => handleAcceptFriendRequest(friend?._id)}>
+                              Chấp nhận
+									</button>
+									<button className='bg-slate-400 text-white hover:bg-slate-500 rounded-lg w-[45%] px-2 py-1'
+										onClick={() => handleDeleteFriendRequest(friend?._id)}>
+                              Xóa
+									</button>
 								</div>
 							</div>
 						</div>
@@ -140,8 +164,14 @@ const Rightbar = ({ user, socketConnection }) => {
 									</p>
 								</div>
 								<div className='py-1 flex justify-between'>
-									<button className='bg-blue-500 text-white hover:bg-blue-800 rounded-lg w-[45%] px-2 py-1'>Chấp nhận</button>
-									<button className='bg-slate-400 text-white hover:bg-slate-500 rounded-lg w-[45%] px-2 py-1'>Xóa</button>
+									<button className='bg-blue-500 text-white hover:bg-blue-800 rounded-lg w-[45%] px-2 py-1'
+										onClick={() => handleAcceptFriendRequest(friend?._id)}>
+                              Chấp nhận
+									</button>
+									<button className='bg-slate-400 text-white hover:bg-slate-500 rounded-lg w-[45%] px-2 py-1'
+										onClick={() => handleDeleteFriendRequest(friend?._id)}>
+                              Xóa
+									</button>
 								</div>
 							</div>
 						</div>

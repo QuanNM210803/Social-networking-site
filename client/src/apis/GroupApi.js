@@ -101,3 +101,14 @@ export async function acceptJoinGroup(data) {
 		console.log(error)
 	}
 }
+
+export async function authorization(data) {
+	try {
+		const response=await api.put('/group/authorization', data, { withCredentials:true })
+		toast.success(response?.data?.message)
+		return response?.data
+	} catch (error) {
+		toast.error(error?.response?.data?.message)
+		console.log(error)
+	}
+}

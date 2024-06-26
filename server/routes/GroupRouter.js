@@ -10,6 +10,7 @@ const editGroup = require('../controller/group/EditGroup')
 const requestJoinGroup = require('../controller/group/RequestJoinGroup')
 const outGroup = require('../controller/group/OutGroup')
 const acceptJoinGroup = require('../controller/group/AcceptJoinGroup')
+const authorization = require('../controller/group/Authorization')
 
 const groupRouter=express.Router()
 
@@ -25,5 +26,7 @@ groupRouter.put('/editGroup',protectRouter,editGroup)
 groupRouter.put('/requestJoinGroup',protectRouter,requestJoinGroup)
 groupRouter.put('/outGroup',protectRouter,outGroup)
 groupRouter.put('/acceptJoinGroup',protectRouter,acceptJoinGroup)
+
+groupRouter.put('/authorization',protectRouter, authorization)
 
 module.exports=groupRouter

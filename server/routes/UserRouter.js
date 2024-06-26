@@ -24,11 +24,11 @@ userRouter.post('/register',registerUser)
 userRouter.put('/update-user',protectRouter,updateUserDetails)
 userRouter.post('/search-user',protectRouter,searchUser)
 
-userRouter.post('/friendRequest',protectRouter,friendRequest)
+userRouter.put('/friendRequest',protectRouter,friendRequest)
 userRouter.put('/cancelFriendRequest',protectRouter,cancelFriendRequest)
 userRouter.put('/acceptFriend',protectRouter,acceptFriend)
-userRouter.put('/deleteFriendRequest',protectRouter,deleteFriendRequest)
 userRouter.put('/unfriend',protectRouter,unfriend)
+userRouter.put('/deleteFriendRequest',protectRouter,deleteFriendRequest)
 
 userRouter.get('/getFriendRequest',protectRouter,getFriendRequest)
 userRouter.get('/getFriends',protectRouter,getListFriend)

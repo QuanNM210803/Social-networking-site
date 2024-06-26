@@ -1,3 +1,4 @@
+/* eslint-disable no-empty */
 /* eslint-disable no-mixed-spaces-and-tabs */
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react'
@@ -6,7 +7,7 @@ import Images from '../Images'
 import Videos from '../Videos'
 import IntroductionUser from './IntroductionUser'
 import FriendUser from './FriendUser'
-import { getUserById } from '../../../../apis/UserApi'
+import { acceptFriend, cancelFriendRequest, friendRequest, getUserById, getUserDetails, unfriend } from '../../../../apis/UserApi'
 import { useSelector } from 'react-redux'
 import { RiVerifiedBadgeFill } from 'react-icons/ri'
 import EditUserDetails from '../../../EditUserDetails'
@@ -16,15 +17,23 @@ import PostsUser from './PostsUser'
 
 const ProfileUser = ({ idFriend, news, loading, handleLikePost, handleCommentPost }) => {
 	const self=useSelector(state => state?.user)
+
 	const [activeTab, setActiveTab] =useState('Bài viết')
 	const [user, setUser] = useState({})
+	const [selfApi, setSelfApi] = useState({})
 	useEffect(() => {
 		if (idFriend!==self?._id) {
 			getUserById(idFriend).then((data) => {
 				setUser(data?.data)
 			})
+			getUserDetails().then((data) => {
+				setSelfApi(data?.data)
+			})
 		} else {
-			setUser(self)
+			getUserDetails().then((data) => {
+				setUser(data?.data)
+				setSelfApi(data?.data)
+			})
 		}
 	}, [idFriend, self])
 	const [showEdit, setShowEdit] = useState(false)
@@ -38,6 +47,52 @@ const ProfileUser = ({ idFriend, news, loading, handleLikePost, handleCommentPos
 	const handleOpenDetailsMutualFriend=() => {
 		setMutualFriendWith(user)
 		setIsOpenDetailsMutualFriend(!isOpenDetailsMutualFriend)
+	}
+
+	const handleUnfriend= async(toId) => {
+		await unfriend({ toId }).then((data) => {
+			if (data?.success) {
+				getUserById(idFriend).then((data) => {
+					setUser(data?.data)
+				})
+				getUserDetails().then((data) => {
+					setSelfApi(data?.data)
+				})
+			}
+		})
+	}
+
+	const handleAcceptFriendRequest = async (toId) => {
+		await acceptFriend({ toId }).then((data) => {
+			if (data?.success) {
+				getUserById(idFriend).then((data) => {
+					setUser(data?.data)
+				})
+				getUserDetails().then((data) => {
+					setSelfApi(data?.data)
+				})
+			}
+		})
+	}
+
+	const handleFriendRequest=async (toId) => {
+		await friendRequest({ toId }).then((data) => {
+			if (data?.success) {
+				getUserById(idFriend).then((data) => {
+					setUser(data?.data)
+				})
+			}
+		})
+	}
+
+	const handleCancelFriendRequest = async (toId) => {
+		await cancelFriendRequest({ toId }).then((data) => {
+			if (data?.success) {
+				getUserById(idFriend).then((data) => {
+					setUser(data?.data)
+				})
+			}
+		})
 	}
 
 	return (
@@ -61,38 +116,50 @@ const ProfileUser = ({ idFriend, news, loading, handleLikePost, handleCommentPos
 							<div className='items-center mt-16'>
 								<div className='flex items-center gap-2'>
 									<p className='font-bold text-3xl'>{user?.name}</p>
-									{self?._id===user?._id && <RiVerifiedBadgeFill className='text-blue-600'/>}
+									{selfApi?._id===user?._id && <RiVerifiedBadgeFill className='text-blue-600'/>}
 								</div>
 								{
-									self?._id!==user?._id && 
+									selfApi?._id!==user?._id && 
                            <p className='cursor-pointer hover:underline' onClick={() => handleOpenDetailsMutualFriend()}>
                            	{user?.mutualFriends?.length} bạn chung
                            </p>
 								}
 							</div>
 						</div>
-						{self?._id!==user?._id && <div className='mt-16 mr-10 flex items-end gap-2'>
+						{selfApi?._id!==user?._id && <div className='mt-16 mr-10 flex items-end gap-2'>
 							{
-								self?.friends.some((friend) => friend?.user===user?._id) &&
-								<button className='bg-slate-400 text-white hover:bg-slate-700 rounded-md px-3 py-1'>Hủy kết bạn</button>
+								selfApi?.friends.some((friend) => friend?.user===user?._id) &&
+								<button className='bg-slate-400 text-white hover:bg-slate-700 rounded-md px-3 py-1'
+									onClick={() => handleUnfriend(user?._id)}>
+                           Hủy kết bạn
+								</button>
 							}
 							{
-								self?.friend_requests.some((friend) => friend?.user===user?._id) &&
-                        <button className='bg-blue-600 text-white hover:bg-blue-800 rounded-md px-3 py-1'>Chấp nhận lời mời</button>
+								selfApi?.friend_requests.some((friend) => friend?.user===user?._id) &&
+                        <button className='bg-blue-600 text-white hover:bg-blue-800 rounded-md px-3 py-1'
+                        	onClick={() => handleAcceptFriendRequest(user?._id)}>
+                           Chấp nhận lời mời
+                        </button>
 							}
 							{
-								!self?.friends.some((friend) => friend?.user===user?._id) &&
-                        !self?.friend_requests.some((friend) => friend?.user===user?._id) &&
-                        !user?.friend_requests?.some((friend) => friend?.user===self?._id) && 
-                        <button className='bg-blue-600 text-white hover:bg-blue-800 rounded-md px-3 py-1'>Kết bạn</button>
+								!selfApi?.friends.some((friend) => friend?.user===user?._id) &&
+                        !selfApi?.friend_requests.some((friend) => friend?.user===user?._id) &&
+                        !user?.friend_requests?.some((friend) => friend?.user===selfApi?._id) && 
+                        <button className='bg-blue-600 text-white hover:bg-blue-800 rounded-md px-3 py-1'
+                        	onClick={() => handleFriendRequest(user?._id)}>
+                           Kết bạn
+                        </button>
 							}
 							{
-								user?.friend_requests?.some((friend) => friend?.user===self?._id) && 
-                        <button className='bg-slate-400 text-white hover:bg-slate-700 rounded-md px-3 py-1'>Hủy yêu cầu kết bạn</button>
+								user?.friend_requests?.some((friend) => friend?.user===selfApi?._id) && 
+                        <button className='bg-slate-400 text-white hover:bg-slate-700 rounded-md px-3 py-1'
+                        	onClick={() => handleCancelFriendRequest(user?._id)}>
+                           Hủy yêu cầu kết bạn
+                        </button>
 							}
 							<Link to={`/chat/${user?._id}`} className='bg-slate-500 text-white hover:bg-slate-700 rounded-md px-3 py-1'>Nhắn tin</Link>
 						</div>}
-						{self?._id===user?._id && <div className='mt-16 mr-10 flex items-end gap-2'>
+						{selfApi?._id===user?._id && <div className='mt-16 mr-10 flex items-end gap-2'>
 							<button className='bg-slate-400 text-white hover:bg-slate-600 rounded-md px-3 py-1'
 								onClick={() => handleShowEdit()}>
                         Chỉnh sửa thông tin
@@ -147,3 +214,9 @@ const ProfileUser = ({ idFriend, news, loading, handleLikePost, handleCommentPos
 }
 
 export default ProfileUser
+
+// chat window
+// thông báo
+
+// call, Video call
+// responsive

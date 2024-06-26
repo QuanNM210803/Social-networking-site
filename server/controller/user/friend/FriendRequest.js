@@ -20,6 +20,7 @@ async function friendRequest(request, response){
          })
       }
 
+      console.log('1')
       if(!sender?.friends.some(friend=>friend?.user.toString()===toId) 
          && !receiver?.friend_requests.some(friendRequest=>friendRequest?.user.toString()===fromId)){
          await receiver?.updateOne({

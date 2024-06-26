@@ -103,10 +103,10 @@ const Sidebar = ({ user }) => {
 							{groups.slice(5).map((group, index) => (
 								<Link to={`/profileGroup/${group?._id}`} className='flex items-center gap-5 py-2 px-5 cursor-pointer hover:bg-slate-200 rounded-lg'>
 									<img
-										src={group?.avatar}
+										src={group?.profile_pic}
 										className='rounded w-9 h-9 object-cover'
 									/>
-									<p className='text-base font-semibold'>{group?.profile_pic}</p>
+									<p className='text-base font-semibold'>{group?.name}</p>
 								</Link>
 							))}
 							<div className='flex items-center gap-5 py-2 px-5 cursor-pointer hover:bg-slate-200 rounded-lg'

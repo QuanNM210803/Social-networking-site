@@ -1,9 +1,10 @@
+/* eslint-disable no-mixed-spaces-and-tabs */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/jsx-key */
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react'
 import { IoIosSearch } from 'react-icons/io'
-import { getGroupById } from '../../../../apis/GroupApi'
+import { authorization, getGroupById } from '../../../../apis/GroupApi'
 import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { RiVerifiedBadgeFill } from 'react-icons/ri'
@@ -31,6 +32,16 @@ const MemberGroup = ({ objectId }) => {
 			setMembersShow(filteredMembers)
 		}
 	}, [search])
+
+	const handleAuthorization=async (userId) => {
+		await authorization({ groupId:objectId, userId }).then((data) => {
+			if (data?.admin==true) {
+				setAdmin([...admin, { _id:userId }])
+			} else if (data?.admin==false) {
+				setAdmin(admin.filter(ad => ad._id!==userId))
+			}
+		})
+	}
 
 	return (
 		<div className='bg-slate-200 rounded-md h-auto'>
@@ -74,6 +85,21 @@ const MemberGroup = ({ objectId }) => {
 										}
 									</div>
 								</div>
+								{
+									member?._id!==user?._id && admin.some( ad => ad?._id===user?._id) && 
+                           <div className='flex items-center justify-end'>
+                           	<button className='h-auto w-[100px] hover:bg-slate-200 py-1 px-2 rounded-md'
+                           		onClick={() => handleAuthorization(member?._id)}>
+                           		{
+                           			admin.some(ad => ad._id===member._id) ? (
+                           				<p className='text-sm'>Gỡ quản trị</p>
+                           			):(
+                           				<p className='text-sm'>Thêm quyền quản trị</p>
+                           			)
+                           		}
+                           	</button>
+                           </div>
+								}
 							</div>
 						))
 					}

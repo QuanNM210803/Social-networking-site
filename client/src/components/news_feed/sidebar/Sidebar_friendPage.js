@@ -1,3 +1,4 @@
+/* eslint-disable no-empty */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/jsx-key */
 /* eslint-disable no-unused-vars */
@@ -7,22 +8,29 @@ import { IoMdPeople } from 'react-icons/io'
 import TipsAndUpdatesIcon from '@mui/icons-material/TipsAndUpdates'
 import { FaAngleRight } from 'react-icons/fa6'
 import { FaArrowLeft } from 'react-icons/fa6'
-import { getFriendRequest, getFriendsSuggest, getListFriend } from '../../../apis/UserApi'
+import { acceptFriend, deleteFriendRequest, getFriendRequest, getFriendsSuggest, getListFriend, getUserDetails, unfriend, friendRequest } from '../../../apis/UserApi'
 import { useSelector } from 'react-redux'
 import DetailsMutualFriend from '../DetailsObject/DetailsMutualFriend'
 
 const Sidebar_friendPage = ({ handleClickFriend }) => {
 	const user=useSelector(state => state?.user)
 	const [option, setOption]=useState(null)
-	const [friendRequest, setFriendRequest]=useState([])
+	const [friendRequests, setFriendRequests]=useState([])
 	const [friends, setFriends]=useState([])
 	const [friendsSuggest, setFriendsSuggest]=useState([])
 
-	// phải setUser trong redux
+	const [self, setSelf]=useState({})
+
+	useEffect(() => {
+		getUserDetails().then((data) => {
+			setSelf(data?.data)
+		})
+	}, [user])
+
 	useEffect(() => {
 		getFriendRequest().then((data) => {
 			if (data?.data) {
-				setFriendRequest(data?.data)
+				setFriendRequests(data?.data)
 			}
 		})
 	}, [user])
@@ -53,6 +61,80 @@ const Sidebar_friendPage = ({ handleClickFriend }) => {
 	const handleOpenDetailsMutualFriend=(friend) => {
 		setMutualFriendWith(friend)
 		setIsOpenDetailsMutualFriend(!isOpenDetailsMutualFriend)
+	}
+
+	const handleUnfriend= async(toId) => {
+		await unfriend({ toId }).then(async (data) => {
+			if (data?.success) {
+				await getFriendsSuggest().then((data) => {
+					if (data?.data) {
+						setFriendsSuggest(data?.data)
+					}
+				})
+				await getListFriend(user?._id, search).then((data) => {
+					if (data?.data) {
+						setFriends(data?.data)
+					}
+				})
+			}
+		})
+	}
+
+	const handleAcceptFriendRequest = async (toId) => {
+		await acceptFriend({ toId }).then(async (data) => {
+			if (data?.success) {
+				getUserDetails().then((data) => {
+					setSelf(data?.data)
+				})
+				await getFriendRequest().then((data) => {
+					if (data?.data) {
+						setFriendRequests(data?.data)
+					}
+				})
+				await getFriendsSuggest().then((data) => {
+					if (data?.data) {
+						setFriendsSuggest(data?.data)
+					}
+				})
+				await getListFriend(user?._id, search).then((data) => {
+					if (data?.data) {
+						setFriends(data?.data)
+					}
+				})
+			}
+		})
+	}
+
+	const handleFriendRequest=async (toId) => {
+		await friendRequest({ toId }).then(async(data) => {
+			if (data?.success) {
+				await getFriendsSuggest().then((data) => {
+					if (data?.data) {
+						setFriendsSuggest(data?.data)
+					}
+				})
+			}
+		})
+	}
+
+	const handleDeleteFriendRequest = async (toId) => {
+		await deleteFriendRequest({ toId }).then(async(data) => {
+			if (data?.success) {
+				getUserDetails().then((data) => {
+					setSelf(data?.data)
+				})
+				await getFriendRequest().then((data) => {
+					if (data?.data) {
+						setFriendRequests(data?.data)
+					}
+				})
+				await getFriendsSuggest().then((data) => {
+					if (data?.data) {
+						setFriendsSuggest(data?.data)
+					}
+				})
+			}
+		})
 	}
 
 	return (
@@ -96,7 +178,7 @@ const Sidebar_friendPage = ({ handleClickFriend }) => {
 						<p className='font-semibold text-nomal'>Lời mời kết bạn</p>
 					</div>
 					{
-						friendRequest.length===0 ? (
+						friendRequests.length===0 ? (
 							<div className='py-5 px-5'>
 								<p className='text-center text-slate-500'>Không có lời mời kết bạn</p>
 							</div>
@@ -104,7 +186,7 @@ const Sidebar_friendPage = ({ handleClickFriend }) => {
 							<div className='p-3 space-y-2 h-[550px] overflow-auto scrollbar-newsfeed'>
 								<div className='w-[360px]'>
 									{
-										friendRequest.map((friend, index) => (
+										friendRequests.map((friend, index) => (
 											<div className='flex gap-3 px-2 py-1 '>
 												<div className='flex-shrink-0'>
 													<img
@@ -125,8 +207,14 @@ const Sidebar_friendPage = ({ handleClickFriend }) => {
 														</p>
 													</div>
 													<div className='py-1 flex justify-between'>
-														<button className='bg-blue-500 text-white hover:bg-blue-800 rounded-lg w-[45%] px-2 py-1'>Chấp nhận</button>
-														<button className='bg-slate-400 text-white hover:bg-slate-500 rounded-lg w-[45%] px-2 py-1'>Xóa</button>
+														<button className='bg-blue-500 text-white hover:bg-blue-800 rounded-lg w-[45%] px-2 py-1'
+															onClick={() => handleAcceptFriendRequest(friend?._id)}>
+                                             Chấp nhận
+														</button>
+														<button className='bg-slate-400 text-white hover:bg-slate-500 rounded-lg w-[45%] px-2 py-1'
+															onClick={() => handleDeleteFriendRequest(friend?._id)}>
+                                             Xóa
+														</button>
 													</div>
 												</div>
 											</div>
@@ -146,7 +234,7 @@ const Sidebar_friendPage = ({ handleClickFriend }) => {
 						<p className='font-semibold text-nomal'>Gợi ý kết bạn</p>
 					</div>
 					{
-						friendsSuggest.length===0 ? (
+						friendsSuggest?.length===0 ? (
 							<div className='py-5 px-5'>
 								<p className='text-center text-slate-500'>Không có bạn bè gợi ý</p>
 							</div>
@@ -175,10 +263,16 @@ const Sidebar_friendPage = ({ handleClickFriend }) => {
 													</div>
 													<div className='py-1'>
 														{
-															user?.friend_requests?.some((f) => f?.user?.toString()===friend?._id?.toString()) ? (
-																<button className='bg-blue-400 text-white hover:bg-blue-600 rounded-lg w-[45%] px-2 py-1'>Chấp nhận</button>
+															self?.friend_requests?.some((f) => f?.user?.toString()===friend?._id?.toString()) ? (
+																<button className='bg-blue-400 text-white hover:bg-blue-600 rounded-lg w-[45%] px-2 py-1'
+																	onClick={() => handleAcceptFriendRequest(friend?._id)}>
+                                                   Chấp nhận
+																</button>
 															):(
-																<button className='bg-blue-400 text-white hover:bg-blue-600 rounded-lg w-[45%] px-2 py-1'>Thêm bạn bè</button>
+																<button className='bg-blue-400 text-white hover:bg-blue-600 rounded-lg w-[45%] px-2 py-1'
+																	onClick={() => handleFriendRequest(friend?._id)}>
+                                                   Thêm bạn bè
+																</button>
 															)
 														}
 													</div>
@@ -240,11 +334,12 @@ const Sidebar_friendPage = ({ handleClickFriend }) => {
 														</p>
 													</div>
 												</div>
-												<div className='flex items-center justify-end w-[100px] '>
+												<div className='flex items-center justify-end w-[250px] '>
 													<div className='flex flex-col w-full'>
-														<p className='w-full px-2 py-1'>{friend?.createdAt}</p>
-														<button className='bg-slate-200 rounded px-2 py-1 hover:bg-red-500 hover:text-white'>
-                                             Unfriend
+														<p className='w-full px-2 py-1 flex justify-end'>{friend?.createdAt}</p>
+														<button className='bg-slate-200 rounded px-2 py-1 hover:bg-red-400 hover:text-white'
+															onClick={() => handleUnfriend(friend?._id)}>
+                                             Hủy kết bạn
 														</button>
 													</div>
 												</div>

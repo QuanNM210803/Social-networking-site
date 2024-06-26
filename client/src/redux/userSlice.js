@@ -37,6 +37,12 @@ export const userSlice = createSlice({
 			state.friend_requests=action?.payload?.friend_requests
 			state.storagedVideo=action?.payload?.storagedVideo
 		},
+		setFriends:(state, action) => {
+			state.friends=action?.payload
+		},
+		setFriendRequests:(state, action) => {
+			state.friend_requests=action?.payload
+		},
 		setToken:(state, action) => {
 			state.token=action.payload
 		},
@@ -62,7 +68,7 @@ export const userSlice = createSlice({
 })
 
 // Đây là việc xuất ra các action creator. Redux Toolkit tự động tạo ra các action creator cho mỗi reducer function
-export const { setUser, setToken, logout, setOnlineUsers, setSocketConnection } = userSlice.actions
+export const { setUser, setToken, logout, setOnlineUsers, setFriends, setFriendRequests } = userSlice.actions
 
 //Đây là việc xuất ra reducer function. Redux Toolkit tự động tạo ra reducer function từ các reducer function bạn đã cung cấp
 export default userSlice.reducer

@@ -123,3 +123,58 @@ export async function searchUserGroup(search) {
 		console.log(error)
 	}
 }
+
+export async function friendRequest(data) {
+	try {
+		const response=await api.put('/user/friendRequest', data, { withCredentials:true })
+		toast.success(response?.data?.message)
+		return response?.data
+	} catch (error) {
+		toast.error(error?.response?.data?.message)
+		console.log(error)
+	}
+}
+
+export async function cancelFriendRequest(data) {
+	try {
+		const response=await api.put('/user/cancelFriendRequest', data, { withCredentials:true })
+		toast.success(response?.data?.message)
+		return response?.data
+	} catch (error) {
+		toast.error(error?.response?.data?.message)
+		console.log(error)
+	}
+}
+
+export async function acceptFriend(data) {
+	try {
+		const response=await api.put('/user/acceptFriend', data, { withCredentials:true })
+		toast.success(response?.data?.message)
+		return response?.data
+	} catch (error) {
+		toast.error(error?.response?.data?.message)
+		console.log(error)
+	}
+}
+
+export async function unfriend(data) {
+	try {
+		const response=await api.put('/user/unfriend', data, { withCredentials:true })
+		toast.success(response?.data?.message)
+		return response?.data
+	} catch (error) {
+		toast.error(error?.response?.data?.message)
+		console.log(error)
+	}
+}
+
+export async function deleteFriendRequest(data) {
+	try {
+		const response=await api.put('/user/deleteFriendRequest', data, { withCredentials:true })
+		toast.success(response?.data?.message)
+		return response?.data
+	} catch (error) {
+		toast.error(error?.response?.data?.message)
+		console.log(error)
+	}
+}
