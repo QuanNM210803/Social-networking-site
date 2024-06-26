@@ -25,6 +25,13 @@ const groupSchema=new mongoose.Schema({
          required:true
       }
    ],
+   pending_members:[
+      {
+         type:mongoose.Schema.Types.ObjectId,
+         ref:'User',
+         default:[]
+      }
+   ],
    admin:[
       {
          type:mongoose.Schema.Types.ObjectId,

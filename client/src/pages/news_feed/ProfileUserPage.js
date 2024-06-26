@@ -76,13 +76,13 @@ const ProfileUserPage = () => {
 	const handleLikePost=async (postId) => {
 		try {
 			const response=await likePost(postId)
-			if (response?.liked) {
+			if (response?.liked===true) {
 				setNews(prevNews => (
 					prevNews.map(post => 
 						post._id===postId ? { ...post, like:[...post?.like, user?._id] } : post
 					)
 				))
-			} else {
+			} else if (response?.liked===false) {
 				setNews(prevNews => (
 					prevNews.map(post => 
 						post._id===postId ? { ...post, like: post?.like.filter(userId => userId!==user?._id) } : post

@@ -1,5 +1,6 @@
 const User=require('../../models/UserModel')
 const Post=require('../../models/PostModel')
+const Group=require('../../models/GroupModel')
 const Comment=require('../../models/CommentModel')
 const cloudinary=require('cloudinary').v2
 const path=require('path')
@@ -27,11 +28,6 @@ const createComment=async(request, response)=>{
       const {postId, text}=request?.body
       let image=request?.files['image']?.[0] || null
       let video=request?.files['video']?.[0] || null
-
-      console.log('image', image)
-      console.log('video', video)
-      console.log('textarea', text)
-      console.log('postId', postId)
       
       if(!text && !image && !video){
          return response.status(400).json({
@@ -46,38 +42,51 @@ const createComment=async(request, response)=>{
             error:true
          })
       }
-      if(image){
-         const uploadImageResponse=await cloudinary.uploader.upload(image.path)
-         image=uploadImageResponse.secure_url
-      }
-      if(video){
-         const uploadVideoResponse=await cloudinary.uploader.upload(video.path,{resource_type:'video'})
-         video=uploadVideoResponse.secure_url
-      }
 
-      const comment=new Comment({
-         commenter:commenterId,
-         content:{
-            text,
-            image,
-            video
-         }
+      // postInGroup
+      const postInGroup=await Group.findOne({
+         posts:postId
       })
-      await comment.save()
-      await Post.updateOne(
-         {
-            _id:postId
-         },
-         {
-            $push:{
-               comments:comment._id
+
+      if((postInGroup && postInGroup?.members?.includes(commenterId)) || !postInGroup || postInGroup?.privacy==='public'){
+         if(image){
+            const uploadImageResponse=await cloudinary.uploader.upload(image.path)
+            image=uploadImageResponse.secure_url
+         }
+         if(video){
+            const uploadVideoResponse=await cloudinary.uploader.upload(video.path,{resource_type:'video'})
+            video=uploadVideoResponse.secure_url
+         }
+   
+         const comment=new Comment({
+            commenter:commenterId,
+            content:{
+               text,
+               image,
+               video
             }
-         }
-      )
-      return response.status(201).json({
-         message:'Comment created successfully',
-         success:true
-      })
+         })
+         await comment.save()
+         await Post.updateOne(
+            {
+               _id:postId
+            },
+            {
+               $push:{
+                  comments:comment._id
+               }
+            }
+         )
+         return response.status(201).json({
+            message:'Comment created successfully',
+            success:true
+         })
+      }else{
+         return response.status(403).json({
+            message:'You are not allowed to comment on this post',
+            error:true
+         })
+      }
    }catch(error){
       return response.status(500).json({
          message: error.message || error,

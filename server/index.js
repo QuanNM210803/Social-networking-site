@@ -15,6 +15,7 @@ const cookiesParser=require('cookie-parser')
 const {app, server}=require('./socket/index');
 const createAPost = require('./controller/post/CreatePost');
 const createAComment = require('./controller/comment/CreateComment');
+const createAPostInGroup = require('./controller/group/CreatePostInGroup');
 
 cloudinary.config({
    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -53,6 +54,7 @@ app.use('/comment',commentRouter)
 // cái này lấy thẳng từ controller
 app.use('/post',createAPost) 
 app.use('/comment',createAComment)
+app.use('/post',createAPostInGroup)
 
 connectDB().then(()=>{
    server.listen(PORT,()=>{

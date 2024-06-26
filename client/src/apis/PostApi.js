@@ -26,6 +26,26 @@ export const createPost=async (post) => {
 	}
 }
 
+export const createPostInGroup=async (post) => {
+	try {
+		const formData=new FormData()
+		formData.append('groupId', post?.groupId)
+		formData.append('text', post?.text)
+		Array.from(post?.image).forEach(image => {
+			formData.append('image', image)
+		})
+		Array.from(post?.video).forEach(video => {
+			formData.append('video', video)
+		})
+		const response=await api.post('/post/createInGroup', formData, { withCredentials:true })
+		toast.success(response?.data?.message)
+		return response?.data
+	} catch (error) {
+		toast.error(error?.response?.data?.message)
+		console.error(error)
+	}
+}
+
 export const getPostsPagination=async (page, limit) => {
 	try {
 		const response=await api.get(`/post/posts?page=${page}&limit=${limit}`, { withCredentials:true })

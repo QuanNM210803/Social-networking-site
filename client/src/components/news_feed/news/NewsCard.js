@@ -59,9 +59,9 @@ const NewsCard = ({ news, handleLikePost, handleCommentPost }) => {
 							<Link to={`/profileUser/${post?.poster?._id}`} className='font-semibold'>{post?.poster?.name}</Link>
 							{
 								post?.group && (
-									<p className='text-xs text-gray-500'>
+									<Link to={`/profileGroup/${post?.group?._id}`} className='text-xs text-gray-500'>
                               đã đăng trong nhóm <strong className='cursor-pointer hover:underline'>{post?.group?.name}</strong>
-									</p>
+									</Link>
 								)
 							}
 						</div>

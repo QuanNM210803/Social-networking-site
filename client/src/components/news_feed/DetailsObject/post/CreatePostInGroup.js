@@ -5,15 +5,14 @@ import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { BsEmojiSmileFill } from 'react-icons/bs'
 import { FaImages } from 'react-icons/fa'
-import { createPost } from '../../../../apis/PostApi'
 import Loading from '../../../Loading'
-const CreatePost = ({ handleCreatePost }) => {
+import { createPostInGroup } from '../../../../apis/PostApi'
+
+const CreatePostInGroup = ({ handleCreatePost, groupId, groupName }) => {
 	const user=useSelector((state) => state?.user)
 	const textareaRef = useRef(null)
 
 	const [contentText, setContentText] = useState('')
-	// const [payloadImages, setPayloadImages] = useState([])
-	// const [payloadVideos, setPayloadVideos] = useState([])
 	const [contentImage, setContentImage] = useState([])
 	const [contentVideo, setContentVideo] = useState([])
 	const [loadingFile, setLoadingFile]=useState(false)
@@ -24,25 +23,6 @@ const CreatePost = ({ handleCreatePost }) => {
 		const newVideos = newFiles.filter(file => file.type.startsWith('video'))
 		setContentImage(prevImages => [...prevImages, ...newImages])
 		setContentVideo(prevVideos => [...prevVideos, ...newVideos])
-		// let copyImages=[...newImages]
-		// let copyVideos=[...newVideos]
-		// setContentImage(prevImages => [...prevImages, ...newImages.map(file => URL.createObjectURL(file))])
-		// setContentVideo(prevVideos => [...prevVideos, ...newVideos.map(file => URL.createObjectURL(file))])
-
-		// if (copyImages?.length) {
-		// 	for (let i=0;i<copyImages.length;i++) {
-		// 		await uploadFile(copyImages[i]).then((data) => {
-		// 			setPayloadImages(prevImages => [...prevImages, data?.url])
-		// 		})
-		// 	}
-		// }
-		// if (copyVideos?.length) {
-		// 	for (let i=0;i<copyVideos.length;i++) {
-		// 		await uploadFile(copyVideos[i]).then((data) => {
-		// 			setPayloadVideos(prevVideos => [...prevVideos, data?.url])
-		// 		})
-		// 	}
-		// }
 		setLoadingFile(false)
 	}
 
@@ -52,11 +32,9 @@ const CreatePost = ({ handleCreatePost }) => {
 
 	const handleRemoveImage = (index) => {
 		setContentImage(prevImages => prevImages.filter((_, i) => i !== index))
-		// setPayloadImages(prevImages => prevImages.filter((_, i) => i !== index))
 	}
 	const handleRemoveVideo = (index) => {
 		setContentVideo(prevVideos => prevVideos.filter((_, i) => i !== index))
-		// setPayloadVideos(prevVideos => prevVideos.filter((_, i) => i !== index))
 	}
 
 	const handleChange = (event) => {
@@ -72,26 +50,26 @@ const CreatePost = ({ handleCreatePost }) => {
 	}
 	const handlePost=async() => {
 		const data={
+			groupId:groupId,
 			text: contentText,
-			// image: payloadImages,
-			// video: payloadVideos
 			image: contentImage,
 			video: contentVideo
 		}
 		setLoadingFile(true)
-		const response=await createPost(data)
+		const response=await createPostInGroup(data)
 		setLoadingFile(false)
 		if (response?.success) {
 			handleCreatePost()
 			window.location.reload()
 		}
 	}
+
 	return (
 		<div className='fixed top-14 bottom-0 right-0 left-0 bg-gray-700 bg-opacity-70
          z-50 flex justify-center items-center'>
 			<div className='bg-slate-200 w-[40%] h-auto max-h-[600px] rounded'>
 				<div className='flex items-center justify-center relative py-2'>
-					<p className='font-bold text-lg'>Tạo bài viết</p>
+					<p className='font-bold text-lg'>Tạo bài viết trong {groupName}</p>
 					<IoCloseOutline size={30} className='absolute right-2 cursor-pointer hover:bg-slate-300 rounded-full'
 						onClick={() => handleCreatePost()}/>
 				</div>
@@ -178,4 +156,4 @@ const CreatePost = ({ handleCreatePost }) => {
 	)
 }
 
-export default CreatePost
+export default CreatePostInGroup

@@ -15,6 +15,9 @@ async function groupDetails(request,response){
       }).populate({
          path:'members',
          select:'_id name profile_pic'
+      }).populate({
+         path:'pending_members',
+         select:'_id name profile_pic'
       })
       if(!group){
          return response.status(404).json({
@@ -35,7 +38,8 @@ async function groupDetails(request,response){
                _id:group?._id,
                name:group?.name,
                profile_pic:group?.profile_pic,
-               cover_pic:group?.cover_pic
+               cover_pic:group?.cover_pic,
+               pending_members:group?.pending_members,
             },
             message:'Private group, join to see more details',
             success:true

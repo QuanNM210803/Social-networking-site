@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-console */
 /* eslint-disable react/jsx-key */
 /* eslint-disable no-unused-vars */
@@ -7,75 +8,41 @@ import { FaAngleRight } from 'react-icons/fa6'
 import { FaArrowLeft } from 'react-icons/fa6'
 import { IoAddOutline } from 'react-icons/io5'
 import { IoMdClose } from 'react-icons/io'
+import { createGroup, getGroupByUserId } from '../../../apis/GroupApi'
+import { useSelector } from 'react-redux'
 
 const Sidebar_groupPage = ({ handleClickGroup }) => {
+	const user=useSelector(state => state?.user)
 	const [option, setOption]=useState(null)
 	const [onOpenCreateGroup, setOnOpenCreateGroup]=useState(false)
+
+	const [profile_pic, setProfile_pic]=useState('https://res.cloudinary.com/daygzzzwz/image/upload/v1719383894/chat-app-file/caj3g7ohm42ghm3ffkmu.jpg')
+	const [cover_pic, setCover_pic]=useState('https://res.cloudinary.com/daygzzzwz/image/upload/v1719383900/chat-app-file/xufmmzamzwem5wthrtpr.png')
 	const [valuePrivacy, setValuePrivacy]=useState('')
 	const [groupNameCreate, setGroupNameCreate]=useState('')
+
 	const [errorInput, setErrorInput]=useState('')
-	const [groups, setGroups]=useState([
-		{
-			_id: '1',
-			avatar: 'https://www.w3schools.com/howto/img_avatar.png',
-			name: 'Code ptit'
-		},
-		{
-			_id: '2',
-			avatar: 'https://www.w3schools.com/howto/img_avatar.png',
-			name: 'Mùa lúa chín'
-		},
-		{
-			_id: '3',
-			avatar: 'https://www.w3schools.com/howto/img_avatar.png',
-			name: 'Hưng Yên quê tôi'
-		},
-		{
-			_id: '4',
-			avatar: 'https://www.w3schools.com/howto/img_avatar.png',
-			name: 'Tôi yêu Ptit'
-		},
-		{
-			_id: '5',
-			avatar: 'https://www.w3schools.com/howto/img_avatar.png',
-			name: 'Cộng đồng PUPG Việt Nam'
-		},
-		{
-			_id: '6',
-			avatar: 'https://www.w3schools.com/howto/img_avatar.png',
-			name: 'Học lập trình cùng Ptit'
-		},
-		{
-			_id: '7',
-			avatar: 'https://www.w3schools.com/howto/img_avatar.png',
-			name: 'Ảo thật đấy'
-		},
-		{
-			_id: '8',
-			avatar: 'https://www.w3schools.com/howto/img_avatar.png',
-			name: 'Anh em code dạo'
-		},
-		{
-			_id: '9',
-			avatar: 'https://www.w3schools.com/howto/img_avatar.png',
-			name: 'Học code mạng xã hội'
-		},
-		{
-			_id: '10',
-			avatar: 'https://www.w3schools.com/howto/img_avatar.png',
-			name: 'Không có gì hôm nay?'
-		},
-		{
-			_id: '11',
-			avatar: 'https://www.w3schools.com/howto/img_avatar.png',
-			name: 'Nguyễn Văn A'
-		},
-		{
-			_id: '12',
-			avatar: 'https://www.w3schools.com/howto/img_avatar.png',
-			name: 'Nguyễn Văn A'
+   
+	const [groups, setGroups]=useState([])
+	const [groupsShow, setGroupsShow]=useState([])
+	const [search, setSearch]=useState('')
+
+	useEffect(() => {
+		getGroupByUserId(user?._id).then(data => {
+			setGroups(data?.data)
+			setGroupsShow(data?.data)
+		})
+	}, [user])
+
+	useEffect(() => {
+		if (search==='') {
+			setGroupsShow(groups)
+		} else {
+			const newGroups = groups.filter(group => group?.name?.toLowerCase().includes(search?.toLowerCase()))
+			setGroupsShow(newGroups)
 		}
-	])
+	}, [search])
+
 	const handleClickedOption=(value) => {
 		setOption(value)
 	}
@@ -88,12 +55,13 @@ const Sidebar_groupPage = ({ handleClickGroup }) => {
 	const handleGroupNameChange = (event) => {
 		setGroupNameCreate(event?.target?.value)
 	}
-	const handleCreateGroup=() => {
+	const handleCreateGroup=async () => {
 		if (groupNameCreate==='' || valuePrivacy==='') {
 			setErrorInput('Vui lòng điền đầy đủ thông tin')
 		} else {
 			setErrorInput('')
 			console.log('Tạo nhóm thành công', { groupNameCreate, valuePrivacy })
+			await createGroup({ name:groupNameCreate, privacy:valuePrivacy, profile_pic, cover_pic })
 			setOnOpenCreateGroup(false)
 		}
 	}
@@ -136,25 +104,29 @@ const Sidebar_groupPage = ({ handleClickGroup }) => {
 						<p className='font-semibold text-nomal'>Nhóm của bạn</p>
 					</div>
 					<div className='flex items-center px-3 py-2 bg-slate-300'>
-						<input type='text' placeholder='Tìm kiếm nhóm của bạn' className='w-full h-8 px-3 bg-slate-200 rounded-md'/>
+						<input 
+							type='text' 
+							name='search'
+							value={search}
+							onChange={(e) => setSearch(e?.target?.value)}
+							placeholder='Tìm kiếm nhóm của bạn' 
+							className='w-full h-8 px-3 bg-slate-200 rounded-md'/>
 					</div>
 					{
-						groups.length===0 ? (
+						groupsShow?.length===0 ? (
 							<div className='py-5 px-5'>
 								<p className='text-center text-slate-500'>Bạn chưa tham gia vào bất kì nhóm nào</p>
 							</div>
 						):(
 							<div className='p-3 space-y-2 h-[510px] overflow-auto scrollbar-newsfeed'>
-								<div className='w-[335px] space-y-3'>
+								<div className='w-[360px] space-y-3'>
 									{
-										groups.map((group, index) => (
-											<div className='flex gap-3'>
-												<div className=''>
+										groupsShow?.map((group, index) => (
+											<div className='flex gap-3 py-1 px-2 hover:bg-slate-200 rounded-md'>
+												<div className='flex-shrink-0'>
 													<img
-														src={group?.avatar}
-														width={60}
-														height={60}
-														className='rounded-lg cursor-pointer'
+														src={group?.profile_pic}
+														className='rounded-lg cursor-pointer w-14 h-14 object-cover'
 														onClick={() => handleClickGroup(group?._id)}
 													/>
 												</div>

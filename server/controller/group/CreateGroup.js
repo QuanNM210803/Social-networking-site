@@ -14,14 +14,13 @@ async function createGroup(request,response){
       const {name, privacy}=request?.body
       let {profile_pic, cover_pic}=request?.body
 
-      if(profile_pic){
-         const uploadProfilePic=await cloudinary.uploader.upload(profile_pic)
-         profile_pic=uploadProfilePic.secure_url
+      if(!name || !privacy){
+         return response.status(400).json({
+            message:'Please provide all required fields',
+            error:true
+         })
       }
-      if(cover_pic){
-         const uploadCoverPic=await cloudinary.uploader.upload(cover_pic)
-         cover_pic=uploadCoverPic.secure_url
-      }
+      
       const newGroup=new Group({
          name,
          profile_pic,

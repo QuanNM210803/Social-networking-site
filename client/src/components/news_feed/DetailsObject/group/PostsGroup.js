@@ -7,8 +7,8 @@ import { MdEmojiEmotions } from 'react-icons/md'
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import NewsCard from '../../news/NewsCard'
-import CreatePost from '../post/CreatePost'
 import { getGroupById } from '../../../../apis/GroupApi'
+import CreatePostInGroup from '../post/CreatePostInGroup'
 
 const PostsGroup = ({ objectId, news, loading, handleLikePost, handleCommentPost }) => {
 	const [showCreatePost, setShowCreatePost] = useState(false)
@@ -73,7 +73,7 @@ const PostsGroup = ({ objectId, news, loading, handleLikePost, handleCommentPost
 				</div>
 			</div>
 			{showCreatePost && (
-				<CreatePost handleCreatePost={handleCreatePost}/>
+				<CreatePostInGroup handleCreatePost={handleCreatePost} groupId={group?._id} groupName={group?.name}/>
 			)}
 		</div>
 	)

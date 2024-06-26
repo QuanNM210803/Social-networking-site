@@ -1,3 +1,5 @@
+/* eslint-disable no-unsafe-optional-chaining */
+/* eslint-disable no-undef */
 /* eslint-disable no-mixed-spaces-and-tabs */
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react'
@@ -7,8 +9,10 @@ import Videos from '../Videos'
 import IntroductionGroup from './IntroductionGroup'
 import MemberGroup from './MemberGroup'
 import PostsGroup from './PostsGroup'
-import { getGroupById } from '../../../../apis/GroupApi'
+import { getGroupById, outGroup, requestJoinGroup } from '../../../../apis/GroupApi'
 import { useSelector } from 'react-redux'
+import EditGroupDetails from './EditGroupDetails'
+import PendingMembers from './PendingMembers'
 
 const ProfileGroup = ({ idGroup, news, loading, handleLikePost, handleCommentPost }) => {
 	const user=useSelector(state => state?.user)
@@ -23,6 +27,36 @@ const ProfileGroup = ({ idGroup, news, loading, handleLikePost, handleCommentPos
 	const handleOnclickMembers=() => {
 		setActiveTab('Thành viên')
 	}
+
+	const [showEditGroup, setShowEditGroup]=useState(false)
+	const handleShowEditGroup=() => {
+		setShowEditGroup(!showEditGroup)
+	}
+
+	const handleRequestJoinGroup=async () => {
+		await requestJoinGroup({ groupId:idGroup }).then((data) => {
+			if (data?.request) {
+				setGroup({
+					...group,
+					pending_members:[...group?.pending_members, { _id:user?._id, name:user?.name, profile_pic:user?.profile_pic }]
+				})
+			} else {
+				setGroup({
+					...group,
+					pending_members:group?.pending_members?.filter(member => member?._id?.toString()!==user?._id.toString())
+				})
+			}
+		})
+	}
+
+	const handleOutGroup=async() => {
+		await outGroup({ groupId:idGroup }).then((data) => {
+			if (data?.success) {
+				window.location.reload()
+			}
+		})
+	}
+
 	return (
 		<div className='w-full h-auto'>
 			<div className='relative w-full h-[500px] bg-slate-200'>
@@ -61,17 +95,35 @@ const ProfileGroup = ({ idGroup, news, loading, handleLikePost, handleCommentPos
 						{
 							(group?.admin && group?.admin?.some((ad) => ad?._id===user?._id)) ? (
 								<div className='mt-16 mr-10 flex items-end gap-2'>
-									<button className='bg-slate-400 text-white hover:bg-slate-600 rounded-md px-3 py-1'>Chỉnh sửa thông tin nhóm</button>
+									<button className='bg-slate-400 text-white hover:bg-slate-600 rounded-md px-3 py-1'
+										onClick={() => handleShowEditGroup()}>
+                              Chỉnh sửa thông tin nhóm
+									</button>
 								</div>
 							):(
 								group?.members?.some(member => member?._id.toString()===user?._id.toString()) ? (
 									<div className='mt-16 mr-10 flex items-end gap-2'>
-										<button className='bg-blue-600 text-white hover:bg-blue-800 rounded-md px-3 py-1'>Rời nhóm</button>
+										<button className='bg-slate-400 text-white hover:bg-slate-600 rounded-md px-3 py-1'
+											onClick={() => handleOutGroup()}>
+                                 Rời nhóm
+										</button>
 									</div>
 								):(
-									<div className='mt-16 mr-10 flex items-end gap-2'>
-										<button className='bg-blue-600 text-white hover:bg-blue-800 rounded-md px-3 py-1'>Tham gia nhóm</button>
-									</div>
+									group?.pending_members?.some(member => member?._id?.toString()===user?._id) ? (
+										<div className='mt-16 mr-10 flex items-end gap-2'>
+											<button className='bg-slate-400 text-white hover:bg-slate-600 rounded-md px-3 py-1'
+												onClick={() => handleRequestJoinGroup()}>
+                                    Hủy yêu cầu tham gia
+											</button>
+										</div>
+									):(
+										<div className='mt-16 mr-10 flex items-end gap-2'>
+											<button className='bg-blue-600 text-white hover:bg-blue-800 rounded-md px-3 py-1'
+												onClick={() => handleRequestJoinGroup()}>
+                                    Tham gia nhóm
+											</button>
+										</div>
+									)
 								)
 							)
 						}
@@ -88,6 +140,11 @@ const ProfileGroup = ({ idGroup, news, loading, handleLikePost, handleCommentPos
 					<Tab label="Thành viên" isActive={activeTab === 'Thành viên'} onClick={() => setActiveTab('Thành viên')}/>
 					<Tab label="Ảnh" isActive={activeTab === 'Ảnh'} onClick={() => setActiveTab('Ảnh')}/>
 					<Tab label="Video" isActive={activeTab === 'Video'} onClick={() => setActiveTab('Video')}/>
+					{
+						group?.admin?.some((ad) => ad?._id===user?._id) && (
+							<Tab label="Duyệt thành viên" isActive={activeTab === 'Duyệt thành viên'} onClick={() => setActiveTab('Duyệt thành viên')}/>
+						)
+					}
 				</div>
 			</div>
 			<div className='flex justify-center'>
@@ -110,6 +167,11 @@ const ProfileGroup = ({ idGroup, news, loading, handleLikePost, handleCommentPos
 								{activeTab==='Video' && (
 									<Videos objectId={group?._id} typeObject={'group'}/>
 								)}
+								{
+									group?.admin?.some((ad) => ad?._id===user?._id) && (
+										activeTab==='Duyệt thành viên' && <PendingMembers objectId={group?._id}/>
+									)
+								}
 							</>
 						):(
 							<div className='bg-white mt-2 w-full p-4 rounded'>
@@ -119,6 +181,11 @@ const ProfileGroup = ({ idGroup, news, loading, handleLikePost, handleCommentPos
 					}
 				</div>
 			</div>
+			{
+				showEditGroup && (
+					<EditGroupDetails onClose={handleShowEditGroup} objectId={idGroup}/>
+				)
+			}
 		</div>
 	)
 }
