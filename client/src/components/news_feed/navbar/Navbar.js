@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-mixed-spaces-and-tabs */
 /* eslint-disable react/jsx-key */
 /* eslint-disable react-hooks/rules-of-hooks */
@@ -21,16 +23,39 @@ import EditUserDetails from '../../EditUserDetails'
 import { FaEdit } from 'react-icons/fa'
 import { searchUserGroup } from '../../../apis/UserApi'
 import Tab from '../../chat/rightbar/Tab'
+import moment from 'moment'
 
 const navbar = ({ user, socketConnection }) => {
 	const location = useLocation()
 	const dispatch=useDispatch()
 	const navigate=useNavigate()
 	const [showOptions, setShowOptions] = useState(false)
+	const [showNotification, setShowNotification]=useState(false)
 	const [showEdit, setShowEdit] = useState(false)
+	const [allNotification, setAllNotification]=useState([])
+	const falseNotificationRead = allNotification.filter((notification) => notification?.read === false).length
+
+	useEffect(() => {
+		if (socketConnection) {
+			socketConnection.emit('get-notification', user?._id)
+			socketConnection.on('notifications', (data) => {
+				setAllNotification(data)
+			})
+		}
+	}, [socketConnection, user])
 
 	const handleShowEdit=() => {
 		setShowEdit(!showEdit)
+		setShowOptions(false)
+		setShowNotification(false)
+	}
+	const handleShowOption=() => {
+		setShowOptions(!showOptions)
+		setShowNotification(false)
+	}
+	const handleShowNotification=() => {
+		socketConnection.emit('seen-notification', { userId: user?._id })
+		setShowNotification(!showNotification)
 		setShowOptions(false)
 	}
 	const handleLogout=async() => {
@@ -161,15 +186,144 @@ const navbar = ({ user, socketConnection }) => {
                ${location.pathname.includes('/chat') ? 'bg-slate-400':'hover:bg-slate-400 bg-slate-600'}`}>
 					<BiSolidMessageRounded className='w-7 h-7 text-slate-800  cursor-pointer'/>
 				</Link>
-				<div className='w-auto h-auto flex justify-center rounded-full bg-slate-600 p-[5px] hover:bg-slate-400'>
-					<IoNotifications className='w-7 h-7 text-slate-800 cursor-pointer'/>
+				<div className={`w-auto h-auto flex justify-center rounded-full p-[5px] 
+               ${showNotification? 'bg-slate-400':'bg-slate-600 hover:bg-slate-400'} relative`}>
+					{falseNotificationRead>0 && 
+                  <div className='absolute -top-1 -right-1 w-4 h-4 rounded-full bg-red-500 flex items-center justify-center'>
+                  	<p className='text-[11px] text-white'>{falseNotificationRead>9 ? '9+':falseNotificationRead}</p>
+                  </div>
+					}
+               
+					<IoNotifications className='w-7 h-7 text-slate-800 cursor-pointer' onClick={() => handleShowNotification()}/>
+					{showNotification && (
+						<div className='absolute right-0 mt-10 p-2 w-80 bg-white rounded-lg shadow-xl'>
+							<div className='bg-slate-200 rounded-md'>
+								{allNotification?.length===0 &&(
+									<p className='text-center text-slate-500 py-2'>Not notification!</p>
+								)}
+								{allNotification?.length>0 && (
+									<div className='h-auto max-h-[300px] space-y-2 scroll-container'>
+										{allNotification.map((notification, index) => (
+											<React.Fragment key={index}>
+												{(notification?.type === 'friend request' || notification?.type === 'accept friendship') && (
+													<Link to={`/profileUser/${notification?.related?._id}`} 
+														className='flex items-center gap-2 cursor-pointer hover:bg-slate-300 rounded-md'>
+														<div className='p-1 flex-shrink-0 rounded'>
+															<img
+																src={notification?.from?.profile_pic}
+																alt='logo'
+																className='rounded-full w-10 h-10 object-cover'
+															/>
+														</div>
+														<div className='py-1 w-full'>
+															<div className='flex justify-between w-full'>
+																<p className='font-bold'>{notification?.from?.name}</p>
+																<p className='text-[10px] mr-1 flex items-center'>{moment(notification?.createdAt).format('DD/MM/YY HH:mm')}</p>
+															</div>
+															<div className='flex justify-between w-full'>
+																<p className=''>{notification?.type}</p>
+															</div>
+														</div>
+													</Link>
+												)}
+												{(notification?.type === 'request join group') && (
+													<Link to={`/profileGroup/${notification?.related?._id}`} 
+														className='flex items-center gap-2 cursor-pointer hover:bg-slate-300 rounded-md'>
+														<div className='p-1 flex-shrink-0 rounded'>
+															<img
+																src={notification?.from?.profile_pic}
+																alt='logo'
+																className='rounded-full w-10 h-10 object-cover'
+															/>
+														</div>
+														<div className='py-1 w-full'>
+															<div className='flex justify-between w-full'>
+																<p className='font-bold'>{notification?.from?.name}</p>
+																<p className='text-[10px] mr-1 flex items-center'>{moment(notification?.createdAt).format('DD/MM/YY HH:mm')}</p>
+															</div>
+															<div className='flex gap-1 w-full'>
+																<p className='line-clamp-1 text-ellipsis'>{notification?.type} <strong>{notification?.related?.name}</strong></p>
+															</div>
+														</div>
+													</Link>
+												)}
+												{(notification?.type === 'group member') && (
+													<Link to={`/profileGroup/${notification?.related?._id}`} 
+														className='flex items-center gap-2 cursor-pointer hover:bg-slate-300 rounded-md'>
+														<div className='p-1 flex-shrink-0 rounded'>
+															<img
+																src={notification?.related?.profile_pic}
+																alt='logo'
+																className='rounded-full w-10 h-10 object-cover'
+															/>
+														</div>
+														<div className='py-1 w-full'>
+															<div className='flex justify-between w-full'>
+																<p className='font-bold'>{notification?.related?.name}</p>
+																<p className='text-[10px] mr-1 flex items-center'>{moment(notification?.createdAt).format('DD/MM/YY HH:mm')}</p>
+															</div>
+															<div className='flex gap-1 w-full'>
+																<p className='line-clamp-1 text-ellipsis'>You are already {notification?.type}</p>
+															</div>
+														</div>
+													</Link>
+												)}
+												{(notification?.type === 'comment' || notification?.type === 'like') && (
+													<Link to={`/post/${notification?.related?._id}`} 
+														className='flex items-center gap-2 cursor-pointer hover:bg-slate-300 rounded-md'>
+														<div className='p-1 flex-shrink-0 rounded'>
+															<img
+																src={notification?.from?.profile_pic}
+																alt='logo'
+																className='rounded-full w-10 h-10 object-cover'
+															/>
+														</div>
+														<div className='py-1 w-full'>
+															<div className='flex justify-between w-full'>
+																<p className='font-bold'>{notification?.from?.name}</p>
+																<p className='text-[10px] mr-1 flex items-center'>{moment(notification?.createdAt).format('DD/MM/YY HH:mm')}</p>
+															</div>
+															<div className='flex gap-1 w-full'>
+																<p className='line-clamp-1 text-ellipsis'>{notification?.type} a your posts </p>
+															</div>
+														</div>
+													</Link>
+												)}
+												{/* {(notification?.type === 'post' || notification?.type === 'post in group') && (
+													<Link to={`/post/${notification?.related?._id}`} 
+														className='flex items-center gap-2 cursor-pointer hover:bg-slate-300 rounded-md'>
+														<div className='p-1 flex-shrink-0 rounded'>
+															<img
+																src={notification?.from?.profile_pic}
+																alt='logo'
+																className='rounded-full w-10 h-10 object-cover'
+															/>
+														</div>
+														<div className='py-1 w-full'>
+															<div className='flex justify-between w-full'>
+																<p className='font-bold'>{notification?.from?.name}</p>
+																<p className='text-[10px] mr-1 flex items-center'>{moment(notification?.createdAt).format('DD/MM/YY HH:mm')}</p>
+															</div>
+															<div className='flex gap-1 w-full'>
+																<p className='line-clamp-1 text-ellipsis'>{notification?.type} a your posts </p>
+															</div>
+														</div>
+													</Link>
+												)} */}
+											</React.Fragment>
+										))}
+									</div>
+								)}
+							</div>
+						</div>
+					)}
 				</div>
 				<div className='relative'>
 					<img
 						src={user?.profile_pic}
 						alt='logo'
 						className='rounded-full w-[38px] h-[38px] bg-slate-300 cursor-pointer object-cover'
-						onClick={() => setShowOptions(!showOptions)}
+						onClick={() => handleShowOption()}
 					/>
 					{showOptions && (
 						<div className='absolute right-0 mt-2 p-2 w-72 bg-white rounded-lg shadow-xl'>

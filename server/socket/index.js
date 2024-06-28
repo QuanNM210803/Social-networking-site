@@ -4,8 +4,12 @@ const http=require('http')
 const getUserDetailsFromToken = require('../helpers/getUserDetailsFromToken')
 const UserModel = require('../models/UserModel')
 const ConversationModel =require('../models/ConversationModel')
-const  MessageModel =require('../models/MessageModel')
+const MessageModel =require('../models/MessageModel')
+const NotificationModel=require('../models/NotificationModel')
+const GroupModel=require('../models/GroupModel')
+const PostModel=require('../models/PostModel')
 const getConversation=require('../helpers/getConversation')
+const { read } = require('fs')
 
 const app=express()
 
@@ -18,8 +22,8 @@ const io=new Server(server,{
    }
 })
 
-
 const onlineUsers= new Set()
+
 /** đăng kí 1 sự kiện 'connection', khi client kết nối hàm callback sẽ được gọi
  * với socket của client đó
  */
@@ -30,11 +34,47 @@ io.on('connection', async (socket)=>{
    const user= await getUserDetailsFromToken(token)
 
    //create a room
-   socket.join(user?._id?.toString())// Tham gia vào một phòng chat với ID là ID của người dùng
+   socket.join(user?._id?.toString())// thêm mỗi socket vào 1 phòng có tên user?._id
    onlineUsers.add(user?._id?.toString())
 
    /** Gửi danh sách người dùng đang online đến tất cả các client. */
    io.emit('onlineUsers', Array.from(onlineUsers))
+
+   // socket.on('call-user', ({ from, to }) => {
+   //    const targetSocketId = to
+   //    console.log(from, to)
+   //    if (targetSocketId) {
+   //      io.to(targetSocketId).emit('incoming-call', { from });
+   //    }
+   //  });
+  
+   //  socket.on('accept-call', ({ from, to }) => {
+   //    const fromSocketId = to
+   //    if (fromSocketId) {
+   //      io.to(fromSocketId).emit('call-accepted', { from, to });
+   //    }
+   //  });
+  
+   //  socket.on('offer', (data) => {
+   //    const targetSocketId = data.to
+   //    if (targetSocketId) {
+   //      io.to(targetSocketId).emit('offer', data);
+   //    }
+   //  });
+  
+   //  socket.on('answer', (data) => {
+   //    const targetSocketId = data.to
+   //    if (targetSocketId) {
+   //      io.to(targetSocketId).emit('answer', data);
+   //    }
+   //  });
+  
+   //  socket.on('candidate', (data) => {
+   //    const targetSocketId = data.to
+   //    if (targetSocketId) {
+   //      io.to(targetSocketId).emit('candidate', data);
+   //    }
+   //  });
 
    /** đăng kí sự kiện */
    socket.on('message-page',async (userId)=>{
@@ -168,7 +208,7 @@ io.on('connection', async (socket)=>{
       const conversationReceiver=await getConversation(msgByUserId)
 
       io.to(user?._id.toString()).emit('conversation', conversationSender)
-      io.to(msgByUserId).emit('conversation', conversationReceiver)
+      io.to(msgByUserId).emit('conversation', conversationReceiver) // gửi đến tất cả các socket trong phòng có tên msgByUserId
    })
 
    //media
@@ -191,6 +231,183 @@ io.on('connection', async (socket)=>{
       socket.emit('media',media || [])
    })
 
+   //get-notification
+   socket.on('get-notification', async(userId)=>{
+      const notifications=await NotificationModel.find({
+         to:userId
+      }).populate({
+         path:'from',
+         select:'_id name profile_pic'
+      }).sort({createdAt:-1})
+      socket.emit('notifications', notifications) //nếu bạn đang xử lý một sự kiện từ một socket cụ thể và bạn muốn trả lời chỉ socket đó
+   })
+
+   //friend-request
+   socket.on('friend-request', async (data)=>{
+      const notification=new NotificationModel({
+         from:data?.senderId,
+         to:data?.receiverId,
+         type:'friend request',
+         related:{
+            _id: data?.senderId
+         },
+         read:false
+      })
+      await notification.save()
+      const notifications=await NotificationModel.find({
+         to:data?.receiverId
+      }).populate({
+         path:'from',
+         select:'_id name profile_pic'
+      }).sort({createdAt:-1})
+      io.to(data?.receiverId).emit('notifications',notifications)
+   })
+
+   //accept-friendship
+   socket.on('accept-friendship', async (data)=>{
+      const notification=new NotificationModel({
+         from:data?.senderId,
+         to:data?.receiverId,
+         type:'accept friendship',
+         related:{
+            _id: data?.senderId
+         },
+         read:false
+      })
+      await notification.save()
+      const notifications=await NotificationModel.find({
+         to:data?.receiverId
+      }).populate({
+         path:'from',
+         select:'_id name profile_pic'
+      }).sort({createdAt:-1})
+      io.to(data?.receiverId).emit('notifications',notifications)
+   })
+
+   //request-join-group
+   socket.on('request-join-group', async (data)=>{
+      const groupId=data?.groupId
+      const requestId=data?.request
+      const group=await GroupModel.findById(groupId).populate({
+         path:'admin',
+         select:'_id name profile_pic'
+      })
+      group?.admin?.forEach(async admin=>{
+         const notification=new NotificationModel({
+            from:requestId,
+            to:admin?._id,
+            type:'request join group',
+            related:{
+               _id: groupId,
+               name: group?.name
+            },
+            read:false
+         })
+         await notification.save()
+         const notifications=await NotificationModel.find({
+            to:admin?._id
+         }).populate({
+            path:'from',
+            select:'_id name profile_pic'
+         }).sort({createdAt:-1})
+         io.to(admin?._id.toString()).emit('notifications',notifications)
+      })
+   })
+
+   //accept-join-group
+   socket.on('accept-join-group', async (data)=>{
+      const senderId=data?.senderId
+      const receiverId=data?.receiverId
+      const groupId=data?.groupId
+      const group=await GroupModel.findById(groupId)
+      const notification=new NotificationModel({
+         from:senderId,
+         to:receiverId,
+         type:'group member',
+         related:{
+            _id: groupId,
+            name: group?.name,
+            profile_pic: group?.profile_pic
+         },
+         read:false
+      })
+      await notification.save()
+      const notifications=await NotificationModel.find({
+         to:receiverId
+      }).populate({
+         path:'from',
+         select:'_id name profile_pic'
+      }).sort({createdAt:-1})
+      io.to(receiverId).emit('notifications',notifications)
+   })
+
+   //like
+   socket.on('like', async(data)=>{
+      const senderId=data?.senderId
+      const postId=data?.postId
+      const post=await PostModel.findById(postId)
+      const notification=new NotificationModel({
+         from:senderId,
+         to:post?.poster,
+         type:'like',
+         related:{
+            _id: postId
+         },
+         read:false
+      })
+      await notification.save()
+      const notifications=await NotificationModel.find({
+         to:post?.poster
+      }).populate({
+         path:'from',
+         select:'_id name profile_pic'
+      }).sort({createdAt:-1})
+      console.log('poster',post?.poster)
+      io.to(post?.poster.toString()).emit('notifications',notifications)
+   })
+
+   //comment
+   socket.on('comment',async (data)=>{
+      const senderId=data?.senderId
+      const postId=data?.postId
+      const post=await PostModel.findById(postId)
+      const notification=new NotificationModel({
+         from:senderId,
+         to:post?.poster,
+         type:'comment',
+         related:{
+            _id: postId
+         },
+         read:false
+      })
+      await notification.save()
+      const notifications=await NotificationModel.find({
+         to:post?.poster
+      }).populate({
+         path:'from',
+         select:'_id name profile_pic'
+      }).sort({createdAt:-1})
+      io.to(post?.poster.toString()).emit('notifications',notifications)
+   })
+
+   //seen-notification
+   socket.on('seen-notification',async (data)=>{
+      const userId=data?.userId
+      const updataNotification=await NotificationModel.updateMany({
+         to:userId
+      },{
+         '$set':{
+            read:true
+         }
+      })
+      const notifications=await NotificationModel.find({
+         to:userId
+      }).populate({
+         path:'from',
+         select:'_id name profile_pic'
+      }).sort({createdAt:-1})
+      io.to(userId).emit('notifications',notifications)
+   })
    socket.on('disconnect',()=>{
       onlineUsers.delete(user?._id?.toString())
       io.emit('onlineUsers', Array.from(onlineUsers))

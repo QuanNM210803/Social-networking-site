@@ -251,7 +251,7 @@ const VideoPage = () => {
 	return (
 		<div>
 			<div className='sticky top-0 bg-slate-500' style={{ zIndex:1000 }}>
-				<Navbar user={user}/>
+				<Navbar user={user} socketConnection={socketConnection}/>
 			</div>
 			<div className='flex top-14 left-0 right-0 bottom-0'>
 				<div className='h-[calc(100vh-56px)] w-[20%] bg-slate-100'>

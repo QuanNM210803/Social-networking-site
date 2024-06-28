@@ -1,20 +1,18 @@
 .scrollbar::-webkit-scrollbar{
-   width: 10px;
+   width: 7px;
 }
-
 .scrollbar::-webkit-scrollbar-track{
    @apply bg-slate-100
 }
-
 .scrollbar::-webkit-scrollbar-thumb{
    @apply bg-slate-300 rounded-full
 }
+
 
 .text-nomal {
    font-size: 18px;
    line-height: 24px;
 }
-
 .text-mini {
    font-size: 12px;
    line-height: 18px;
@@ -23,28 +21,37 @@
    font-size: 15px;
 }
 
+
 .scrollbar-newsfeed::-webkit-scrollbar{
    width: 5px;
    display: none;
 }
-
 .scrollbar-newsfeed:hover::-webkit-scrollbar {
    display:inherit;
 }
-
 .scrollbar-newsfeed::-webkit-scrollbar-track{
    @apply bg-slate-200
 }
-
 .scrollbar-newsfeed::-webkit-scrollbar-thumb{
    @apply bg-slate-400 rounded-full
 }
 
+
 .scroll-container {
-   overflow-y: scroll; /* Cho phép cuộn dọc */
+   overflow-y: scroll
  }
+.scroll-container::-webkit-scrollbar {
+   display: none
+}
+
  
- /* Ẩn thanh cuộn nhưng vẫn cho phép cuộn */
- .scroll-container::-webkit-scrollbar {
-   display: none; /* Đối với trình duyệt WebKit (Chrome, Safari) */
- }
+.progress {
+   animation: progressAnimation 3s forwards;
+}
+ 
+@keyframes progressAnimation {
+   to {
+     left: 0;
+   }
+}
+ 

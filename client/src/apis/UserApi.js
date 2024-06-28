@@ -25,7 +25,7 @@ export async function getUserDetails() {
 		//toast.success(response.data.message)
 		return response.data
 	} catch (error) {
-		toast.error(error?.response?.data?.message)
+		// toast.error(error?.response?.data?.message)
 		console.log(error)
 	}
 }
@@ -59,7 +59,7 @@ export async function getFriendRequest() {
 		const response=await api.get('/user/getFriendRequest', { withCredentials:true })
 		return response?.data
 	} catch (error) {
-		toast.error(error?.response?.data?.message)
+		// toast.error(error?.response?.data?.message)
 		console.log(error)
 	}
 }
@@ -69,7 +69,7 @@ export async function getUserById(userId) {
 		const response=await api.get(`/user/getUserById/${userId}`, { withCredentials:true })
 		return response?.data
 	} catch (error) {
-		toast.error(error?.response?.data?.message)
+		// toast.error(error?.response?.data?.message)
 		console.log(error)
 	}
 }
@@ -79,7 +79,7 @@ export async function getListFriend(objectId, search) {
 		const response=await api.get('/user/getFriends', { params:{ objectId, search }, withCredentials:true })
 		return response?.data
 	} catch (error) {
-		toast.error(error?.response?.data?.message)
+		// toast.error(error?.response?.data?.message)
 		console.log(error)
 	}
 }
@@ -89,7 +89,7 @@ export async function getFriendsSuggest() {
 		const response=await api.get('/user/getFriendsSuggest', { withCredentials:true })
 		return response?.data
 	} catch (error) {
-		toast.error(error?.response?.data?.message)
+		// toast.error(error?.response?.data?.message)
 		console.log(error)
 	}
 }
@@ -99,7 +99,7 @@ export async function getImagesByUserId(userId) {
 		const response=await api.get('/user/getImagesByUserId', { params:{ userId }, withCredentials:true })
 		return response?.data
 	} catch (error) {
-		toast.error(error?.response?.data?.message)
+		// toast.error(error?.response?.data?.message)
 		console.log(error)
 	}
 }
@@ -109,7 +109,7 @@ export async function getVideosByUserId(userId) {
 		const response=await api.get('/user/getVideosByUserId', { params:{ userId }, withCredentials:true })
 		return response?.data
 	} catch (error) {
-		toast.error(error?.response?.data?.message)
+		// toast.error(error?.response?.data?.message)
 		console.log(error)
 	}
 }
@@ -119,7 +119,7 @@ export async function searchUserGroup(search) {
 		const response=await api.post('/user/search-user-group', { search }, { withCredentials:true })
 		return response?.data
 	} catch (error) {
-		toast.error(error?.response?.data?.message)
+		// toast.error(error?.response?.data?.message)
 		console.log(error)
 	}
 }

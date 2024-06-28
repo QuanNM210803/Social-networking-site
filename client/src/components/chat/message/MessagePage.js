@@ -32,7 +32,7 @@ const MessagePage = () => {
 		online:false
 	})
 
-	const [openImageVideoUpload, setOpenImageVideoUpload]=useState(false)
+	
 	const [message, setMessage]=useState({
 		text:'',
 		imageUrl:'',
@@ -42,7 +42,7 @@ const MessagePage = () => {
 	const [loading, setLoading]=useState(false)
 	const [allMessages, setAllMessages]=useState([])
 	const currentMessage= useRef()
-	const [openDetailsConversation, setOpenDetailsConversation]=useState(true)
+	
 
 	useEffect(() => {
 		if (currentMessage) {
@@ -68,7 +68,8 @@ const MessagePage = () => {
 		}
 	}, [socketConnection, params?.userId, user])
 
-
+   
+	const [openImageVideoUpload, setOpenImageVideoUpload]=useState(false)
 	const handleUploadImageVideoOpen =() => {
 		setOpenImageVideoUpload(!openImageVideoUpload)
 	}
@@ -150,10 +151,19 @@ const MessagePage = () => {
 		}
 	}
 
+	const [openDetailsConversation, setOpenDetailsConversation]=useState(true)
 	const handleOpenDetailsConversation=() => {
 		setOpenDetailsConversation(!openDetailsConversation)
 	}
 
+	const [clickedMessageIndex, setClickedMessageIndex] = useState([])
+	const handleOnClickMessage = (index) => {
+		if (clickedMessageIndex.includes(index)) {
+			setClickedMessageIndex(clickedMessageIndex.filter((item) => item!==index))
+		} else {
+			setClickedMessageIndex([...clickedMessageIndex, index])
+		}
+	}
 	return (
 
 		<div className='w-full h-full'>
@@ -216,8 +226,8 @@ const MessagePage = () => {
 							allMessages.map((msg, index) => {
 								return (
 									<div className={`bg-white p-1 py-1 rounded w-fit max-w-[280px] md:max-w-sm lg:max-w-md 
-                              ${user._id===msg?.msgByUserId ? 'ml-auto bg-teal-100':'bg-white'}`}>
-										<div className='w-full'>
+                              ${user._id===msg?.msgByUserId ? 'ml-auto bg-teal-100':'bg-white'}`} onClick={() => handleOnClickMessage(index)}>
+										<div className='w-full space-y-1'>
 											{
 												msg?.imageUrl && (
 													<img
@@ -240,9 +250,10 @@ const MessagePage = () => {
 										<p className='px-2'>
 											{msg?.text}
 										</p>
-										<p className='text-xs ml-auto w-fit'>
-											{ moment(msg.createdAt).format('HH:mm')}
-										</p>
+										{clickedMessageIndex.includes(index) && <p className='text-xs ml-auto w-fit'>
+											{ moment(msg?.createdAt).isSame(moment(), 'day') ? moment(msg?.createdAt).format('HH:mm') : 
+												moment(msg?.createdAt).format('DD/MM/YY HH:mm')}
+										</p>}
 									</div>
 								)
 							})

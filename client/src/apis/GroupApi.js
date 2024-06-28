@@ -12,7 +12,7 @@ export async function getGroupByUserId() {
 		const response=await api.get('/group/getGroupOfUser', { withCredentials:true })
 		return response.data
 	} catch (error) {
-		toast.error(error?.response?.data?.message)
+		// toast.error(error?.response?.data?.message)
 		console.log(error)
 	}
 }

@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 /* eslint-disable no-empty */
 /* eslint-disable no-mixed-spaces-and-tabs */
 /* eslint-disable no-unused-vars */
@@ -15,7 +16,7 @@ import { Link } from 'react-router-dom'
 import DetailsMutualFriend from '../DetailsMutualFriend'
 import PostsUser from './PostsUser'
 
-const ProfileUser = ({ idFriend, news, loading, handleLikePost, handleCommentPost }) => {
+const ProfileUser = ({ idFriend, news, loading, handleLikePost, handleCommentPost, socketConnection }) => {
 	const self=useSelector(state => state?.user)
 
 	const [activeTab, setActiveTab] =useState('Bài viết')
@@ -65,6 +66,7 @@ const ProfileUser = ({ idFriend, news, loading, handleLikePost, handleCommentPos
 	const handleAcceptFriendRequest = async (toId) => {
 		await acceptFriend({ toId }).then((data) => {
 			if (data?.success) {
+				socketConnection.emit('accept-friendship', { senderId:self?._id, receiverId:toId })
 				getUserById(idFriend).then((data) => {
 					setUser(data?.data)
 				})
@@ -78,6 +80,7 @@ const ProfileUser = ({ idFriend, news, loading, handleLikePost, handleCommentPos
 	const handleFriendRequest=async (toId) => {
 		await friendRequest({ toId }).then((data) => {
 			if (data?.success) {
+				socketConnection.emit('friend-request', { senderId:self?._id, receiverId:toId })
 				getUserById(idFriend).then((data) => {
 					setUser(data?.data)
 				})

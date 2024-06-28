@@ -14,7 +14,7 @@ import { useSelector } from 'react-redux'
 import EditGroupDetails from './EditGroupDetails'
 import PendingMembers from './PendingMembers'
 
-const ProfileGroup = ({ idGroup, news, loading, handleLikePost, handleCommentPost }) => {
+const ProfileGroup = ({ idGroup, news, loading, handleLikePost, handleCommentPost, socketConnection }) => {
 	const user=useSelector(state => state?.user)
 	const [activeTab, setActiveTab] =useState('Bài viết')
 	const [group, setGroup] = useState({})
@@ -33,8 +33,11 @@ const ProfileGroup = ({ idGroup, news, loading, handleLikePost, handleCommentPos
 		setShowEditGroup(!showEditGroup)
 	}
 
-	const handleRequestJoinGroup=async () => {
+	const handleRequestJoinGroup=async (join) => {
 		await requestJoinGroup({ groupId:idGroup }).then((data) => {
+			if (join===true) {
+				socketConnection.emit('request-join-group', { request:user?._id, groupId:idGroup })
+			}
 			if (data?.request) {
 				setGroup({
 					...group,
@@ -112,14 +115,14 @@ const ProfileGroup = ({ idGroup, news, loading, handleLikePost, handleCommentPos
 									group?.pending_members?.some(member => member?._id?.toString()===user?._id) ? (
 										<div className='mt-16 mr-10 flex items-end gap-2'>
 											<button className='bg-slate-400 text-white hover:bg-slate-600 rounded-md px-3 py-1'
-												onClick={() => handleRequestJoinGroup()}>
+												onClick={() => handleRequestJoinGroup(false)}>
                                     Hủy yêu cầu tham gia
 											</button>
 										</div>
 									):(
 										<div className='mt-16 mr-10 flex items-end gap-2'>
 											<button className='bg-blue-600 text-white hover:bg-blue-800 rounded-md px-3 py-1'
-												onClick={() => handleRequestJoinGroup()}>
+												onClick={() => handleRequestJoinGroup(true)}>
                                     Tham gia nhóm
 											</button>
 										</div>
@@ -169,7 +172,7 @@ const ProfileGroup = ({ idGroup, news, loading, handleLikePost, handleCommentPos
 								)}
 								{
 									group?.admin?.some((ad) => ad?._id===user?._id) && (
-										activeTab==='Duyệt thành viên' && <PendingMembers objectId={group?._id}/>
+										activeTab==='Duyệt thành viên' && <PendingMembers objectId={group?._id} socketConnection={socketConnection}/>
 									)
 								}
 							</>

@@ -12,7 +12,7 @@ import { acceptFriend, deleteFriendRequest, getFriendRequest, getFriendsSuggest,
 import { useSelector } from 'react-redux'
 import DetailsMutualFriend from '../DetailsObject/DetailsMutualFriend'
 
-const Sidebar_friendPage = ({ handleClickFriend }) => {
+const Sidebar_friendPage = ({ handleClickFriend, socketConnection }) => {
 	const user=useSelector(state => state?.user)
 	const [option, setOption]=useState(null)
 	const [friendRequests, setFriendRequests]=useState([])
@@ -82,6 +82,7 @@ const Sidebar_friendPage = ({ handleClickFriend }) => {
 
 	const handleAcceptFriendRequest = async (toId) => {
 		await acceptFriend({ toId }).then(async (data) => {
+			socketConnection.emit('accept-friendship', { senderId:self?._id, receiverId:toId })
 			if (data?.success) {
 				getUserDetails().then((data) => {
 					setSelf(data?.data)
@@ -107,6 +108,7 @@ const Sidebar_friendPage = ({ handleClickFriend }) => {
 
 	const handleFriendRequest=async (toId) => {
 		await friendRequest({ toId }).then(async(data) => {
+			socketConnection.emit('friend-request', { senderId:self?._id, receiverId:toId })
 			if (data?.success) {
 				await getFriendsSuggest().then((data) => {
 					if (data?.data) {

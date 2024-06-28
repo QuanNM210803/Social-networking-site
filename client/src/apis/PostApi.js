@@ -52,7 +52,7 @@ export const getPostsPagination=async (page, limit) => {
 		return response?.data
 	} catch (error) {
 		console.error(error)
-		toast.error('Can\'t load more')
+		// toast.error('Can\'t load more')
 	}
 }
 
@@ -62,7 +62,7 @@ export const getPostsPaginationInGroup=async (groupId, page, limit) => {
 		return response?.data
 	} catch (error) {
 		console.error(error)
-		toast.error('Can\'t load more')
+		// toast.error('Can\'t load more')
 	}
 }
 
@@ -72,7 +72,7 @@ export const getPostsByUserId=async (userId, page, limit) => {
 		return response?.data
 	} catch (error) {
 		console.error(error)
-		toast.error('Can\'t load more')
+		// toast.error('Can\'t load more')
 	}
 }
 
@@ -84,5 +84,14 @@ export const likePost=async (postId) => {
 	} catch (error) {
 		console.log(error)
 		toast.error(error?.response?.data?.message)
+	}
+}
+
+export const getPostByPostId=async (postId) => {
+	try {
+		const response=await api.get(`/post/post/${postId}`, { withCredentials:true })
+		return response?.data
+	} catch (error) {
+		console.error(error)
 	}
 }

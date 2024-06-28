@@ -77,6 +77,7 @@ const ProfileUserPage = () => {
 		try {
 			const response=await likePost(postId)
 			if (response?.liked===true) {
+				socketConnection.emit('like', { senderId:user?._id, postId })
 				setNews(prevNews => (
 					prevNews.map(post => 
 						post._id===postId ? { ...post, like:[...post?.like, user?._id] } : post
@@ -95,6 +96,7 @@ const ProfileUserPage = () => {
 	}
 	const handleCommentPost=async (postId) => {
 		try {
+			socketConnection.emit('comment', { senderId:user?._id, postId })
 			setNews(prevNews => (
 				prevNews.map(post =>
 					post._id===postId ? { ...post, comment:post?.comment+1 } : post
@@ -107,12 +109,13 @@ const ProfileUserPage = () => {
 	return (
 		<div>
 			<div className='sticky top-0 bg-slate-500' style={{ zIndex:1000 }}>
-				<Navbar user={user}/>
+				<Navbar user={user} socketConnection={socketConnection}/>
 			</div>
 			<div className='flex top-14 left-0 right-0 bottom-0' style={{ zIndex:0 }}>
 				<div className='h-[calc(100vh-56px)] overflow-auto bg-slate-300 w-full' onScroll={handleScroll}>
 					<ProfileUser idFriend={userId} 
-						news={news} loading={loading} handleLikePost={handleLikePost} handleCommentPost={handleCommentPost}/>
+						news={news} loading={loading} handleLikePost={handleLikePost} handleCommentPost={handleCommentPost}
+						socketConnection={socketConnection}/>
 				</div>
 			</div>
 		</div>

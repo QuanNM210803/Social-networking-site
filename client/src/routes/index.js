@@ -14,12 +14,18 @@ import GroupPage from '../pages/news_feed/GroupPage'
 import GamePage from '../pages/news_feed/GamePage'
 import ProfileUserPage from '../pages/news_feed/ProfileUserPage'
 import ProfileGroupPage from '../pages/news_feed/ProfileGroupPage'
+import WelcomePage from '../pages/WelcomePage'
+import PostDetail from '../pages/news_feed/PostDetail'
 
 const router = createBrowserRouter([
 	{
 		path: '/',
 		element: <App/>,
 		children:[
+			{
+				path:'',
+				element:<WelcomePage/>
+			},
 			{
 				path:'register',
 				element: <AuthLayouts> <RegisterPage/> </AuthLayouts>
@@ -73,6 +79,10 @@ const router = createBrowserRouter([
 			{
 				path: 'profileGroup/:groupId',
 				element: <ProfileGroupPage/>
+			},
+			{
+				path:'post/:postId',
+				element: <PostDetail/>
 			}
 		]
 	}

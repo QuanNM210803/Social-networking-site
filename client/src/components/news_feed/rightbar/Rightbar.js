@@ -6,10 +6,9 @@ import { IoClose, IoSearchOutline } from 'react-icons/io5'
 import ChatWindow from '../ChatWindow'
 import { Link } from 'react-router-dom'
 import { acceptFriend, deleteFriendRequest, getFriendRequest } from '../../../apis/UserApi'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import DetailsMutualFriend from '../DetailsObject/DetailsMutualFriend'
 import Avatar from '../../Avatar'
-import { setFriendRequests } from '../../../redux/userSlice'
 
 const Rightbar = ({ user, socketConnection }) => {
 	const self=useSelector(state => state?.user)
@@ -25,6 +24,7 @@ const Rightbar = ({ user, socketConnection }) => {
 
 	const handleAcceptFriendRequest = async (toId) => {
 		await acceptFriend({ toId }).then((data) => {
+			socketConnection.emit('accept-friendship', { senderId:self?._id, receiverId:toId })
 			if (data?.success) {
 				setInviteFriend(inviteFriend.filter((friend) => friend?._id!==toId))
 			}
@@ -229,7 +229,9 @@ const Rightbar = ({ user, socketConnection }) => {
 			)}
 			{
 				isOpenChatWindow && (
-					<ChatWindow handleCloseChatWindow={handleCloseChatWindow} friendChat={friendChat}/>
+					<ChatWindow handleCloseChatWindow={handleCloseChatWindow}
+						friendChat={friendChat}
+						socketConnection={socketConnection}/>
 				)
 			}
 			{

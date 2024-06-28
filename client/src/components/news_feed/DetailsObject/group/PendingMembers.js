@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux'
 import { acceptJoinGroup, getGroupById } from '../../../../apis/GroupApi'
 import { Link } from 'react-router-dom'
 
-const PendingMembers = ({ objectId }) => {
+const PendingMembers = ({ objectId, socketConnection }) => {
 	const user=useSelector(state => state?.user)
 	const [pending_members, setPending_members]=useState([])
 
@@ -18,6 +18,7 @@ const PendingMembers = ({ objectId }) => {
 
 	const handleAcceptJoinGroup=async (userId) => {
 		await acceptJoinGroup({ groupId:objectId, userId }).then((data) => {
+			socketConnection.emit('accept-join-group', { senderId:user?._id, receiverId:userId, groupId:objectId })
 			if (data?.success) {
 				setPending_members(pending_members.filter(member => member?._id !== userId))
 			}

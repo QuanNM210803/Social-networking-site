@@ -25,7 +25,7 @@ const NewsCard = ({ news, handleLikePost, handleCommentPost }) => {
 	const [isOpenDetailMedia, setIsOpenDetailMedia]=useState(false)
 	const [isOpenComment, setIsOpenComment]=useState(false)
 	const [isOpenDetailsLike, setIsOpenDetailsLike]=useState(false)
-
+	console.log('news', news)
 	useEffect(() => {
 		setPost(news)
 	}, [news])
