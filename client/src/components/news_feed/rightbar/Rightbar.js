@@ -105,7 +105,7 @@ const Rightbar = ({ user, socketConnection }) => {
 	}
 
 	return (
-		<div className='z-0 w-[295px]'>
+		<div className='z-0 w-full'>
 			<div className='w-full h-auto'>
 				<div className='flex w-full h-auto items-center justify-between p-3'>
 					<p className='font-semibold'>Lời mời kết bạn</p>
@@ -130,12 +130,12 @@ const Rightbar = ({ user, socketConnection }) => {
 										{friend?.mutualFriends?.length} bạn chung
 									</p>
 								</div>
-								<div className='py-1 flex justify-between'>
-									<button className='bg-blue-500 text-white hover:bg-blue-800 rounded-lg w-[45%] px-2 py-1'
+								<div className='py-1 lg:flex lg:flex-col lg:gap-1 xl:justify-between xl:flex-row items-center'>
+									<button className='bg-blue-500 text-white hover:bg-blue-800 rounded-lg xl:w-[70%] lg:w-full xl:py-1'
 										onClick={() => handleAcceptFriendRequest(friend?._id)}>
                               Chấp nhận
 									</button>
-									<button className='bg-slate-400 text-white hover:bg-slate-500 rounded-lg w-[45%] px-2 py-1'
+									<button className='bg-slate-400 text-white hover:bg-slate-500 rounded-lg xl:w-[30%] lg:w-full xl:py-1'
 										onClick={() => handleDeleteFriendRequest(friend?._id)}>
                               Xóa
 									</button>
@@ -163,12 +163,12 @@ const Rightbar = ({ user, socketConnection }) => {
 										{friend?.mutualFriends?.length} bạn chung
 									</p>
 								</div>
-								<div className='py-1 flex justify-between'>
-									<button className='bg-blue-500 text-white hover:bg-blue-800 rounded-lg w-[45%] px-2 py-1'
+								<div className='py-1 lg:flex lg:flex-col lg:gap-1 xl:justify-between xl:flex-row items-center'>
+									<button className='bg-blue-500 text-white hover:bg-blue-800 rounded-lg xl:w-[70%] lg:w-full xl:py-1'
 										onClick={() => handleAcceptFriendRequest(friend?._id)}>
                               Chấp nhận
 									</button>
-									<button className='bg-slate-400 text-white hover:bg-slate-500 rounded-lg w-[45%] px-2 py-1'
+									<button className='bg-slate-400 text-white hover:bg-slate-500 rounded-lg xl:w-[30%] lg:w-full xl:py-1'
 										onClick={() => handleDeleteFriendRequest(friend?._id)}>
                               Xóa
 									</button>

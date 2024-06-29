@@ -36,15 +36,15 @@ const Home = () => {
 				<Navbar user={user} socketConnection={socketConnection}/>
 			</div>
 			<div className='flex top-14 left-0 right-0 bottom-0'>
-				<div className='h-[calc(100vh-56px)] w-[20%]'>
+				<div className='h-[calc(100vh-56px)] lg:w-[20%] w-[110px] flex-shrink-0'>
 					<Sidebar socketConnection={socketConnection}/>
 				</div>
-				<div className='h-[calc(100vh-56px)] w-[80%]'>
+				<div className='h-[calc(100vh-56px)] lg:w-[80%] flex-grow'>
 					<section className={`${basePath && 'hidden'} h-full w-full`}>
 						<Outlet context={socketConnection}/>
 					</section>
 					<div className={`justify-center items-center flex-col gap-2 w-full h-full
-                  ${!basePath ? 'hidden':'lg:flex'}`}>
+                  ${!basePath ? 'hidden':'flex'}`}>
 						<img
 							src={logo}
 							width={150}

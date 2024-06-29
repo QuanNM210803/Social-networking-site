@@ -39,7 +39,7 @@ const DetailsMedia = ({ handleCloseDetailMedia, currentMedia, listMedia, numMedi
 								<img
 									src={listMedia[current]}
 									alt='Media'
-									className='w-auto h-[600px] rounded-md'
+									className='w-auto md:h-[600px] h-[500px] rounded-md'
 								/>
 							</TransformComponent>
 						</TransformWrapper>

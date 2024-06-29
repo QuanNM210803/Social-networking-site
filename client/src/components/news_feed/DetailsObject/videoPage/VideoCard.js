@@ -15,21 +15,19 @@ const VideoCard = ({ news }) => {
 		<div>
 			<div className='w-full h-auto bg-slate-200 px-4 py-2 rounded-md space-y-2'>
 				<div className='flex justify-between items-center '>
-					<div className='gap-4 flex items-center'>
+					<div className='gap-4 flex '>
 						<img
 							src={news?.poster?.avatar}
-							width={40}
-							height={40}
-							className='rounded-full'
+							className='rounded-full w-10 h-10 flex items-start object-cover'
 						/>
-						<div className='space-y-0'>
+						<div className='space-y-0 '>
 							<p className='font-semibold'>{news?.poster?.name}</p>
 							<p className='text-mini'>{news?.createdAt}</p>
 						</div>
 					</div>
 					<div className='flex items-center gap-2 cursor-pointer hover:bg-slate-300 px-2 py-1 rounded-md'>
 						<HiOutlineSave size={25} className=''/>
-						<p>Lưu Video</p>
+						<p className='sm:block hidden'>Lưu Video</p>
 					</div>
 				</div>
 				<div className='space-y-1'>
@@ -59,13 +57,13 @@ const VideoCard = ({ news }) => {
 				<div className='flex justify-between px-2'>
 					<div className='w-[45%] h-9 flex justify-center items-center gap-2 hover:bg-slate-300 rounded cursor-pointer'>
 						<AiOutlineLike size={25}/>
-						<p className='font-semibold'>Thích</p>
+						<p className='font-semibold sm:block hidden'>Thích</p>
 					</div>
 					<div className='w-[45%] h-9 flex justify-center items-center gap-2 hover:bg-slate-300 rounded cursor-pointer'
 						onClick={handleOpenComment}
 					>
-						<FaRegComment size={23}/>
-						<p className='font-semibold'>Comment</p>
+						<FaRegComment size={23} className='flex-shrink-0'/>
+						<p className='font-semibold sm:block hidden'>Comment</p>
 					</div>
 				</div>
 			</div>

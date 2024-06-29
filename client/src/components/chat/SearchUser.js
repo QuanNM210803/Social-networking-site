@@ -21,7 +21,7 @@ const SearchUser = ({ onClose }) => {
 
 	return (
 		<div className='fixed top-14 bottom-0 left-0 right-0 bg-slate-700 bg-opacity-40 p-2 z-50'>
-			<div className='w-full max-w-lg mx-auto mt-10'>
+			<div className='w-full max-w-lg mx-auto mt-14'>
 				<div className='bg-white rounded h-14 overflow-hidden flex '>
 					<input
 						type='text'

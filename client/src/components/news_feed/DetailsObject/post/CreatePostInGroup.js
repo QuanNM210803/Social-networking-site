@@ -67,9 +67,9 @@ const CreatePostInGroup = ({ handleCreatePost, groupId, groupName }) => {
 	return (
 		<div className='fixed top-14 bottom-0 right-0 left-0 bg-gray-700 bg-opacity-70
          z-50 flex justify-center items-center'>
-			<div className='bg-slate-200 w-[40%] h-auto max-h-[600px] rounded'>
+			<div className='bg-slate-200 lg:w-[40%] md:w-[50%] sm:w-[60%] w-[80%] h-auto max-h-[600px] rounded'>
 				<div className='flex items-center justify-center relative py-2'>
-					<p className='font-bold text-lg'>Tạo bài viết trong {groupName}</p>
+					<p className='font-bold px-7 text-lg text-ellipsis line-clamp-1'>Tạo bài viết trong {groupName}</p>
 					<IoCloseOutline size={30} className='absolute right-2 cursor-pointer hover:bg-slate-300 rounded-full'
 						onClick={() => handleCreatePost()}/>
 				</div>
@@ -130,7 +130,7 @@ const CreatePostInGroup = ({ handleCreatePost, groupId, groupName }) => {
 				</div>
 				<div className='w-full h-auto px-5 py-2 space-y-2'>
 					<div className='bg-slate-300 flex items-center justify-between w-full h-auto rounded-md px-2 py-1'>
-						<p>Thêm vào bài viết của bạn</p>
+						<p className='sm:block hidden'>Thêm vào bài viết của bạn</p>
 						<div className='flex items-center gap-2 px-2 py-1'>
 							<FaImages size={25} className='text-green-600 cursor-pointer' onClick={handleImageClick} />
 							<BsEmojiSmileFill size={25} className='text-yellow-600 cursor-pointer'/>

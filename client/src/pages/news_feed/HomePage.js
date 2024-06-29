@@ -118,13 +118,13 @@ const HomePage = () => {
 				<Navbar user={user} socketConnection={socketConnection}/>
 			</div>
 			<div className='bg-slate-300 flex top-14 left-0 right-0 bottom-0'>
-				<div className='h-[calc(100vh-56px)] w-[27%] overflow-auto scrollbar-newsfeed'>
+				<div className='h-[calc(100vh-56px)] w-[20%] overflow-auto scrollbar-newsfeed xl:block hidden'>
 					<Sidebar user={user}/>
 				</div>
-				<div className='h-[calc(100vh-56px)] w-[63%] overflow-auto scrollbar-newsfeed' onScroll={handleScroll}>
+				<div className='h-[calc(100vh-56px)] xl:w-[60%] lg:w-[75%] w-full overflow-auto scrollbar-newsfeed' onScroll={handleScroll}>
 					<Content news={news} loading={loading} handleLikePost={handleLikePost} handleCommentPost={handleCommentPost}/>
 				</div>
-				<div className='h-[calc(100vh-56px)] w-[22%] overflow-auto scrollbar-newsfeed'>
+				<div className='h-[calc(100vh-56px)] xl:w-[20%] lg:w-[25%] overflow-auto scrollbar-newsfeed lg:block hidden'>
 					<Rightbar user={user} socketConnection={socketConnection}/>
 				</div>
 			</div>

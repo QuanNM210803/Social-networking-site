@@ -28,8 +28,8 @@ const IntroductionUser = ({ objectId }) => {
 				<p className='text-2xl font-bold px-3'>Giới thiệu</p>
 			</div>
 			<div className='px-3 py-3 w-full h-auto'>
-				<div className='px-3 space-y-2 w-[450px]'>
-					<div className='flex gap-2 px-1 py-1 rounded-lg bg-slate-300'>
+				<div className='px-3 space-y-2 sm:w-[450px] w-full'>
+					<div className='flex gap-2 w-full px-1 py-1 rounded-lg bg-slate-300'>
 						<div className='flex items-start'>
 							<div className='flex items-center gap-1 '>
 								<MdEmail size={25}/>

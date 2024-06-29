@@ -66,12 +66,12 @@ const CommentVideoCard = ({ handleOpenComment, news }) => {
 	return (
 		<div className='fixed top-14 bottom-0 left-0 right-0 bg-gray-700 bg-opacity-70
          z-50 flex justify-center items-center'>
-			<div className='absolute top-0 right-0 mt-2 mr-3 p-1 rounded-full hover:bg-slate-100 hover:text-black cursor-pointer
+			<div className='absolute top-0 right-0 mt-2 mr-3 sm:p-1 rounded-full hover:bg-slate-100 hover:text-black cursor-pointer
             bg-slate-300 text-slate-600' onClick={handleOpenComment}>
 				<IoCloseOutline size={40}/>
 			</div>
-			<div className='relative w-[50%] h-[600px] bg-slate-200 rounded-md'>
-				<div className='w-full h-[580px] bg-slate-200 px-4 py-2 rounded-t-md space-y-2 overflow-auto'>
+			<div className='relative lg:w-[50%] md:w-[60%] sm:w-[70%] w-[80%] sm:h-[600px] h-[550px] bg-slate-200 rounded-md'>
+				<div className='w-full sm:h-[550px] h-[500px] bg-slate-200 px-4 py-2 rounded-t-md space-y-2 overflow-auto'>
 					<div className='flex items-center gap-4'>
 						<img
 							src={post?.poster?.avatar}
@@ -108,27 +108,13 @@ const CommentVideoCard = ({ handleOpenComment, news }) => {
 					<div>
 						<hr className='border-gray-300'/>
 					</div>
-					<div className='flex justify-between px-2'>
-						<div className='w-[45%] h-9 flex justify-center items-center gap-2 hover:bg-slate-300 rounded cursor-pointer'>
-							<AiOutlineLike size={25}/>
-							<p className='font-semibold'>Thích</p>
-						</div>
-						<div className='w-[45%] h-9 flex justify-center items-center gap-2 hover:bg-slate-300 rounded cursor-pointer'
-							onClick={() => textareaRef?.current?.focus()}>
-							<FaRegComment size={23}/>
-							<p className='font-semibold'>Comment</p>
-						</div>
-					</div>
-					<div>
-						<hr className='border-gray-300'/>
-					</div>
 					<div className='space-y-3'>
 						<p>Tất cả bình luận</p>
 						{
 							comments.length>0 && comments.map((comment, index) => (
 								<div className='space-y-1'>
 									<div key={index} className='flex gap-3'>
-										<div className=''>
+										<div className='flex-shrink-0'>
 											<img
 												src={comment?.poster?.avatar}
 												width={40}
@@ -174,9 +160,6 @@ const CommentVideoCard = ({ handleOpenComment, news }) => {
 					<div className=''>
 						<button className='px-1 py-[6px] rounded hover:bg-blue-300'>
 							<FaImage size={20}/>
-						</button>
-						<button className='px-1 py-[6px] rounded hover:bg-blue-300'>
-							<FaVideo size={20}/>
 						</button>
 					</div>
 					<textarea type='text'

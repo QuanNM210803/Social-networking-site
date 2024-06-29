@@ -20,7 +20,7 @@ const Content = ({ news, loading, handleLikePost, handleCommentPost }) => {
 	}
 	return (
 		<div>
-			<div className='w-[850px] space-y-3 px-20'>
+			<div className='w-full space-y-3 md:px-20 sm:px-4'>
 				<div className='w-full h-auto bg-slate-200 px-4 py-2 space-y-2 rounded-md'>
 					<div className='flex items-center gap-4'>
 						<Link to={`/profileUser/${user?._id}`} className='w-12 h-12 flex-shrink-0'>
@@ -40,19 +40,19 @@ const Content = ({ news, loading, handleLikePost, handleCommentPost }) => {
 					<div>
 						<hr className='border-gray-300'/>
 					</div>
-					<div className='flex items-center justify-between'>
-						<div className='flex items-center gap-2 h-10 px-5 hover:bg-gray-300 cursor-pointer rounded-lg'>
+					<div className='sm:flex items-center sm:justify-between grid grid-flow-col grid-cols-3'>
+						<div className='flex items-center justify-center gap-2 h-10 px-5 hover:bg-gray-300 cursor-pointer rounded-lg'>
 							<IoIosVideocam size={25} className='text-red-600'/>
-							<p>Video trực tiếp</p>
+							<p className='sm:block hidden'>Video trực tiếp</p>
 						</div>
-						<div className='flex items-center gap-2 h-10 px-5 hover:bg-gray-300 cursor-pointer rounded-lg'
+						<div className='flex items-center justify-center gap-2 h-10 px-5 hover:bg-gray-300 cursor-pointer rounded-lg'
 							onClick={() => handleCreatePost()}>
 							<FaImages size={25} className='text-green-600'/>
-							<p>Ảnh/Video</p>
+							<p className='sm:block hidden'>Ảnh/Video</p>
 						</div>
-						<div className='flex items-center gap-2 h-10 px-5 hover:bg-gray-300 cursor-pointer rounded-lg'>
+						<div className='flex items-center justify-center gap-2 h-10 px-5 hover:bg-gray-300 cursor-pointer rounded-lg'>
 							<MdEmojiEmotions size={25} className='text-yellow-600'/>
-							<p>Cảm xúc/hoạt động</p>
+							<p className='sm:block hidden'>Cảm xúc/hoạt động</p>
 						</div>
 					</div>
 				</div>

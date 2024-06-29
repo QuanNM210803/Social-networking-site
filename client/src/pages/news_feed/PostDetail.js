@@ -73,7 +73,7 @@ const PostDetail = () => {
 				<Navbar user={user} socketConnection={socketConnection}/>
 			</div>
 			<div className='flex top-14 left-0 right-0 bottom-0 justify-center bg-slate-300 overflow-auto' style={{ zIndex:0 }}>
-				<div className='min-h-[calc(100vh-56px)] w-[50%] py-5'>
+				<div className='min-h-[calc(100vh-56px)] lg:w-[50%] md:w-[70%] sm:w-[80%] sm:px-0 w-full px-3 py-5'>
 					<NewsCard news={news[0]} handleLikePost={handleLikePost} handleCommentPost={handleCommentPost}/>
 				</div>
 			</div>

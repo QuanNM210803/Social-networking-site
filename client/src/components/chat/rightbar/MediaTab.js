@@ -16,7 +16,7 @@ function MediaTab({ media }) {
 	}
 	return (
 		<>
-			<div className="grid grid-flow-row grid-cols-3 gap-1 z-0">
+			<div className="grid grid-flow-row md:grid-cols-3 grid-cols-2 gap-1 z-0">
 				{
 					media?.length>0 && media.map((item, index) => {
 						return (

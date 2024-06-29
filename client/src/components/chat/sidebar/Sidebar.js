@@ -13,6 +13,7 @@ import { FiArrowUpLeft } from 'react-icons/fi'
 import SearchUser from '../SearchUser'
 import { FaImage } from 'react-icons/fa6'
 import { FaVideo } from 'react-icons/fa6'
+import logo from '../../../assets/xing.svg'
 
 
 const Sidebar = ({ socketConnection }) => {
@@ -75,7 +76,11 @@ const Sidebar = ({ socketConnection }) => {
 			</div>
 			<div className='w-full h-full'>
 				<div className='h-16 flex items-center'>
-					<h2 className='text-xl font-bold p-4 text-slate-800'>Message</h2>
+					<h2 className='text-xl font-bold p-4 text-slate-800 lg:block hidden'>Message</h2>
+					<img
+						src={logo}
+						className='lg:hidden block mx-auto w-10 h-10'
+					/>
 				</div>
 				<div className='bg-slate-200 p-[0.5px]'></div>
 				<div className='h-[calc(100%-65px)] overflow-x-hidden overflow-y-auto scrollbar'>
@@ -103,7 +108,7 @@ const Sidebar = ({ socketConnection }) => {
 											userId={conv?.userDetails?._id}
 										/>
 									</div>
-									<div>
+									<div className='lg:block hidden'>
 										<h3 className='text-ellipsis line-clamp-1 font-semibold text-base'>{conv?.userDetails?.name}</h3>
 										<div className='text-slate-500 text-xs flex items-center gap-1'>
 											<div className='flex items-center gap-1'>

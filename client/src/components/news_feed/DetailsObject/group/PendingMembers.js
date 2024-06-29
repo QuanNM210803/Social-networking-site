@@ -25,40 +25,42 @@ const PendingMembers = ({ objectId, socketConnection }) => {
 		})
 	}
 	return (
-		<div className='bg-slate-200 rounded-md h-auto'>
-			{pending_members?.length>0 ? (
-				<div className='grid grid-flow-row grid-cols-3 gap-2 py-2 px-3'>
-					{
-						pending_members.map((member, index) => (
-							<div className='flex gap-3 hover:bg-slate-100 px-3 py-2 rounded-md border-slate-300 border'>
-								<Link to={`/profileUser/${member?._id}`} className='flex-shrink-0'>
-									<img
-										src={member?.profile_pic}
-										className='rounded-lg w-14 h-14 object-cover'
-									/>
-								</Link>
-								<div className='w-full h-full flex items-center'>
-									<div className='w-auto h-auto'>
-										<Link to={`/profileUser/${member?._id}`} className='text-sm font-semibold hover:underline flex items-center gap-1'>
-											{member?.name}
-										</Link>
+		<div className='flex justify-center w-full'>
+			<div className='bg-slate-200 rounded-md h-auto md:w-full sm:w-[80%] w-full'>
+				{pending_members?.length>0 ? (
+					<div className='grid grid-flow-row xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-2 py-2 px-3'>
+						{
+							pending_members.map((member, index) => (
+								<div className='flex gap-3 hover:bg-slate-100 lg:px-3 md:px-1 px-2 py-2 rounded-md border-slate-300 border'>
+									<Link to={`/profileUser/${member?._id}`} className='flex-shrink-0'>
+										<img
+											src={member?.profile_pic}
+											className='rounded-lg lg:w-14 lg:h-14 md:w-11 md:h-11 w-12 h-12 object-cover'
+										/>
+									</Link>
+									<div className='w-full h-full flex items-center'>
+										<div className='w-auto h-auto'>
+											<Link to={`/profileUser/${member?._id}`} className='text-sm font-semibold hover:underline flex items-center gap-1'>
+												{member?.name}
+											</Link>
+										</div>
+									</div>
+									<div className='flex items-center justify-end w-auto h-auto'>
+										<button className='w-[90px] h-auto hover:bg-slate-200 py-1 rounded-md'
+											onClick={() => handleAcceptJoinGroup(member?._id)}>
+                                    Chấp nhận
+										</button>
 									</div>
 								</div>
-								<div className='flex items-center justify-end w-auto h-auto'>
-									<button className='w-[100px] h-auto hover:bg-slate-200 px-2 py-1 rounded-md'
-										onClick={() => handleAcceptJoinGroup(member?._id)}>
-                              Chấp nhận
-									</button>
-								</div>
-							</div>
-						))
-					}
-				</div>
-			):(
-				<div className='w-full h-20 flex justify-center items-center'>
-					<p className='text-slate-500 text-lg'>Không có người nào yêu cầu tham gia nhóm.</p>
-				</div>
-			)}
+							))
+						}
+					</div>
+				):(
+					<div className='w-full h-20 flex justify-center items-center'>
+						<p className='text-slate-500 text-lg text-center'>Không có người nào yêu cầu tham gia nhóm.</p>
+					</div>
+				)}
+			</div>
 		</div>
 	)
 }

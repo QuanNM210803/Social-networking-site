@@ -31,13 +31,13 @@ const Images = ({ objectId, typeObject }) => {
 		}
 	}, [objectId, typeObject])
 	return (
-		<div>
-			<div className='bg-slate-200 rounded-md h-auto'>
+		<div className='flex justify-center items-center w-full'>
+			<div className='bg-slate-200 rounded-md h-auto md:w-full sm:w-[80%] w-full'>
 				<div className='flex justify-between px-3 py-2'>
 					<div className='flex items-center gap-7'>
 						<p className='text-2xl font-bold px-3'>Ảnh của {typeObject==='user' ? (words[words?.length-1]):'nhóm'}</p>
 						<p>{images?.length} ảnh</p>
-					</div>
+					</div>                                        
 				</div>
 				{
 					images?.length===0 ? (
@@ -45,11 +45,11 @@ const Images = ({ objectId, typeObject }) => {
 							<p className='text-slate-500 text-lg'>Không có ảnh nào.</p>
 						</div>
 					):(
-						<div className='px-6 py-3 w-full h-auto grid grid-cols-5 gap-1'>
+						<div className='px-6 py-3 w-full h-auto grid lg:grid-cols-5 md:grid-cols-4 sm:grid-cols-3 grid-cols-2 gap-1'>
 							{
 								images?.map((image, index) => (
 									<div key={index} onClick={() => handleOpenDetailMedia(index)} className='cursor-pointer'>
-										<img src={image} alt='Image' className='w-full h-[200px] object-cover rounded-md'/>
+										<img src={image} alt='Image' className='w-full xl:h-[190px] lg:h-[170px] md:h-[150px] sm:h-[130px] h-[130px] object-cover rounded-md'/>
 									</div>
 								))
 							}

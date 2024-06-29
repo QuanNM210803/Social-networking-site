@@ -11,7 +11,6 @@ import { IoPeopleSharp } from 'react-icons/io5'
 import { BiSolidVideos } from 'react-icons/bi'
 import { MdGroups } from 'react-icons/md'
 import { IoGameControllerSharp } from 'react-icons/io5'
-import { IoMenu } from 'react-icons/io5'
 import { BiSolidMessageRounded } from 'react-icons/bi'
 import { IoNotifications } from 'react-icons/io5'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
@@ -79,13 +78,13 @@ const navbar = ({ user, socketConnection }) => {
 
 	const [activeTab, setActiveTab] =useState('Nguời dùng')
 	return (
-		<div className='w-full h-14 flex items-center justify-between'>
-			<div className='h-auto w-auto flex items-center gap-3 px-5'>
+		<div className='w-full h-14 flex items-center lg:justify-between justify-center'>
+			<div className='hidden xl:w-[20%] xl:flex items-center h-auto w-auto gap-3 px-5 flex-shrink-0'>
 				<Link to={'/home'}>
 					<img
 						src={logo}
 						alt='logo'
-						className='rounded-full w-10 h-10'
+						className='rounded-full w-10 h-10 object-cover'
 					/>
 				</Link>
 				<div className='relative'>
@@ -95,7 +94,7 @@ const navbar = ({ user, socketConnection }) => {
 						value={search}
 						onChange={(e) => setSearch(e?.target?.value)}
 						placeholder='Search'
-						className='bg-slate-400 rounded-lg py-1 px-2 placeholder:text-slate-300'
+						className='bg-slate-400 rounded-lg py-1 px-2 placeholder:text-slate-300 w-[95%]'
 					/>
 					{
 						search!=='' && (
@@ -161,27 +160,24 @@ const navbar = ({ user, socketConnection }) => {
 					}
 				</div>
 			</div>
-			<div className='h-auto w-auto flex items-center gap-5'>
-				<Link to={'/home'} className={'w-20 h-auto flex justify-center'}>
+			<div className='h-auto w-auto lg:w-[75%] xl:w-[60%] justify-center flex items-center sm:gap-5 gap-[15%]'>
+				<Link to={'/home'} className={'sm:w-20 w-10 h-auto flex justify-center'}>
 					<IoHome className={`w-8 h-8 cursor-pointer ${location.pathname === '/home' ? 'text-slate-300':'hover:text-slate-300 text-slate-800'}`}/>
 				</Link>
-				<Link to={'/friend-request'} className='w-20 h-auto flex justify-center'>
+				<Link to={'/friend-request'} className='sm:w-20 w-10 h-auto flex justify-center'>
 					<IoPeopleSharp className={`w-8 h-8 cursor-pointer ${location.pathname === '/friend-request' ? 'text-slate-300':'hover:text-slate-300 text-slate-800'}`}/>
-				</Link>
-				<Link to={'/video'} className='w-20 h-auto flex justify-center'>
+				</Link> 
+				<Link to={'/video'} className='sm:w-20 w-10 h-auto flex justify-center'>
 					<BiSolidVideos className={`w-8 h-8 cursor-pointer ${location.pathname === '/video' ? 'text-slate-300':'hover:text-slate-300 text-slate-800'}`}/>
 				</Link>
-				<Link to={'/groups'} className='w-20 h-auto flex justify-center'>
+				<Link to={'/groups'} className='sm:w-20 w-10 h-auto flex justify-center'>
 					<MdGroups className={`w-8 h-8 cursor-pointer ${location.pathname === '/groups' ? 'text-slate-300':'hover:text-slate-300 text-slate-800'}`}/>
 				</Link>
-				<Link to={'/games'} className='w-20 h-auto flex justify-center'>
+				<Link to={'/games'} className='sm:w-20 w-10 h-auto flex justify-center'>
 					<IoGameControllerSharp className={`w-8 h-8 cursor-pointer ${location.pathname === '/games' ? 'text-slate-300':'hover:text-slate-300 text-slate-800'}`}/>
 				</Link>
 			</div>
-			<div className=' h-auto w-auto flex items-center px-5 gap-3'>
-				<div className='w-auto h-auto flex justify-center rounded-full bg-slate-600 p-[5px] hover:bg-slate-400'>
-					<IoMenu className='w-7 h-7 text-slate-800 cursor-pointer'/>
-				</div>
+			<div className='hidden h-auto w-auto xl:w-[20%] lg:w-[25%] lg:justify-end lg:flex items-center px-5 gap-3'>
 				<Link to={'/chat'} className={`w-auto h-auto flex justify-center rounded-full p-[5px] 
                ${location.pathname.includes('/chat') ? 'bg-slate-400':'hover:bg-slate-400 bg-slate-600'}`}>
 					<BiSolidMessageRounded className='w-7 h-7 text-slate-800  cursor-pointer'/>

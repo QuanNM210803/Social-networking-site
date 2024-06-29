@@ -98,28 +98,42 @@ const ProfileUser = ({ idFriend, news, loading, handleLikePost, handleCommentPos
 		})
 	}
 
+	const [windowWidth, setWindowWidth] = useState(window.innerWidth)
+
+	useEffect(() => {
+		const handleResize = () => {
+			setWindowWidth(window.innerWidth)
+		}
+
+		window.addEventListener('resize', handleResize)
+		return () => {
+			window.removeEventListener('resize', handleResize)
+		}
+	}, [])
+
 	return (
 		<div className='w-full h-auto'>
-			<div className='relative w-full h-[500px] bg-slate-200'>
+			<div className='relative w-full sm:h-[500px] h-[450px] bg-slate-200'>
 				<div className='flex justify-center rounded-b-md'>
 					<img
 						src={user?.cover_pic}
-						className={'w-[80%] h-[350px] object-cover rounded-b-md'}
+						className={'w-[80%] lg:h-[350px] h-[250px] object-cover rounded-b-md'}
 					/>
 				</div>
-				<div className='flex justify-center w-full h-auto absolute top-[60%]'>
+				<div className='hidden lg:flex justify-center w-full h-auto absolute top-[60%]'>
 					<div className={'h-auto w-[80%] flex justify-between'}>
 						<div className='flex gap-5'>
-							<div className='ml-10'>
+							<div className='xl:ml-10 ml-5 flex-shrink-0'>
 								<img
 									src={user?.profile_pic}
-									className='w-[180px] h-[180px] object-cover rounded-full border-4 border-slate-300'
+									className='md:w-[180px] md:h-[180px] w-[150px] h-[150px] object-cover rounded-full border-4 border-slate-300'
 								/>
 							</div>
 							<div className='items-center mt-16'>
-								<div className='flex items-center gap-2'>
-									<p className='font-bold text-3xl'>{user?.name}</p>
-									{selfApi?._id===user?._id && <RiVerifiedBadgeFill className='text-blue-600'/>}
+								<div className=''>
+									<p className='font-bold lg:text-3xl text-xl flex items-center gap-2'>
+										{user?.name} {selfApi?._id===user?._id && <RiVerifiedBadgeFill className='text-blue-600 lg:text-xl text-nomal'/>}
+									</p>
 								</div>
 								{
 									selfApi?._id!==user?._id && 
@@ -129,53 +143,124 @@ const ProfileUser = ({ idFriend, news, loading, handleLikePost, handleCommentPos
 								}
 							</div>
 						</div>
-						{selfApi?._id!==user?._id && <div className='mt-16 mr-10 flex items-end gap-2'>
-							{
-								selfApi?.friends.some((friend) => friend?.user===user?._id) &&
+						{selfApi?._id!==user?._id ? 
+							<div className='mt-16 xl:mr-10 flex items-end gap-2'>
+								{
+									selfApi?.friends.some((friend) => friend?.user===user?._id) &&
 								<button className='bg-slate-400 text-white hover:bg-slate-700 rounded-md px-3 py-1'
 									onClick={() => handleUnfriend(user?._id)}>
                            Hủy kết bạn
 								</button>
-							}
-							{
-								selfApi?.friend_requests.some((friend) => friend?.user===user?._id) &&
+								}
+								{
+									selfApi?.friend_requests.some((friend) => friend?.user===user?._id) &&
                         <button className='bg-blue-600 text-white hover:bg-blue-800 rounded-md px-3 py-1'
                         	onClick={() => handleAcceptFriendRequest(user?._id)}>
                            Chấp nhận lời mời
                         </button>
-							}
-							{
-								!selfApi?.friends.some((friend) => friend?.user===user?._id) &&
+								}
+								{
+									!selfApi?.friends.some((friend) => friend?.user===user?._id) &&
                         !selfApi?.friend_requests.some((friend) => friend?.user===user?._id) &&
                         !user?.friend_requests?.some((friend) => friend?.user===selfApi?._id) && 
                         <button className='bg-blue-600 text-white hover:bg-blue-800 rounded-md px-3 py-1'
                         	onClick={() => handleFriendRequest(user?._id)}>
                            Kết bạn
                         </button>
-							}
-							{
-								user?.friend_requests?.some((friend) => friend?.user===selfApi?._id) && 
+								}
+								{
+									user?.friend_requests?.some((friend) => friend?.user===selfApi?._id) && 
                         <button className='bg-slate-400 text-white hover:bg-slate-700 rounded-md px-3 py-1'
                         	onClick={() => handleCancelFriendRequest(user?._id)}>
                            Hủy yêu cầu kết bạn
                         </button>
-							}
-							<Link to={`/chat/${user?._id}`} className='bg-slate-500 text-white hover:bg-slate-700 rounded-md px-3 py-1'>Nhắn tin</Link>
-						</div>}
-						{selfApi?._id===user?._id && <div className='mt-16 mr-10 flex items-end gap-2'>
-							<button className='bg-slate-400 text-white hover:bg-slate-600 rounded-md px-3 py-1'
-								onClick={() => handleShowEdit()}>
+								}
+								<Link to={`/chat/${user?._id}`} className='bg-slate-500 text-white hover:bg-slate-700 rounded-md px-3 py-1'>Nhắn tin</Link>
+							</div> : 
+							<div className='mt-16 lg:mr-10 flex items-end gap-2'>
+								<button className='bg-slate-400 text-white hover:bg-slate-600 rounded-md px-3 py-1'
+									onClick={() => handleShowEdit()}>
                         Chỉnh sửa thông tin
-							</button>
-						</div>}
+								</button>
+							</div>
+						}
 					</div>
 				</div>
+				{
+					windowWidth < 1024 && (
+						<div className='flex justify-center w-full h-auto absolute top-[35%] '>
+							<div className={'h-auto w-[80%] flex flex-col'}>
+								<div className='flex justify-center items-center'>
+									<img
+										src={user?.profile_pic}
+										className='sm:w-[180px] sm:h-[180px] w-[150px] h-[150px] object-cover rounded-full border-4 border-slate-300'
+									/>
+								</div>
+								<div className='flex justify-center items-center mt-2'>
+									<p className='font-bold text-3xl flex items-center text-center gap-2'>
+										{user?.name} {selfApi?._id===user?._id && <RiVerifiedBadgeFill className='text-blue-600 lg:text-xl text-nomal'/>}
+									</p>
+								</div>
+								<div className='flex justify-center items-center'>
+									{
+										selfApi?._id!==user?._id && 
+                              <p className='cursor-pointer hover:underline' onClick={() => handleOpenDetailsMutualFriend()}>
+                              	{user?.mutualFriends?.length} bạn chung
+                              </p>
+									}
+								</div>
+
+								{selfApi?._id!==user?._id ?
+									<div className='flex items-center justify-center gap-2 mt-5'>
+										{
+											selfApi?.friends.some((friend) => friend?.user===user?._id) &&
+                                 <button className='bg-slate-400 text-white hover:bg-slate-700 rounded-md px-3 py-1'
+                                 	onClick={() => handleUnfriend(user?._id)}>
+                                    Hủy kết bạn
+                                 </button>
+										}
+										{
+											selfApi?.friend_requests.some((friend) => friend?.user===user?._id) &&
+                                 <button className='bg-blue-600 text-white hover:bg-blue-800 rounded-md px-3 py-1'
+                                 	onClick={() => handleAcceptFriendRequest(user?._id)}>
+                                    Chấp nhận lời mời
+                                 </button>
+										}
+										{
+											!selfApi?.friends.some((friend) => friend?.user===user?._id) &&
+                                 !selfApi?.friend_requests.some((friend) => friend?.user===user?._id) &&
+                                 !user?.friend_requests?.some((friend) => friend?.user===selfApi?._id) && 
+                                 <button className='bg-blue-600 text-white hover:bg-blue-800 rounded-md px-3 py-1'
+                                 	onClick={() => handleFriendRequest(user?._id)}>
+                                    Kết bạn
+                                 </button>
+										}
+										{
+											user?.friend_requests?.some((friend) => friend?.user===selfApi?._id) && 
+                                 <button className='bg-slate-400 text-white hover:bg-slate-700 rounded-md px-3 py-1'
+                                 	onClick={() => handleCancelFriendRequest(user?._id)}>
+                                    Hủy yêu cầu kết bạn
+                                 </button>
+										}
+										<Link to={`/chat/${user?._id}`} className='bg-slate-500 text-white hover:bg-slate-700 rounded-md px-3 py-1'>Nhắn tin</Link>
+									</div> : 
+									<div className='flex items-center justify-center gap-2 mt-5'>
+										<button className='bg-slate-400 text-white hover:bg-slate-600 rounded-md px-3 py-1'
+											onClick={() => handleShowEdit()}>
+                                 Chỉnh sửa thông tin
+										</button>
+									</div>
+								}
+							</div>
+						</div>
+					)
+				}
 			</div>
 			<div className='flex justify-center bg-slate-200'>
 				<hr className={'w-[80%] border-slate-300'}/>
 			</div>
 			<div className='flex justify-center bg-slate-200'>
-				<div className={'w-[80%] px-1 py-3 flex items-center gap-1'}>
+				<div className={'md:w-[80%] w-full justify-center md:justify-start px-1 py-3 flex items-center md:gap-1'}>
 					<Tab label="Bài viết" isActive={activeTab === 'Bài viết'} onClick={() => setActiveTab('Bài viết')}/>
 					<Tab label="Giới thiệu" isActive={activeTab === 'Giới thiệu'} onClick={() => setActiveTab('Giới thiệu')}/>
 					<Tab label="Bạn bè" isActive={activeTab === 'Bạn bè'} onClick={() => setActiveTab('Bạn bè')}/>
@@ -184,7 +269,7 @@ const ProfileUser = ({ idFriend, news, loading, handleLikePost, handleCommentPos
 				</div>
 			</div>
 			<div className='flex justify-center'>
-				<div className={'w-[80%] h-auto py-5'}>
+				<div className={'md:w-[80%] w-full h-auto py-5'}>
 					{activeTab==='Bài viết' && (
 						<PostsUser objectId={user?._id} news={news} loading={loading} handleLikePost={handleLikePost} handleCommentPost={handleCommentPost}/>
 					)}

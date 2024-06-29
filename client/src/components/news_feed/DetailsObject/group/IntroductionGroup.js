@@ -26,7 +26,7 @@ const IntroductionGroup = ({ objectId }) => {
 				<p className='text-2xl font-bold px-3'>Giới thiệu</p>
 			</div>
 			<div className='px-3 py-3 w-full h-auto'>
-				<div className='px-3 space-y-2 w-[450px]'>
+				<div className='px-3 space-y-2 sm:w-[450px] w-full'>
 					<div className='flex gap-3 p-2 rounded-lg bg-slate-300'>
 						<div className='flex items-start'>
 							<div className='flex items-center'>

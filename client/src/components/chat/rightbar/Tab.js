@@ -1,7 +1,7 @@
 function Tab({ label, isActive, onClick }) {
 	return (
 		<button
-			className={`text-gray-700 px-4 py-2 ${isActive ? 'bg-slate-200 rounded-t-md' : ''}`}
+			className={`text-gray-700 sm:px-4 px-2 py-2 ${isActive ? 'bg-slate-200 rounded-t-md' : ''}`}
 			onClick={onClick}
 		>
 			{label}

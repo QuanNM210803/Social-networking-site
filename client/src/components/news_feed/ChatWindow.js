@@ -123,7 +123,7 @@ const ChatWindow = ({ handleCloseChatWindow, friendChat, socketConnection }) => 
 	}
 
 	return (
-		<div className='absolute w-[22%] h-[65%] bottom-0 right-16 bg-slate-300 rounded-t-lg border-[1px] border-black'>
+		<div className='absolute w-[330px] h-[65%] bottom-0 right-[2%] bg-slate-300 rounded-t-lg border-[1px] border-black'>
 			<div className='flex items-center justify-between w-full h-[52px] rounded-t-lg px-2 bg-slate-400'>
 				<div className='flex items-center gap-3 '>
 					<Link to={`/profileUser/${friendChat?._id}`} className='relative w-10 h-10 flex-shrink-0'>

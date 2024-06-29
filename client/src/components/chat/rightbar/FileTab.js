@@ -11,11 +11,11 @@ const FileTab = ({ file }) => {
 					return (
 						<div>
 							<div className='w-full h-12 flex items-center gap-3'>
-								<div className='w-10 h-10 rounded bg-slate-50 flex items-center justify-center'>
+								<div className='w-10 h-10 rounded bg-slate-50 flex items-center justify-center flex-shrink-0'>
 									<CiFileOn size={25}/>
 								</div>
-								<div className=''>
-									<p className='font-semibold text-base'>{item?.name}</p>
+								<div className='flex-grow overflow-hidden'>
+									<p className='font-semibold text-base truncate'>{item?.name}</p>
 									<p className='text-xs'>{item?.size}</p>
 								</div>
 								

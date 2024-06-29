@@ -168,7 +168,7 @@ const MessagePage = () => {
 
 		<div className='w-full h-full'>
 			<div style={{ backgroundImage: `url(${backgroundImage})` }} className={`
-            bg-no-repeat bg-cover z-0 ${openDetailsConversation ? 'mr-80':''}`}>
+            bg-no-repeat bg-cover z-0 ${openDetailsConversation ? 'lg:mr-80 sm:mr-60 mr-0':''}`}>
 				<header className='sticky top-0 h-16 bg-white flex justify-between items-center px-4'>
 					<div className='flex items-center gap-4'>
 						<Link to={`/profileUser/${dataUser?._id}`}>
@@ -198,17 +198,17 @@ const MessagePage = () => {
 						</div>
 					</div>
 					<div className='flex items-center gap-4'>
-						<div className='sm:block hidden' title='Call'>
+						<div className='' title='Call'>
 							<button className=''>
 								<IoCall size={20}/>
 							</button>
 						</div>
-						<div className='sm:block hidden' title='Video call'>
+						<div className='' title='Video call'>
 							<button className=''>
 								<IoVideocam size={25}/>
 							</button>
 						</div>
-						<div className='' onClick={handleOpenDetailsConversation} title='Information Conversation'>
+						<div className='sm:block hidden' onClick={handleOpenDetailsConversation} title='Information Conversation'>
 							<button className=''>
 								<HiDotsVertical size={20}/>
 							</button>
@@ -372,7 +372,7 @@ const MessagePage = () => {
 			</div>
 			{
 				openDetailsConversation && (
-					<div className='w-80 fixed right-0 top-14 z-0 h-full'>
+					<div className='lg:w-80 sm:w-60 sm:block hidden fixed right-0 top-14 z-0 h-full '>
 						<Rightbar receiver={dataUser} socketConnection={socketConnection}/>
 					</div>
 				)

@@ -7,7 +7,7 @@ import VideoCard from './VideoCard'
 const ContentVideoPage = ({ news }) => {
 	return (
 		<div className='w-full flex justify-center'>
-			<div className='w-[70%] h-auto space-y-3'>
+			<div className='lg:w-[70%] sm:w-[90%] w-[95%] h-auto space-y-3'>
 				{news.length>0 ? (
 					news.map((item, index) => (
 						item?.content?.video.map((it, index) => (

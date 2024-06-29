@@ -48,7 +48,7 @@ const Rightbar = ({ receiver, socketConnection }) => {
 						<MdOutlineEmail/>
 						<p className='font-semibold mb-1'>{receiver?.email}</p>
 					</div>
-					<p className='font-bold flex justify-center text-xl mt-0'>{receiver?.name}</p>
+					<p className='font-bold flex justify-center text-xl mt-0 text-center'>{receiver?.name}</p>
 
 					<div className="bg-slate-200 py-1 px-1 h-auto w-full mt-16">
 						<div className='bg-slate-200 w-full h-auto py-1 font-semibold'>

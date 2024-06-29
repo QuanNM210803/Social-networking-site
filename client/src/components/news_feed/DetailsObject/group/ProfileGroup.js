@@ -60,22 +60,35 @@ const ProfileGroup = ({ idGroup, news, loading, handleLikePost, handleCommentPos
 		})
 	}
 
+	const [windowWidth, setWindowWidth] = useState(window.innerWidth)
+
+	useEffect(() => {
+		const handleResize = () => {
+			setWindowWidth(window.innerWidth)
+		}
+
+		window.addEventListener('resize', handleResize)
+		return () => {
+			window.removeEventListener('resize', handleResize)
+		}
+	}, [])
+
 	return (
 		<div className='w-full h-auto'>
-			<div className='relative w-full h-[500px] bg-slate-200'>
+			<div className='relative w-full sm:h-[500px] h-[450px] bg-slate-200'>
 				<div className='flex justify-center rounded-b-md'>
 					<img
 						src={group?.cover_pic}
-						className={'w-[80%] h-[350px] object-cover rounded-b-md'}
+						className={'w-[80%] lg:h-[350px] h-[250px] object-cover rounded-b-md'}
 					/>
 				</div>
-				<div className='flex justify-center w-full h-auto absolute top-[60%]'>
+				<div className='hidden lg:flex justify-center w-full h-auto absolute top-[60%]'>
 					<div className={'h-auto w-[80%] flex justify-between'}>
 						<div className='flex gap-5'>
-							<div className='ml-10'>
+							<div className='xl:ml-10 ml-5 flex-shrink-0'>
 								<img
 									src={group?.profile_pic}
-									className='w-[180px] h-[180px] object-cover rounded-full border-4 border-slate-300'
+									className='md:w-[180px] md:h-[180px] w-[150px] h-[150px] object-cover rounded-full border-4 border-slate-300'
 								/>
 							</div>
 							{
@@ -83,8 +96,9 @@ const ProfileGroup = ({ idGroup, news, loading, handleLikePost, handleCommentPos
 									<div className='items-center mt-16'>
 										<div className='flex items-end gap-4'>
 											<p className='font-bold text-3xl'>{group?.name}</p>
-											<p>{group?.privacy==='private' ? '(Riêng tư)':'(Công khai)'}</p>
+											
 										</div>
+										<p>{group?.privacy==='private' ? '(Riêng tư)':'(Công khai)'}</p>
 										<p onClick={() => handleOnclickMembers()} className='cursor-pointer'>{group?.members?.length} thành viên</p>
 									</div>
 								):(
@@ -97,7 +111,7 @@ const ProfileGroup = ({ idGroup, news, loading, handleLikePost, handleCommentPos
 						</div>
 						{
 							(group?.admin && group?.admin?.some((ad) => ad?._id===user?._id)) ? (
-								<div className='mt-16 mr-10 flex items-end gap-2'>
+								<div className='mt-16 xl:mr-10 flex items-end gap-2'>
 									<button className='bg-slate-400 text-white hover:bg-slate-600 rounded-md px-3 py-1'
 										onClick={() => handleShowEditGroup()}>
                               Chỉnh sửa thông tin nhóm
@@ -105,7 +119,7 @@ const ProfileGroup = ({ idGroup, news, loading, handleLikePost, handleCommentPos
 								</div>
 							):(
 								group?.members?.some(member => member?._id.toString()===user?._id.toString()) ? (
-									<div className='mt-16 mr-10 flex items-end gap-2'>
+									<div className='mt-16 xl:mr-10 flex items-end gap-2'>
 										<button className='bg-slate-400 text-white hover:bg-slate-600 rounded-md px-3 py-1'
 											onClick={() => handleOutGroup()}>
                                  Rời nhóm
@@ -113,14 +127,14 @@ const ProfileGroup = ({ idGroup, news, loading, handleLikePost, handleCommentPos
 									</div>
 								):(
 									group?.pending_members?.some(member => member?._id?.toString()===user?._id) ? (
-										<div className='mt-16 mr-10 flex items-end gap-2'>
+										<div className='mt-16 xl:mr-10 flex items-end gap-2'>
 											<button className='bg-slate-400 text-white hover:bg-slate-600 rounded-md px-3 py-1'
 												onClick={() => handleRequestJoinGroup(false)}>
                                     Hủy yêu cầu tham gia
 											</button>
 										</div>
 									):(
-										<div className='mt-16 mr-10 flex items-end gap-2'>
+										<div className='mt-16 xl:mr-10 flex items-end gap-2'>
 											<button className='bg-blue-600 text-white hover:bg-blue-800 rounded-md px-3 py-1'
 												onClick={() => handleRequestJoinGroup(true)}>
                                     Tham gia nhóm
@@ -132,12 +146,76 @@ const ProfileGroup = ({ idGroup, news, loading, handleLikePost, handleCommentPos
 						}
 					</div>
 				</div>
+				{
+					windowWidth< 1024 && (
+						<div className='flex justify-center w-full h-auto absolute top-[35%]'>
+							<div className={'h-auto w-[80%] flex flex-col'}>
+								<div className='flex justify-center items-center'>
+									<img
+										src={group?.profile_pic}
+										className='sm:w-[180px] sm:h-[180px] w-[150px] h-[150px] object-cover rounded-full border-4 border-slate-300'
+									/>
+								</div>
+								{
+									(group?.privacy==='public' || group?.members?.some(member => member?._id.toString()===user?._id.toString())) ? (
+										<div className='flex justify-center items-center flex-col mt-1'>
+											<p className='font-bold text-3xl text-center'>{group?.name}</p>
+											<p>{group?.privacy==='private' ? '(Riêng tư)':'(Công khai)'}</p>
+											<p onClick={() => handleOnclickMembers()} className='cursor-pointer'>{group?.members?.length} thành viên</p>
+										</div>
+									):(
+										<div className='flex justify-center items-center flex-col mt-1'>
+											<p className='font-bold text-3xl text-center'>{group?.name}</p>
+											<p>Tham gia nhóm ngay</p>
+										</div>
+									)
+								}
+
+								{
+									(group?.admin && group?.admin?.some((ad) => ad?._id===user?._id)) ? (
+										<div className='flex items-center justify-center mt-2'>
+											<button className='bg-slate-400 text-white hover:bg-slate-600 rounded-md px-3 py-1'
+												onClick={() => handleShowEditGroup()}>
+                                    Chỉnh sửa thông tin nhóm
+											</button>
+										</div>
+									):(
+										group?.members?.some(member => member?._id.toString()===user?._id.toString()) ? (
+											<div className='flex items-center justify-center mt-2'>
+												<button className='bg-slate-400 text-white hover:bg-slate-600 rounded-md px-3 py-1'
+													onClick={() => handleOutGroup()}>
+                                       Rời nhóm
+												</button>
+											</div>
+										):(
+											group?.pending_members?.some(member => member?._id?.toString()===user?._id) ? (
+												<div className='flex items-center justify-center mt-2'>
+													<button className='bg-slate-400 text-white hover:bg-slate-600 rounded-md px-3 py-1'
+														onClick={() => handleRequestJoinGroup(false)}>
+                                          Hủy yêu cầu tham gia
+													</button>
+												</div>
+											):(
+												<div className='flex items-center justify-center mt-2'>
+													<button className='bg-blue-600 text-white hover:bg-blue-800 rounded-md px-3 py-1'
+														onClick={() => handleRequestJoinGroup(true)}>
+                                          Tham gia nhóm
+													</button>
+												</div>
+											)
+										)
+									)
+								}
+							</div>
+						</div>
+					)
+				}
 			</div>
 			<div className='flex justify-center bg-slate-200'>
 				<hr className={'w-[80%] border-slate-300'}/>
 			</div>
 			<div className='flex justify-center bg-slate-200'>
-				<div className={'w-[80%] px-1 py-3 flex items-center gap-1'}>
+				<div className={'md:w-[80%] w-full justify-center md:justify-start px-1 py-3 flex items-center md:gap-1'}>
 					<Tab label="Bài viết" isActive={activeTab === 'Bài viết'} onClick={() => setActiveTab('Bài viết')}/>
 					<Tab label="Giới thiệu" isActive={activeTab === 'Giới thiệu'} onClick={() => setActiveTab('Giới thiệu')}/>
 					<Tab label="Thành viên" isActive={activeTab === 'Thành viên'} onClick={() => setActiveTab('Thành viên')}/>
@@ -151,7 +229,7 @@ const ProfileGroup = ({ idGroup, news, loading, handleLikePost, handleCommentPos
 				</div>
 			</div>
 			<div className='flex justify-center'>
-				<div className={'w-[80%] h-auto py-5'}>
+				<div className={'md:w-[80%] w-full h-auto py-5'}>
 					{
 						group?.privacy==='public' || group?.members?.some(member => member?._id.toString()===user?._id.toString()) ? (
 							<>

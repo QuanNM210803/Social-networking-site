@@ -31,8 +31,8 @@ const Videos = ({ objectId, typeObject }) => {
 		}
 	}, [objectId, typeObject])
 	return (
-		<div>
-			<div className='bg-slate-200 rounded-md h-auto'>
+		<div className='flex justify-center items-center w-full'>
+			<div className='bg-slate-200 rounded-md h-auto md:w-full sm:w-[80%] w-full'>
 				<div className='flex justify-between px-3 py-2'>
 					<div className='flex items-center gap-7'>
 						<p className='text-2xl font-bold px-3'>Video của {typeObject==='user' ? (words[words?.length-1]):'nhóm'}</p>
@@ -45,11 +45,11 @@ const Videos = ({ objectId, typeObject }) => {
 							<p className='text-slate-500 text-lg'>Không có video nào.</p>
 						</div>
 					):(
-						<div className='px-6 py-3 w-full h-auto grid grid-cols-5 gap-1'>
+						<div className='px-6 py-3 w-full h-auto grid lg:grid-cols-5 md:grid-cols-4 sm:grid-cols-3 grid-cols-2 gap-1'>
 							{
 								videos?.map((video, index) => (
 									<div key={index} className='cursor-pointer relative opacity-80' onClick={() => handleOpenDetailMedia(index)}>
-										<video src={video} alt='video' className='w-full h-[200px] object-cover rounded-md'/>
+										<video src={video} alt='video' className='w-full xl:h-[190px] lg:h-[170px] md:h-[150px] sm:h-[130px] h-[130px] object-cover rounded-md'/>
 										<div className='absolute top-0 left-0 right-0 bottom-0 flex items-center justify-center'>
 											<FaRegPlayCircle size={50}/>
 										</div>

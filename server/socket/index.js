@@ -346,24 +346,26 @@ io.on('connection', async (socket)=>{
       const senderId=data?.senderId
       const postId=data?.postId
       const post=await PostModel.findById(postId)
-      const notification=new NotificationModel({
-         from:senderId,
-         to:post?.poster,
-         type:'like',
-         related:{
-            _id: postId
-         },
-         read:false
-      })
-      await notification.save()
-      const notifications=await NotificationModel.find({
-         to:post?.poster
-      }).populate({
-         path:'from',
-         select:'_id name profile_pic'
-      }).sort({createdAt:-1})
-      console.log('poster',post?.poster)
-      io.to(post?.poster.toString()).emit('notifications',notifications)
+      if(senderId!==post?.poster?.toString()){
+         const notification=new NotificationModel({
+            from:senderId,
+            to:post?.poster,
+            type:'like',
+            related:{
+               _id: postId
+            },
+            read:false
+         })
+         await notification.save()
+         const notifications=await NotificationModel.find({
+            to:post?.poster
+         }).populate({
+            path:'from',
+            select:'_id name profile_pic'
+         }).sort({createdAt:-1})
+         console.log('poster',post?.poster)
+         io.to(post?.poster.toString()).emit('notifications',notifications)
+      }
    })
 
    //comment
@@ -371,23 +373,25 @@ io.on('connection', async (socket)=>{
       const senderId=data?.senderId
       const postId=data?.postId
       const post=await PostModel.findById(postId)
-      const notification=new NotificationModel({
-         from:senderId,
-         to:post?.poster,
-         type:'comment',
-         related:{
-            _id: postId
-         },
-         read:false
-      })
-      await notification.save()
-      const notifications=await NotificationModel.find({
-         to:post?.poster
-      }).populate({
-         path:'from',
-         select:'_id name profile_pic'
-      }).sort({createdAt:-1})
-      io.to(post?.poster.toString()).emit('notifications',notifications)
+      if(senderId!==post?.poster?.toString()){
+         const notification=new NotificationModel({
+            from:senderId,
+            to:post?.poster,
+            type:'comment',
+            related:{
+               _id: postId
+            },
+            read:false
+         })
+         await notification.save()
+         const notifications=await NotificationModel.find({
+            to:post?.poster
+         }).populate({
+            path:'from',
+            select:'_id name profile_pic'
+         }).sort({createdAt:-1})
+         io.to(post?.poster.toString()).emit('notifications',notifications)
+      }
    })
 
    //seen-notification

@@ -23,7 +23,7 @@ const Sidebar = ({ user }) => {
 		setShowMore(!showMore)
 	}
 	return (
-		<div className='w-[365px]'>
+		<div className='w-full'>
 			<div className='w-full h-auto py-2'>
 				<Link to={`/profileUser/${user?._id}`} className='flex gap-3 py-2 px-5 items-center cursor-pointer hover:bg-slate-200 rounded-lg'>
 					<img
@@ -31,7 +31,7 @@ const Sidebar = ({ user }) => {
 						alt='profile'
 						className='rounded-full w-10 h-10'
 					/>
-					<p className='text-nomal font-semibold'>{user?.name}</p>
+					<p className='text-nomal font-semibold text-ellipsis line-clamp-1'>{user?.name}</p>
 				</Link>
 				<Link to={'/friend-request'} className='flex gap-5 py-2 px-5 items-center cursor-pointer hover:bg-slate-200 rounded-lg'>
 					<IoPeopleSharp className='w-8 h-8 text-blue-600 cursor-pointer'/>
@@ -67,7 +67,7 @@ const Sidebar = ({ user }) => {
 									src={group?.profile_pic}
 									className='rounded w-9 h-9 object-cover'
 								/>
-								<p className='text-base font-semibold'>{group?.name}</p>
+								<p className='text-base font-semibold text-ellipsis line-clamp-1'>{group?.name}</p>
 							</Link>
 						)
 					})}
@@ -78,7 +78,7 @@ const Sidebar = ({ user }) => {
 									src={group?.profile_pic}
 									className='rounded w-9 h-9 object-cover'
 								/>
-								<p className='text-base font-semibold'>{group?.name}</p>
+								<p className='text-base font-semibold text-ellipsis line-clamp-1'>{group?.name}</p>
 							</Link>
 						)
 					})}
@@ -106,7 +106,7 @@ const Sidebar = ({ user }) => {
 										src={group?.profile_pic}
 										className='rounded w-9 h-9 object-cover'
 									/>
-									<p className='text-base font-semibold'>{group?.name}</p>
+									<p className='text-base font-semibold text-ellipsis line-clamp-1'>{group?.name}</p>
 								</Link>
 							))}
 							<div className='flex items-center gap-5 py-2 px-5 cursor-pointer hover:bg-slate-200 rounded-lg'

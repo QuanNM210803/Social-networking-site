@@ -25,7 +25,7 @@ const NewsCard = ({ news, handleLikePost, handleCommentPost }) => {
 	const [isOpenDetailMedia, setIsOpenDetailMedia]=useState(false)
 	const [isOpenComment, setIsOpenComment]=useState(false)
 	const [isOpenDetailsLike, setIsOpenDetailsLike]=useState(false)
-	console.log('news', news)
+   
 	useEffect(() => {
 		setPost(news)
 	}, [news])
@@ -47,19 +47,19 @@ const NewsCard = ({ news, handleLikePost, handleCommentPost }) => {
 	return (
 		<div>
 			<div className='w-full h-auto bg-slate-200 px-4 py-2 rounded-md space-y-2'>
-				<div className='flex items-center gap-4'>
-					<Link to={`/profileUser/${post?.poster?._id}`} className='w-[40px] h-[40px]'>
+				<div className='flex sm:items-center gap-4'>
+					<Link to={`/profileUser/${post?.poster?._id}`} className='w-[40px] h-[40px] flex-shrink-0'>
 						<img
 							src={post?.poster?.profile_pic}
 							className='rounded-full w-full h-full object-cover cursor-pointer'
 						/>
 					</Link>
 					<div className='space-y-0'>
-						<div className='flex gap-2 items-center'>
+						<div className='sm:flex sm:gap-2 sm:items-center'>
 							<Link to={`/profileUser/${post?.poster?._id}`} className='font-semibold'>{post?.poster?.name}</Link>
 							{
 								post?.group && (
-									<Link to={`/profileGroup/${post?.group?._id}`} className='text-xs text-gray-500'>
+									<Link to={`/profileGroup/${post?.group?._id}`} className='text-xs text-gray-500 text-ellipsis line-clamp-1'>
                               đã đăng trong nhóm <strong className='cursor-pointer hover:underline'>{post?.group?.name}</strong>
 									</Link>
 								)
