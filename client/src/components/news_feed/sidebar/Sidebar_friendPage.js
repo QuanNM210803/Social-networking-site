@@ -140,9 +140,9 @@ const Sidebar_friendPage = ({ handleClickFriend, socketConnection }) => {
 	}
 
 	return (
-		<div className='h-auto'>
+		<div className='h-full'>
 			<div className='px-3 py-2 bg-slate-300'>
-				<p className='font-bold text-2xl text-slate-800'>Bạn bè</p>
+				<p className='font-bold lg:text-2xl text-xl text-slate-800'>Bạn bè</p>
 			</div>
 			{option===null && (
 				<div>
@@ -182,18 +182,18 @@ const Sidebar_friendPage = ({ handleClickFriend, socketConnection }) => {
 					{
 						friendRequests.length===0 ? (
 							<div className='py-5 px-5'>
-								<p className='text-center text-slate-500'>Không có lời mời kết bạn</p>
+								<p className='text-center text-slate-500 xl:text-lg text-[15px]'>Không có lời mời kết bạn</p>
 							</div>
 						):(
-							<div className='p-3 space-y-2 h-[550px] overflow-auto scrollbar-newsfeed'>
-								<div className='w-[360px]'>
+							<div className='p-3 space-y-2 h-auto'>
+								<div className='w-full'>
 									{
 										friendRequests.map((friend, index) => (
 											<div className='flex gap-3 px-2 py-1 '>
 												<div className='flex-shrink-0'>
 													<img
 														src={friend?.profile_pic}
-														className='rounded-full cursor-pointer w-[60px] h-[60px] object-cover'
+														className='rounded-full cursor-pointer xl:w-[55px] xl:h-[55px] lg:w-[50px] lg:h-[50px] w-[40px] h-[40px] object-cover'
 														onClick={() => handleClickFriend(friend?._id)}
 													/>
 												</div>
@@ -201,19 +201,19 @@ const Sidebar_friendPage = ({ handleClickFriend, socketConnection }) => {
 													<div className='flex justify-between'>
 														<p className='text-sm font-semibold cursor-pointer hover:underline'
 															onClick={() => handleClickFriend(friend?._id)}>{friend?.name}</p>
-														<p className='text-sm'>{friend?.inviteTime}</p>
+														<p className='text-mini'>{friend?.inviteTime}</p>
 													</div>
 													<div>
 														<p className='text-sm hover:underline cursor-pointer' onClick={() => handleOpenDetailsMutualFriend(friend)}>
 															{friend?.mutualFriends?.length} bạn chung
 														</p>
 													</div>
-													<div className='py-1 flex justify-between'>
-														<button className='bg-blue-500 text-white hover:bg-blue-800 rounded-lg w-[45%] px-2 py-1'
+													<div className='py-1 flex flex-col gap-1 xl:justify-between xl:flex-row items-center lg:text-[16px] text-[14px]'>
+														<button className='bg-blue-500 text-white hover:bg-blue-800 rounded-lg xl:w-[70%] w-full xl:py-1'
 															onClick={() => handleAcceptFriendRequest(friend?._id)}>
                                              Chấp nhận
 														</button>
-														<button className='bg-slate-400 text-white hover:bg-slate-500 rounded-lg w-[45%] px-2 py-1'
+														<button className='bg-slate-400 text-white hover:bg-slate-500 rounded-lg xl:w-[30%] w-full xl:py-1'
 															onClick={() => handleDeleteFriendRequest(friend?._id)}>
                                              Xóa
 														</button>
@@ -241,20 +241,20 @@ const Sidebar_friendPage = ({ handleClickFriend, socketConnection }) => {
 								<p className='text-center text-slate-500'>Không có bạn bè gợi ý</p>
 							</div>
 						):(
-							<div className='p-3 space-y-2 h-[550px] overflow-auto scrollbar-newsfeed'>
-								<div className='w-[360px] space-y-3'>
+							<div className='p-3 space-y-2 h-auto'>
+								<div className='w-full space-y-3'>
 									{
 										friendsSuggest.map((friend, index) => (
 											<div className='flex gap-3 px-2 py-1 hover:bg-slate-200 rounded-md'>
 												<div className='flex-shrink-0'>
 													<img
 														src={friend?.profile_pic}
-														className='rounded-full cursor-pointer w-[60px] h-[60px] object-cover'
+														className='rounded-full cursor-pointer xl:w-[55px] xl:h-[55px] lg:w-[50px] lg:h-[50px] w-[40px] h-[40px] object-cover'
 														onClick={() => handleClickFriend(friend?._id)}
 													/>
 												</div>
-												<div className='w-full h-auto space-y-1'>
-													<div className='flex justify-between'>
+												<div className='w-full h-auto space-y-1 flex-grow'>
+													<div className='flex flex-col'>
 														<p className='text-sm font-semibold cursor-pointer hover:underline'
 															onClick={() => handleClickFriend(friend?._id)}>{friend?.name}</p>
 														<div>
@@ -263,15 +263,15 @@ const Sidebar_friendPage = ({ handleClickFriend, socketConnection }) => {
 															</p>
 														</div>
 													</div>
-													<div className='py-1'>
+													<div className='lg:text-[16px] text-[14px]'>
 														{
 															self?.friend_requests?.some((f) => f?.user?.toString()===friend?._id?.toString()) ? (
-																<button className='bg-blue-400 text-white hover:bg-blue-600 rounded-lg w-[45%] px-2 py-1'
+																<button className='bg-blue-400 text-white hover:bg-blue-600 rounded-lg w-full'
 																	onClick={() => handleAcceptFriendRequest(friend?._id)}>
                                                    Chấp nhận
 																</button>
 															):(
-																<button className='bg-blue-400 text-white hover:bg-blue-600 rounded-lg w-[45%] px-2 py-1'
+																<button className='bg-blue-400 text-white hover:bg-blue-600 rounded-lg w-full'
 																	onClick={() => handleFriendRequest(friend?._id)}>
                                                    Thêm bạn bè
 																</button>
@@ -294,9 +294,9 @@ const Sidebar_friendPage = ({ handleClickFriend, socketConnection }) => {
 						<div className='flex items-center gap-4'>
 							<FaArrowLeft size={30} className='cursor-pointer p-1 rounded-full hover:bg-slate-200'
 								onClick={() => handleClickedOption(null)}/>
-							<p className='font-semibold text-nomal'>Tất cả bạn bè</p>
+							<p className='font-semibold lg:text-nomal text-mini-1'>Tất cả bạn bè</p>
 						</div>
-						<p className='font-semibold text-mini-1'>{friends?.length} người bạn</p>
+						<p className='font-semibold lg:text-mini-1 text-mini'>{friends?.length} người bạn</p>
 					</div>
 					<div className='flex items-center px-3 py-2 bg-slate-300'>
 						<input 
@@ -304,7 +304,7 @@ const Sidebar_friendPage = ({ handleClickFriend, socketConnection }) => {
 							name='search'
 							value={search}
 							onChange={(e) => setSearch(e.target.value)}
-							placeholder='Tìm kiếm trong danh sách bạn bè' 
+							placeholder='Tìm kiếm bạn bè' 
 							className='w-full h-8 px-3 bg-slate-200 rounded-md'/>
 					</div>
 					{
@@ -313,35 +313,35 @@ const Sidebar_friendPage = ({ handleClickFriend, socketConnection }) => {
 								<p className='text-center text-slate-500'>Bạn chưa kết bạn với ai. Hãy tìm kiếm bạn bè ngay!</p>
 							</div>
 						):(
-							<div className='p-3 h-[510px] overflow-auto scrollbar-newsfeed'>
-								<div className='w-[360px] space-y-3 '>
+							<div className='p-3 h-auto'>
+								<div className='w-full space-y-3 '>
 									{
 										friends.map((friend, index) => (
 											<div className='flex gap-3 items-center py-1 px-2 hover:bg-slate-200 rounded-md'>
 												<div className='flex-shrink-0'>
 													<img
 														src={friend?.profile_pic}
-														className='rounded-full w-[60px] h-[60px] object-cover cursor-pointer'
+														className='rounded-full xl:w-[55px] xl:h-[55px] lg:w-[50px] lg:h-[50px] w-[40px] h-[40px] object-cover cursor-pointer'
 														onClick={() => handleClickFriend(friend?._id)}
 													/>
 												</div>
-												<div className='w-full h-full flex items-center'>
-													<div className='w-auto h-auto'>
+												<div className='flex flex-col flex-grow'>
+													<div className='flex items-center justify-between'>
 														<p className='text-sm font-semibold cursor-pointer hover:underline'
 															onClick={() => handleClickFriend(friend?._id)}>
 															{friend?.name}
 														</p>
+														<p className='text-mini'>{friend?.createdAt}</p>
+													</div>
+													<div className='flex items-center'>
 														<p className='text-sm hover:underline cursor-pointer' onClick={() => handleOpenDetailsMutualFriend(friend)}>
 															{friend?.mutualFriends?.length} bạn chung
 														</p>
 													</div>
-												</div>
-												<div className='flex items-center justify-end w-[250px] '>
-													<div className='flex flex-col w-full'>
-														<p className='w-full px-2 py-1 flex justify-end'>{friend?.createdAt}</p>
-														<button className='bg-slate-200 rounded px-2 py-1 hover:bg-red-400 hover:text-white'
+													<div className='flex items-center w-full lg:text-[16px] text-[14px]'>
+														<button className='bg-slate-200 rounded w-full hover:bg-red-400 hover:text-white'
 															onClick={() => handleUnfriend(friend?._id)}>
-                                             Hủy kết bạn
+                                                Hủy kết bạn
 														</button>
 													</div>
 												</div>

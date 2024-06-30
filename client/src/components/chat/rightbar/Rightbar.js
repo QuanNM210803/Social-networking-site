@@ -32,7 +32,7 @@ const Rightbar = ({ receiver, socketConnection }) => {
 		setShowFile(!showFile)
 	}
 	return (
-		<>
+		<div className=''>
 			{!showFile && (
 				<div className='w-full h-full bg-slate-200 overflow-auto'>
 					<Link to={`/profileUser/${receiver?._id}`} className='flex items-center justify-center mt-8'>
@@ -50,42 +50,7 @@ const Rightbar = ({ receiver, socketConnection }) => {
 					</div>
 					<p className='font-bold flex justify-center text-xl mt-0 text-center'>{receiver?.name}</p>
 
-					<div className="bg-slate-200 py-1 px-1 h-auto w-full mt-16">
-						<div className='bg-slate-200 w-full h-auto py-1 font-semibold'>
-							<div onClick={toggleDropdownCustomize} className='flex items-center justify-between px-2 rounded hover:bg-slate-100 cursor-pointer'>
-								<p className='text-base'>
-                           Tùy chỉnh đoạn chat
-								</p>
-								<button className=''>
-									{!isOpenCustomize && <RiArrowDropDownLine size={35}/>}
-									{isOpenCustomize && <RiArrowDropUpLine size={35}/>}
-								</button>
-							</div>
-							{
-								isOpenCustomize && (
-									<div className='mt-2 space-y-1 h-auto'>
-										<div className='rounded hover:bg-slate-100 cursor-pointer py-1 px-2'>
-											<button className='flex gap-2 items-center'>
-												<AiFillPicture size={20}/>
-												<span>File phương tiện</span>
-											</button>
-										</div>
-										<div className='rounded hover:bg-slate-100 cursor-pointer py-1 px-2'>
-											<button className='flex gap-2 items-center'>
-												<FaFile size={20}/>
-												<span>File</span>
-											</button>
-										</div>
-										<div className='rounded hover:bg-slate-100 cursor-pointer py-1 px-2'>
-											<button className='flex gap-2 items-center'>
-												<FaLink size={20}/>
-												<span>Liên kết</span>
-											</button>
-										</div>
-									</div>
-								)
-							}
-						</div>
+					<div className="bg-slate-200 py-1 px-1 h-auto w-full mt-[10%]">
 						<div className='bg-slate-200 w-full h-auto py-1 font-semibold'>
 							<div onClick={toggleDropdownFile} className='flex items-center justify-between px-2 rounded hover:bg-slate-100 cursor-pointer'>
 								<p className='text-base'>
@@ -121,41 +86,7 @@ const Rightbar = ({ receiver, socketConnection }) => {
 								) 
 							}
 						</div>
-						<div className='bg-slate-200 w-full h-auto py-1 font-semibold'>
-							<div onClick={toggleDropdownPrivate} className='flex items-center justify-between px-2 rounded hover:bg-slate-100 cursor-pointer'>
-								<p className='text-base'>
-                     Quyền riêng tư & hỗ trợ
-								</p>
-								<button className=''>
-									{!isOpenPrivate && <RiArrowDropDownLine size={35}/>}
-									{isOpenPrivate && <RiArrowDropUpLine size={35}/>}
-								</button>
-							</div>
-							{
-								isOpenPrivate && (
-									<div className='mt-2 space-y-1 h-auto'>
-										<div className='rounded hover:bg-slate-100 cursor-pointer py-1 px-2'>
-											<button className='flex gap-2 items-center'>
-												<AiFillPicture size={20}/>
-												<span>File phương tiện</span>
-											</button>
-										</div>
-										<div className='rounded hover:bg-slate-100 cursor-pointer py-1 px-2'>
-											<button className='flex gap-2 items-center'>
-												<FaFile size={20}/>
-												<span>File</span>
-											</button>
-										</div>
-										<div className='rounded hover:bg-slate-100 cursor-pointer py-1 px-2'>
-											<button className='flex gap-2 items-center'>
-												<FaLink size={20}/>
-												<span>Liên kết</span>
-											</button>
-										</div>
-									</div>
-								)
-							}
-						</div>
+
 					</div>
 				</div>)}
 			{
@@ -163,7 +94,7 @@ const Rightbar = ({ receiver, socketConnection }) => {
 					<ShowFile handleShowFile={handleShowFile} content={content} socketConnection={socketConnection}/>
 				)
 			}
-		</>
+		</div>
 	)
 }
 

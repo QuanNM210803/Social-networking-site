@@ -46,7 +46,7 @@ function MediaTab({ media }) {
 			{
 				media.length===0 && (
 					<div className='flex items-center justify-center h-screen'>
-						<p className='text-lg font-semibold text-gray-500'>Không có file phương tiện nào</p>
+						<p className='text-lg text-center font-semibold text-gray-500'>Không có file phương tiện nào</p>
 					</div>
 				)
 			}

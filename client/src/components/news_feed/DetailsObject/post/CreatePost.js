@@ -89,7 +89,7 @@ const CreatePost = ({ handleCreatePost }) => {
 	return (
 		<div className='fixed top-14 bottom-0 right-0 left-0 bg-gray-700 bg-opacity-70
          z-50 flex justify-center items-center'>
-			<div className='bg-slate-200 lg:w-[40%] md:w-[50%] sm:w-[60%] w-[80%] h-auto max-h-[600px] rounded'>
+			<div className='bg-slate-200 lg:w-[40%] md:w-[50%] sm:w-[60%] w-[80%] h-auto max-h-[80%] overflow-auto rounded'>
 				<div className='flex items-center justify-center relative py-2'>
 					<p className='font-bold text-lg'>Tạo bài viết</p>
 					<IoCloseOutline size={30} className='absolute right-2 cursor-pointer hover:bg-slate-300 rounded-full'

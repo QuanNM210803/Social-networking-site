@@ -14,6 +14,7 @@ const getConversation=async(currentUserId)=>{
       }).sort({updatedAt: -1}).populate('messages').populate('sender').populate('receiver')
 
       const conversation= currentUserConversation.map((conv)=>{
+         // tham so dau tien la gia tri tich luy, tham so thu 2 la phan tu cua mang
          const countUnseenMsg=conv?.messages?.reduce((preve,curr) => {
             const msgByUserId=curr?.msgByUserId?.toString()
 

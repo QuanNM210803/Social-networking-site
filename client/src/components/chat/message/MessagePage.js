@@ -372,7 +372,7 @@ const MessagePage = () => {
 			</div>
 			{
 				openDetailsConversation && (
-					<div className='lg:w-80 sm:w-60 sm:block hidden fixed right-0 top-14 z-0 h-full '>
+					<div className='lg:w-80 sm:w-60 sm:block hidden fixed right-0 top-14 z-0 h-full overflow-auto'>
 						<Rightbar receiver={dataUser} socketConnection={socketConnection}/>
 					</div>
 				)

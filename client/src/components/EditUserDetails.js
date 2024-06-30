@@ -66,7 +66,7 @@ const EditUserDetails = ({ onClose }) => {
 	return (
 		<div className='fixed top-14 bottom-0 left-0 right-0 bg-gray-700 bg-opacity-70
          flex justify-center items-center z-10'>
-			<div className='bg-slate-200 px-4 py-3 rounded w-full max-w-sm'>
+			<div className='bg-slate-200 px-4 py-3 rounded w-full max-w-sm h-[80%] overflow-auto'>
 				<div className='flex items-center justify-between w-full'>
 					<h2 className='font-bold'>EDIT PROFILE</h2>
 					<IoClose size={30} className='bg-slate-300 cursor-pointer rounded' onClick={onClose}/>

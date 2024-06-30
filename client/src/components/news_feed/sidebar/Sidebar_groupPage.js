@@ -76,9 +76,9 @@ const Sidebar_groupPage = ({ handleClickGroup }) => {
 		}
 	}, [errorInput])
 	return (
-		<div className='h-auto'>
+		<div className='h-full'>
 			<div className='px-3 py-2 bg-slate-300 flex justify-between items-center'>
-				<p className='font-bold text-2xl text-slate-800'>Nhóm</p>
+				<p className='font-bold lg:text-2xl text-xl text-slate-800'>Nhóm</p>
 				<button className='flex items-center gap-1 hover:bg-slate-200 px-2 py-1 rounded' onClick={handleOpenCreateGroup}>
 					<IoAddOutline size={21}/>
 					<p>Tạo nhóm</p>
@@ -115,23 +115,23 @@ const Sidebar_groupPage = ({ handleClickGroup }) => {
 					{
 						groupsShow?.length===0 ? (
 							<div className='py-5 px-5'>
-								<p className='text-center text-slate-500'>Bạn chưa tham gia vào bất kì nhóm nào</p>
+								<p className='text-center text-slate-500 xl:text-lg text-[15px]'>Bạn chưa tham gia vào bất kì nhóm nào</p>
 							</div>
 						):(
-							<div className='p-3 space-y-2 h-[510px] overflow-auto scrollbar-newsfeed'>
-								<div className='w-[360px] space-y-3'>
+							<div className='p-3 space-y-2 h-auto'>
+								<div className='w-full space-y-3'>
 									{
 										groupsShow?.map((group, index) => (
 											<div className='flex gap-3 py-1 px-2 hover:bg-slate-200 rounded-md'>
 												<div className='flex-shrink-0'>
 													<img
 														src={group?.profile_pic}
-														className='rounded-lg cursor-pointer w-14 h-14 object-cover'
+														className='rounded-lg cursor-pointer xl:w-14 xl:h-14 lg:w-10 lg:h-10 w-8 h-8 object-cover'
 														onClick={() => handleClickGroup(group?._id)}
 													/>
 												</div>
 												<div className='w-full h-auto'>
-													<p className='text-lg font-semibold cursor-pointer hover:underline'
+													<p className='xl:text-lg lg:text-[15px] text-[13px] font-semibold cursor-pointer hover:underline'
 														onClick={() => handleClickGroup(group?._id)}>{group?.name}</p>
 												</div>
 											</div>
@@ -146,7 +146,7 @@ const Sidebar_groupPage = ({ handleClickGroup }) => {
 			{onOpenCreateGroup && (
 				<div className='fixed top-14 bottom-0 left-0 right-0 z-50 bg-gray-700 bg-opacity-70
                   flex justify-center items-center'>
-					<div className='bg-slate-300 w-[500px] h-auto rounded-md py-2'>
+					<div className='bg-slate-300 w-[500px] h-auto max-h-[80%] rounded-md py-2 overflow-auto'>
 						<div className='w-full h-auto flex justify-center items-center py-2'> 
 							<p className='font-bold text-xl'>Tạo nhóm mới</p>
 						</div>

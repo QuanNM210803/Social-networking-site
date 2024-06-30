@@ -70,8 +70,8 @@ const CommentVideoCard = ({ handleOpenComment, news }) => {
             bg-slate-300 text-slate-600' onClick={handleOpenComment}>
 				<IoCloseOutline size={40}/>
 			</div>
-			<div className='relative lg:w-[50%] md:w-[60%] sm:w-[70%] w-[80%] sm:h-[600px] h-[550px] bg-slate-200 rounded-md'>
-				<div className='w-full sm:h-[550px] h-[500px] bg-slate-200 px-4 py-2 rounded-t-md space-y-2 overflow-auto'>
+			<div className='relative lg:w-[50%] md:w-[60%] sm:w-[70%] w-[80%] sm:h-[90%] h-[80%] overflow-auto bg-slate-200 rounded-md'>
+				<div className='w-full h-[90%] bg-slate-200 px-4 py-2 rounded-t-md space-y-2 overflow-auto'>
 					<div className='flex items-center gap-4'>
 						<img
 							src={post?.poster?.avatar}

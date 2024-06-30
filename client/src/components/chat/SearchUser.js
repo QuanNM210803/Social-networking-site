@@ -21,12 +21,12 @@ const SearchUser = ({ onClose }) => {
 
 	return (
 		<div className='fixed top-14 bottom-0 left-0 right-0 bg-slate-700 bg-opacity-40 p-2 z-50'>
-			<div className='w-full max-w-lg mx-auto mt-14'>
-				<div className='bg-white rounded h-14 overflow-hidden flex '>
+			<div className='w-full max-w-lg mx-auto mt-14 h-[80%] overflow-auto rounded'>
+				<div className='bg-slate-300 rounded-b h-14 overflow-hidden flex sticky top-0 z-50'>
 					<input
 						type='text'
 						placeholder='Search user by email or name ...'
-						className='w-full outline-none py-1 h-full px-4'
+						className='w-full outline-none py-1 h-full px-4 bg-slate-300' 
 						onChange={(e) => setSearch(e.target.value)}
 						value={search}
 					/>
@@ -36,21 +36,21 @@ const SearchUser = ({ onClose }) => {
 				</div>
 				{
 					searchUser?.length===0 && search!=='' && !loading && (
-						<div className='bg-white mt-2 w-full p-4 rounded'>
+						<div className='bg-white mt-2 w-full p-4 rounded-t'>
 							<p className='text-center text-slate-500'> Not user found!</p>
 						</div>
 					)
 				}
 				{
 					loading && (
-						<div className='bg-white mt-2 w-full p-4 rounded'>
+						<div className='bg-white mt-2 w-full p-4 rounded-t'>
 							<p><Loading/></p>
 						</div>
 					)
 				}
 				{
 					searchUser.length!==0 && !loading &&(
-						<div className='bg-white mt-2 w-full p-4 rounded h-auto max-h-[350px] overflow-auto'>
+						<div className='bg-white mt-2 w-full p-4 rounded-t'>
 							{searchUser.map((user, index) => {
 								return (
 									<UserSearchCard key={user._id} user={user} onClose={onClose}/>

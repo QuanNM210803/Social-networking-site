@@ -149,8 +149,8 @@ const ChatWindow = ({ handleCloseChatWindow, friendChat, socketConnection }) => 
 					</button>
 				</div>
 			</div>
-			<div className='relative w-full h-[404px] '>
-				<div className='w-full h-[356px] overflow-auto px-2 py-1 relative'>
+			<div className='relative w-full h-[calc(100%-52px)]'>
+				<div className='w-full h-[calc(100%-48px)] overflow-auto px-2 py-1 relative'>
 					<div className='flex flex-col gap-2 py-2' ref={currentMessage}>
 						{
 							allMessages?.map((msg, index) => {

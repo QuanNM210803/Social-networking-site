@@ -57,7 +57,7 @@ const PendingMembers = ({ objectId, socketConnection }) => {
 					</div>
 				):(
 					<div className='w-full h-20 flex justify-center items-center'>
-						<p className='text-slate-500 text-lg text-center'>Không có người nào yêu cầu tham gia nhóm.</p>
+						<p className='text-slate-500 sm:text-lg text-[15px] text-center'>Không có người nào yêu cầu tham gia nhóm.</p>
 					</div>
 				)}
 			</div>

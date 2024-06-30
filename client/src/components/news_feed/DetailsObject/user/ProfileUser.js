@@ -242,7 +242,7 @@ const ProfileUser = ({ idFriend, news, loading, handleLikePost, handleCommentPos
                                     Hủy yêu cầu kết bạn
                                  </button>
 										}
-										<Link to={`/chat/${user?._id}`} className='bg-slate-500 text-white hover:bg-slate-700 rounded-md px-3 py-1'>Nhắn tin</Link>
+										<Link to={`/chat/${user?._id}`} className='bg-slate-500 text-white hover:bg-slate-700 text-center rounded-md px-3 py-1'>Nhắn tin</Link>
 									</div> : 
 									<div className='flex items-center justify-center gap-2 mt-5'>
 										<button className='bg-slate-400 text-white hover:bg-slate-600 rounded-md px-3 py-1'
@@ -302,9 +302,3 @@ const ProfileUser = ({ idFriend, news, loading, handleLikePost, handleCommentPos
 }
 
 export default ProfileUser
-
-// chat window
-// thông báo
-
-// call, Video call
-// responsive

@@ -14,15 +14,15 @@ const Sidebar_videoPage = ({ option, setOption }) => {
 				<div className={option===1 ? ('p-2 flex items-center rounded-md cursor-pointer bg-slate-200' 
 				   ):('p-2 flex items-center rounded-md cursor-pointer')} onClick={() => {setOption(1)}}>
 					<div className='flex items-center gap-4'>
-						<BiSolidVideos size={30} className='md:block hidden'/>
-						<p className='font-semibold sm:text-[18px] text-[13px]'>Trang chủ</p>
+						<BiSolidVideos size={30} className='lg:block md:hidden block'/>
+						<p className='font-semibold text-[18px] md:block hidden'>Trang chủ</p>
 					</div>
 				</div>
 				<div className={option===2 ? ('p-2 flex items-center rounded-md cursor-pointer bg-slate-200' 
 				   ):('p-2 flex items-center rounded-md cursor-pointer')} onClick={() => {setOption(2)}}>
 					<div className='flex items-center gap-4'>
-						<MdOutlineStorage size={30} className='md:block hidden'/>
-						<p className='font-semibold sm:text-[18px] text-[13px]'>Video đã lưu</p>
+						<MdOutlineStorage size={30} className='lg:block md:hidden block'/>
+						<p className='font-semibold text-[18px] md:block hidden'>Video đã lưu</p>
 					</div>
 				</div>
 			</div>

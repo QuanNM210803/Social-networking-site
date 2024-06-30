@@ -3,7 +3,7 @@ const Group=require('../../models/GroupModel')
 async function searchUserGroup(request, response){
    try{
       const {search}=request.body
-      const query =new RegExp(search,'i','g')
+      const query =new RegExp(search,'i','g') // i for case insensitive, g for global search
       const user=await User.find({
          name:query
       }).select('_id name profile_pic')

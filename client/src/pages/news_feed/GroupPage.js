@@ -10,6 +10,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { initializeSocketConnection } from '../../socket/SocketUtils'
 import { useNavigate } from 'react-router-dom'
 import { getPostsPaginationInGroup, likePost } from '../../apis/PostApi'
+import { FaAngleDoubleRight } from 'react-icons/fa'
+import { FaAngleDoubleLeft } from 'react-icons/fa'
 
 const GroupPage = () => {
 	const user=useSelector(state => state?.user)
@@ -113,22 +115,48 @@ const GroupPage = () => {
 			console.error(error)
 		}
 	}
+   
+	const [isOpenSidebar, setIsOpenSidebar]=useState(false)
+	useEffect(() => {
+		setIsOpenSidebar(false)
+	}, [idGroup])
+	const handleOpenSidebar=() => {
+		setIsOpenSidebar(!isOpenSidebar)
+	}
 	return (
 		<div>
 			<div className='sticky top-0 bg-slate-500' style={{ zIndex:1000 }}>
 				<Navbar user={user} socketConnection={socketConnection}/>
 			</div>
-			<div className='flex top-14 left-0 right-0 bottom-0'>
-				<div className='h-[calc(100vh-56px)] w-[25%] bg-slate-100'>
+			<div className='flex top-0 left-0 right-0 bottom-0 relative'>
+				<div className='h-[calc(100vh-56px)] lg:w-[25%] lg:block hidden bg-slate-100 overflow-auto scrollbar'>
 					<Sidebar_groupPage handleClickGroup={handleClickGroup}/>
+				</div>
+				<div className='absolute left-0 top-0 lg:hidden block' style={{ zIndex:500 }}>
+					{ 
+						isOpenSidebar ? (
+							<div className='flex relative'>
+								<div className='h-[calc(100vh-56px)] w-[250px] bg-slate-100 overflow-auto scrollbar'>
+									<Sidebar_groupPage handleClickGroup={handleClickGroup}/>
+								</div>
+								<div className='absolute top-0 -right-12 px-1 py-1 flex items-center justify-center bg-slate-400 rounded-r' onClick={() => handleOpenSidebar()}>
+									<FaAngleDoubleLeft size={40} className='text-slate-600  cursor-pointer hover:text-slate-800'/>
+								</div>
+							</div>
+						):(
+							<div className='flex items-center justify-center px-1 py-1 bg-slate-400 rounded-r' onClick={() => handleOpenSidebar()}>
+								<FaAngleDoubleRight size={40} className='text-slate-600  cursor-pointer hover:text-slate-800'/>
+							</div>
+						)
+					}
 				</div>
 				{
 					idGroup===null ? (
-						<div className='h-[calc(100vh-56px)] w-[75%] flex justify-center items-center overflow-auto bg-slate-300'>
-							<h1 className='text-2xl text-slate-400'>Chọn tên của nhóm mà bạn muốn xem trước trang thông tin.</h1>
+						<div className='h-[calc(100vh-56px)] lg:w-[75%] w-full flex justify-center items-center overflow-auto bg-slate-300'>
+							<h1 className='text-2xl text-slate-400 text-center'>Chọn tên của nhóm mà bạn muốn xem trước trang thông tin.</h1>
 						</div>
 					):(
-						<div className='h-[calc(100vh-56px)] w-[75%] overflow-auto bg-slate-300' onScroll={handleScroll}>
+						<div className='h-[calc(100vh-56px)] lg:w-[75%] w-full overflow-auto bg-slate-300' onScroll={handleScroll}>
 							<ProfileGroup idGroup={idGroup}
 								news={news} loading={loading} handleLikePost={handleLikePost} handleCommentPost={handleCommentPost}
 								socketConnection={socketConnection}/>

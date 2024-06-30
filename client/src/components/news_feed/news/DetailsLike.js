@@ -23,7 +23,7 @@ const DetailsLike = ({ handleOpenDetailsLike, likes }) => {
 	return (
 		<div className='fixed top-14 left-0 right-0 bottom-0 bg-gray-700 bg-opacity-70
        z-50 flex justify-center items-center'>
-			<div className='xl:w-[35%] lg:w-[40%] md:w-[45%] sm:w-[60%] w-auto h-auto rounded bg-slate-200'>
+			<div className='xl:w-[35%] lg:w-[40%] md:w-[45%] sm:w-[60%] w-auto h-auto max-h-[60%] overflow-auto rounded bg-slate-200'>
 				<div className='flex items-center justify-center relative py-2'>
 					<p className='font-bold text-lg'>Ai đã like bài viết này ?</p>
 					<IoCloseOutline size={30} className='absolute right-2 cursor-pointer hover:bg-slate-300 rounded-full'

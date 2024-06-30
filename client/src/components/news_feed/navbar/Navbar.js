@@ -23,6 +23,7 @@ import { FaEdit } from 'react-icons/fa'
 import { searchUserGroup } from '../../../apis/UserApi'
 import Tab from '../../chat/rightbar/Tab'
 import moment from 'moment'
+import { MdOutlineStorage } from 'react-icons/md'
 
 const navbar = ({ user, socketConnection }) => {
 	const location = useLocation()
@@ -33,6 +34,7 @@ const navbar = ({ user, socketConnection }) => {
 	const [showEdit, setShowEdit] = useState(false)
 	const [allNotification, setAllNotification]=useState([])
 	const falseNotificationRead = allNotification.filter((notification) => notification?.read === false).length
+	const [showSM, setShowSM]=useState(true)
 
 	useEffect(() => {
 		if (socketConnection) {
@@ -45,6 +47,7 @@ const navbar = ({ user, socketConnection }) => {
 
 	const handleShowEdit=() => {
 		setShowEdit(!showEdit)
+		setShowSM(false)
 		setShowOptions(false)
 		setShowNotification(false)
 	}
@@ -76,15 +79,239 @@ const navbar = ({ user, socketConnection }) => {
 		})
 	}, [search])
 
+	
+	const handleShowSM=() => {
+		setShowSM(!showSM)
+	}
+
+	useEffect(() => {
+		setShowNotification(false)
+		setShowOptions(false)
+		setShowSM(false)
+	}, [navigate])
+
+
 	const [activeTab, setActiveTab] =useState('Nguời dùng')
 	return (
-		<div className='w-full h-14 flex items-center lg:justify-between justify-center'>
-			<div className='hidden xl:w-[20%] xl:flex items-center h-auto w-auto gap-3 px-5 flex-shrink-0'>
+		<div className='w-full h-14 flex items-center sm:justify-between relative justify-center'>
+			<div className='md:hidden block absolute left-2'>
+				<MdOutlineStorage size={30} className={`hover:text-slate-300 cursor-pointer ${showSM ? 'text-slate-300':'text-slate-800'}`} onClick={() => handleShowSM()}/>
+				{showSM && (
+					<div className='flex flex-col
+                  absolute left-0 top-9 w-[250px] h-auto rounded bg-slate-100 border-[1.5px] border-slate-600 cursor-pointer'>
+						<Link to={`/profileUser/${user?._id}`} className='flex items-center gap-1 p-1'>
+							<img
+								src={user?.profile_pic}
+								alt='logo'
+								className='rounded-full w-8 h-8 object-cover flex-shrink-0'
+							/>
+							<p className='text-[15px] text-ellipsis line-clamp-1'>{user?.name}</p>
+						</Link>
+						<div className='flex flex-col items-center gap-1 p-1'>
+							<input
+								type='text'
+								name='search'
+								value={search}
+								onChange={(e) => setSearch(e?.target?.value)}
+								placeholder='Search'
+								className='bg-slate-300 rounded py-1 px-3 placeholder:text-slate-100 w-full'
+							/>
+							{
+								search!=='' && (
+									<div className='p-1 w-full bg-white rounded-lg shadow-xl'>
+										<div className='flex justify-center'>
+											<div className={'w-full flex items-center gap-1'}>
+												<Tab label="Nguời dùng" isActive={activeTab === 'Nguời dùng'} onClick={() => setActiveTab('Nguời dùng')}/>
+												<Tab label="Nhóm" isActive={activeTab === 'Nhóm'} onClick={() => setActiveTab('Nhóm')}/>
+											</div>
+										</div>
+										{
+											activeTab==='Nguời dùng' && (
+												<div className='bg-slate-200 rounded-md'>
+													{resultSearchUser?.length===0 &&(
+														<p className='text-center text-slate-500 py-2'>Not user found!</p>
+													)}
+													{resultSearchUser?.length>0 && (
+														<div className='h-auto max-h-[200px] scroll-container'>
+															{resultSearchUser.map((user, index) => {
+																return (
+																	<Link to={`/profileUser/${user?._id}`} className='flex items-center gap-2 p-2 hover:bg-slate-300 rounded cursor-pointer'>
+																		<img
+																			src={user?.profile_pic}
+																			alt='logo'
+																			className='rounded-full w-8 h-8 object-cover'
+																		/>
+																		<p className='text-[15px]'>{user?.name}</p>
+																	</Link>
+																)
+															})}
+														</div>
+													)}
+												</div>
+											)
+										}
+										{
+											activeTab==='Nhóm' && (
+												<div className='bg-slate-200 rounded-md'>
+													{resultSearchGroup?.length===0 &&(
+														<p className='text-center text-slate-500 py-2'>Not group found!</p>
+													)}
+													{resultSearchGroup?.length>0 && (
+														<div className='h-auto max-h-[200px] scroll-container'>
+															{resultSearchGroup.map((group, index) => {
+																return (
+																	<Link to={`/profileGroup/${group?._id}`} className='flex items-center gap-2 p-2 hover:bg-slate-300 rounded cursor-pointer'>
+																		<img
+																			src={group?.profile_pic}
+																			alt='logo'
+																			className='rounded-full w-8 h-8 object-cover'
+																		/>
+																		<p className='text-[15px]'>{group?.name}</p>
+																	</Link>
+																)
+															})}
+														</div>
+													)}
+												</div>
+											)
+										}
+									</div>
+								)
+							}
+						</div>
+						<Link to={'/chat'} className='sm:hidden flex items-center gap-1 py-1 px-3 hover:bg-slate-200'>
+							<BiSolidMessageRounded size={25} className=''/>
+							<p className='text-[15px]'>Message</p>
+						</Link>
+						<div className='sm:hidden block py-1 px-3 space-y-1 hover:bg-slate-200 ' onClick={() => handleShowNotification()}>
+							<div className='flex items-center gap-1 relative'>
+								{falseNotificationRead>0 && 
+                        <div className='absolute right-0 w-4 h-4 rounded-full bg-red-500 flex items-center justify-center'>
+                        	<p className='text-[11px] text-white'>{falseNotificationRead>9 ? '9+':falseNotificationRead}</p>
+                        </div>
+								}
+								<IoNotifications size={25} className=''/>
+								<p className='text-[15px]'>Notification</p>
+							</div>
+							{showNotification && (
+								<div className=' w-full rounded shadow-xl'>
+									<div className='bg-slate-300 rounded-md'>
+										{allNotification?.length===0 &&(
+											<p className='text-center text-slate-500 py-2'>Not notification!</p>
+										)}
+										{allNotification?.length>0 && (
+											<div className='h-auto max-h-[300px] space-y-2 scroll-container'>
+												{allNotification.map((notification, index) => (
+													<React.Fragment key={index}>
+														{(notification?.type === 'friend request' || notification?.type === 'accept friendship') && (
+															<Link to={`/profileUser/${notification?.related?._id}`} 
+																className='flex items-center gap-2 cursor-pointer hover:bg-slate-100 rounded-md'>
+																<div className='p-1 flex-shrink-0 rounded'>
+																	<img
+																		src={notification?.from?.profile_pic}
+																		alt='logo'
+																		className='rounded-full w-10 h-10 object-cover'
+																	/>
+																</div>
+																<div className='py-1 w-full'>
+																	<div className='flex justify-between w-full'>
+																		<p className='font-bold'>{notification?.from?.name}</p>
+																		<p className='text-[10px] mr-1 flex items-center'>{moment(notification?.createdAt).format('DD/MM/YY HH:mm')}</p>
+																	</div>
+																	<div className='flex justify-between w-full'>
+																		<p className=''>{notification?.type}</p>
+																	</div>
+																</div>
+															</Link>
+														)}
+														{(notification?.type === 'request join group') && (
+															<Link to={`/profileGroup/${notification?.related?._id}`} 
+																className='flex items-center gap-2 cursor-pointer hover:bg-slate-100 rounded-md'>
+																<div className='p-1 flex-shrink-0 rounded'>
+																	<img
+																		src={notification?.from?.profile_pic}
+																		alt='logo'
+																		className='rounded-full w-10 h-10 object-cover'
+																	/>
+																</div>
+																<div className='py-1 w-full'>
+																	<div className='flex justify-between w-full'>
+																		<p className='font-bold'>{notification?.from?.name}</p>
+																		<p className='text-[10px] mr-1 flex items-center'>{moment(notification?.createdAt).format('DD/MM/YY HH:mm')}</p>
+																	</div>
+																	<div className='flex gap-1 w-full'>
+																		<p className='line-clamp-1 text-ellipsis'>{notification?.type} <strong>{notification?.related?.name}</strong></p>
+																	</div>
+																</div>
+															</Link>
+														)}
+														{(notification?.type === 'group member') && (
+															<Link to={`/profileGroup/${notification?.related?._id}`} 
+																className='flex items-center gap-2 cursor-pointer hover:bg-slate-100 rounded-md'>
+																<div className='p-1 flex-shrink-0 rounded'>
+																	<img
+																		src={notification?.related?.profile_pic}
+																		alt='logo'
+																		className='rounded-full w-10 h-10 object-cover'
+																	/>
+																</div>
+																<div className='py-1 w-full'>
+																	<div className='flex justify-between w-full'>
+																		<p className='font-bold'>{notification?.related?.name}</p>
+																		<p className='text-[10px] mr-1 flex items-center'>{moment(notification?.createdAt).format('DD/MM/YY HH:mm')}</p>
+																	</div>
+																	<div className='flex gap-1 w-full'>
+																		<p className='line-clamp-1 text-ellipsis'>You are already {notification?.type}</p>
+																	</div>
+																</div>
+															</Link>
+														)}
+														{(notification?.type === 'comment' || notification?.type === 'like') && (
+															<Link to={`/post/${notification?.related?._id}`} 
+																className='flex items-center gap-2 cursor-pointer hover:bg-slate-100 rounded-md'>
+																<div className='p-1 flex-shrink-0 rounded'>
+																	<img
+																		src={notification?.from?.profile_pic}
+																		alt='logo'
+																		className='rounded-full w-10 h-10 object-cover'
+																	/>
+																</div>
+																<div className='py-1 w-full'>
+																	<div className='flex justify-between w-full'>
+																		<p className='font-bold'>{notification?.from?.name}</p>
+																		<p className='text-[10px] mr-1 flex items-center'>{moment(notification?.createdAt).format('DD/MM/YY HH:mm')}</p>
+																	</div>
+																	<div className='flex gap-1 w-full'>
+																		<p className='line-clamp-1 text-ellipsis'>{notification?.type} a your posts </p>
+																	</div>
+																</div>
+															</Link>
+														)}
+													</React.Fragment>
+												))}
+											</div>
+										)}
+									</div>
+								</div>
+							)}
+						</div>
+						<div className='sm:hidden flex items-center gap-1 py-1 px-3 hover:bg-slate-200' onClick={() => handleShowEdit()}>
+							<FaEdit size={25} className=''/>
+							<p className='text-[15px]'>Edit profile</p>
+						</div>
+						<div className='sm:hidden flex items-center gap-1 py-1 px-3 hover:bg-slate-200 rounded-b' onClick={() => handleLogout()}>
+							<IoLogOut size={25} className=''/>
+							<p className='text-[15px]'>Logout</p>
+						</div>
+					</div>
+				)}
+			</div>
+			<div className='hidden md:w-[20%] md:flex items-center h-auto w-auto gap-3 lg:px-5 flex-shrink-0'>
 				<Link to={'/home'}>
 					<img
 						src={logo}
 						alt='logo'
-						className='rounded-full w-10 h-10 object-cover'
+						className='rounded-full w-10 h-10 object-cover lg:block hidden'
 					/>
 				</Link>
 				<div className='relative'>
@@ -160,24 +387,24 @@ const navbar = ({ user, socketConnection }) => {
 					}
 				</div>
 			</div>
-			<div className='h-auto w-auto lg:w-[75%] xl:w-[60%] justify-center flex items-center sm:gap-5 gap-[15%]'>
-				<Link to={'/home'} className={'sm:w-20 w-10 h-auto flex justify-center'}>
+			<div className='h-auto w-auto md:w-[60%] sm:w-[75%] justify-center flex items-center lg:gap-5 md:gap-2 gap-2'>
+				<Link to={'/home'} className={'md:w-20 sm:w-16 w-11 h-auto flex justify-center'}>
 					<IoHome className={`w-8 h-8 cursor-pointer ${location.pathname === '/home' ? 'text-slate-300':'hover:text-slate-300 text-slate-800'}`}/>
 				</Link>
-				<Link to={'/friend-request'} className='sm:w-20 w-10 h-auto flex justify-center'>
+				<Link to={'/friend-request'} className='md:w-20 sm:w-16 w-11 h-auto flex justify-center'>
 					<IoPeopleSharp className={`w-8 h-8 cursor-pointer ${location.pathname === '/friend-request' ? 'text-slate-300':'hover:text-slate-300 text-slate-800'}`}/>
 				</Link> 
-				<Link to={'/video'} className='sm:w-20 w-10 h-auto flex justify-center'>
+				<Link to={'/video'} className='md:w-20 sm:w-16 w-11 h-auto flex justify-center'>
 					<BiSolidVideos className={`w-8 h-8 cursor-pointer ${location.pathname === '/video' ? 'text-slate-300':'hover:text-slate-300 text-slate-800'}`}/>
 				</Link>
-				<Link to={'/groups'} className='sm:w-20 w-10 h-auto flex justify-center'>
+				<Link to={'/groups'} className='md:w-20 sm:w-16 w-11 h-auto flex justify-center'>
 					<MdGroups className={`w-8 h-8 cursor-pointer ${location.pathname === '/groups' ? 'text-slate-300':'hover:text-slate-300 text-slate-800'}`}/>
 				</Link>
-				<Link to={'/games'} className='sm:w-20 w-10 h-auto flex justify-center'>
+				<Link to={'/games'} className='md:w-20 sm:w-16 w-11 h-auto flex justify-center'>
 					<IoGameControllerSharp className={`w-8 h-8 cursor-pointer ${location.pathname === '/games' ? 'text-slate-300':'hover:text-slate-300 text-slate-800'}`}/>
 				</Link>
 			</div>
-			<div className='hidden h-auto w-auto xl:w-[20%] lg:w-[25%] lg:justify-end lg:flex items-center px-5 gap-3'>
+			<div className='hidden h-auto w-auto md:w-[20%] sm:w-[25%] sm:justify-end sm:flex items-center px-5 gap-3'>
 				<Link to={'/chat'} className={`w-auto h-auto flex justify-center rounded-full p-[5px] 
                ${location.pathname.includes('/chat') ? 'bg-slate-400':'hover:bg-slate-400 bg-slate-600'}`}>
 					<BiSolidMessageRounded className='w-7 h-7 text-slate-800  cursor-pointer'/>
@@ -314,7 +541,7 @@ const navbar = ({ user, socketConnection }) => {
 						</div>
 					)}
 				</div>
-				<div className='relative'>
+				<div className='relative flex-shrink-0'>
 					<img
 						src={user?.profile_pic}
 						alt='logo'
